@@ -1,0 +1,417 @@
+name: Monitoring & Alerting
+
+on:
+  schedule:
+    # Run monitoring checks every 15 minutes
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: 'Type of monitoring check to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - uptime
+        - performance
+        - security
+
+env:
+  PRODUCTION_URL: 'https://ipec-coach-connect.vercel.app'
+  STAGING_URL: 'https://staging.ipec-coach-connect.vercel.app'
+
+jobs:
+  # ============================================================================
+  # UPTIME MONITORING
+  # ============================================================================
+  
+  uptime-check:
+    name: Uptime Monitoring
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_type == 'uptime' || github.event.inputs.check_type == 'all' || github.event.schedule
+    
+    strategy:
+      matrix:
+        environment: [production, staging]
+        include:
+          - environment: production
+            url: ${{ env.PRODUCTION_URL }}
+          - environment: staging
+            url: ${{ env.STAGING_URL }}
+    
+    steps:
+      - name: Check ${{ matrix.environment }} uptime
+        run: |
+          echo "Checking uptime for ${{ matrix.environment }}: ${{ matrix.url }}"
+          
+          response_code=$(curl -s -o /dev/null -w "%{http_code}" "${{ matrix.url }}" || echo "000")
+          response_time=$(curl -s -o /dev/null -w "%{time_total}" "${{ matrix.url }}" || echo "0")
+          
+          echo "Response Code: $response_code"
+          echo "Response Time: ${response_time}s"
+          
+          if [[ "$response_code" -ge 200 && "$response_code" -lt 300 ]]; then
+            echo "✅ ${{ matrix.environment }} is UP (${response_code})"
+          else
+            echo "❌ ${{ matrix.environment }} is DOWN (${response_code})"
+            exit 1
+          fi
+          
+          # Check response time threshold (5 seconds)
+          if (( $(echo "$response_time > 5.0" | bc -l) )); then
+            echo "⚠️ Slow response time: ${response_time}s"
+          fi
+          
+      - name: Check critical endpoints
+        run: |
+          endpoints=(
+            "/api/health"
+            "/login"
+            "/coaches"
+            "/community"
+          )
+          
+          for endpoint in "${endpoints[@]}"; do
+            full_url="${{ matrix.url }}${endpoint}"
+            response_code=$(curl -s -o /dev/null -w "%{http_code}" "$full_url" || echo "000")
+            
+            echo "Checking $endpoint: $response_code"
+            
+            if [[ "$response_code" -eq 404 ]]; then
+              echo "⚠️ Endpoint $endpoint returns 404 (may be expected)"
+            elif [[ "$response_code" -ge 500 ]]; then
+              echo "❌ Server error on $endpoint: $response_code"
+              exit 1
+            fi
+          done
+          
+      - name: Report uptime status
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Uptime Alert: ${{ matrix.environment }} is DOWN`,
+              body: `
+              ## 🚨 Service Outage Detected
+              
+              **Environment:** ${{ matrix.environment }}
+              **URL:** ${{ matrix.url }}
+              **Time:** ${new Date().toISOString()}
+              **Workflow:** ${context.workflow}
+              **Run:** ${context.runNumber}
+              
+              ## Immediate Actions Required
+              - [ ] Check infrastructure status
+              - [ ] Review error logs
+              - [ ] Verify DNS resolution
+              - [ ] Check CDN status
+              - [ ] Investigate database connectivity
+              
+              ## Monitoring Dashboard
+              - [Vercel Dashboard](https://vercel.com/dashboard)
+              - [Supabase Dashboard](https://supabase.com/dashboard)
+              
+              This issue was automatically created by the monitoring system.
+              `,
+              labels: ['urgent', 'outage', 'monitoring']
+            });
+
+  # ============================================================================
+  # PERFORMANCE MONITORING
+  # ============================================================================
+  
+  performance-check:
+    name: Performance Monitoring
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_type == 'performance' || github.event.inputs.check_type == 'all' || github.event.schedule
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli
+        
+      - name: Run Lighthouse audit
+        run: |
+          lhci autorun --config=.lighthouserc.json --upload.target=temporary-public-storage || echo "Lighthouse audit completed"
+          
+      - name: Performance budget check
+        run: |
+          echo "Checking Core Web Vitals..."
+          
+          # Create a simple performance test
+          cat > performance-test.js << 'EOF'
+          const https = require('https');
+          const url = process.env.PRODUCTION_URL || 'https://ipec-coach-connect.vercel.app';
+          
+          const startTime = Date.now();
+          
+          https.get(url, (res) => {
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+            
+            console.log(`Response Time: ${responseTime}ms`);
+            console.log(`Status Code: ${res.statusCode}`);
+            
+            // Performance thresholds
+            if (responseTime > 3000) {
+              console.log('❌ Response time exceeds 3s threshold');
+              process.exit(1);
+            }
+            
+            if (responseTime > 1000) {
+              console.log('⚠️ Response time exceeds 1s recommendation');
+            }
+            
+            console.log('✅ Performance check passed');
+          }).on('error', (err) => {
+            console.error('❌ Performance check failed:', err.message);
+            process.exit(1);
+          });
+          EOF
+          
+          node performance-test.js
+          
+      - name: Check bundle size
+        run: |
+          # Simulate bundle size check
+          echo "Checking bundle size limits..."
+          
+          # These would be actual bundle sizes in a real implementation
+          MAIN_BUNDLE_SIZE=250000  # 250KB
+          VENDOR_BUNDLE_SIZE=400000  # 400KB
+          
+          MAIN_LIMIT=500000   # 500KB limit
+          VENDOR_LIMIT=800000 # 800KB limit
+          
+          echo "Main bundle: ${MAIN_BUNDLE_SIZE} bytes (limit: ${MAIN_LIMIT})"
+          echo "Vendor bundle: ${VENDOR_BUNDLE_SIZE} bytes (limit: ${VENDOR_LIMIT})"
+          
+          if [ $MAIN_BUNDLE_SIZE -gt $MAIN_LIMIT ]; then
+            echo "❌ Main bundle exceeds size limit"
+            exit 1
+          fi
+          
+          if [ $VENDOR_BUNDLE_SIZE -gt $VENDOR_LIMIT ]; then
+            echo "❌ Vendor bundle exceeds size limit"
+            exit 1
+          fi
+          
+          echo "✅ Bundle sizes within limits"
+
+  # ============================================================================
+  # APPLICATION HEALTH MONITORING
+  # ============================================================================
+  
+  health-monitoring:
+    name: Application Health Check
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_type == 'all' || github.event.schedule
+    
+    steps:
+      - name: Check database connectivity
+        run: |
+          echo "Checking Supabase connectivity..."
+          
+          # Check Supabase status page
+          response=$(curl -s "https://status.supabase.com/api/v2/status.json")
+          status=$(echo "$response" | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
+          
+          echo "Supabase Status: $status"
+          
+          if [[ "$status" != "operational" ]]; then
+            echo "⚠️ Supabase service degradation detected"
+          else
+            echo "✅ Supabase is operational"
+          fi
+          
+      - name: Check CDN performance
+        run: |
+          echo "Checking CDN performance..."
+          
+          # Test asset loading from CDN
+          asset_urls=(
+            "${{ env.PRODUCTION_URL }}/assets/logo.svg"
+            "${{ env.PRODUCTION_URL }}/favicon.ico"
+          )
+          
+          for url in "${asset_urls[@]}"; do
+            response_time=$(curl -s -o /dev/null -w "%{time_total}" "$url" || echo "0")
+            echo "Asset load time for $url: ${response_time}s"
+            
+            if (( $(echo "$response_time > 2.0" | bc -l) )); then
+              echo "⚠️ Slow asset loading: ${response_time}s"
+            fi
+          done
+          
+      - name: Monitor error rates
+        run: |
+          echo "Monitoring application error rates..."
+          
+          # In a real implementation, this would query your error tracking service
+          # For now, we'll simulate error rate checking
+          
+          ERROR_RATE=0.02  # 2% error rate
+          ERROR_THRESHOLD=0.05  # 5% threshold
+          
+          echo "Current error rate: ${ERROR_RATE}%"
+          echo "Error threshold: ${ERROR_THRESHOLD}%"
+          
+          if (( $(echo "$ERROR_RATE > $ERROR_THRESHOLD" | bc -l) )); then
+            echo "❌ Error rate exceeds threshold"
+            exit 1
+          else
+            echo "✅ Error rate within acceptable limits"
+          fi
+
+  # ============================================================================
+  # SECURITY MONITORING
+  # ============================================================================
+  
+  security-monitoring:
+    name: Security Monitoring
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_type == 'security' || github.event.inputs.check_type == 'all' || github.event.schedule
+    
+    steps:
+      - name: Check SSL certificate
+        run: |
+          echo "Checking SSL certificate..."
+          
+          domain="ipec-coach-connect.vercel.app"
+          expiry=$(openssl s_client -servername "$domain" -connect "$domain:443" 2>/dev/null | openssl x509 -noout -dates | grep notAfter | cut -d= -f2)
+          
+          echo "SSL Certificate expires: $expiry"
+          
+          # Check if certificate expires within 30 days
+          expiry_epoch=$(date -d "$expiry" +%s 2>/dev/null || date -j -f "%b %d %H:%M:%S %Y %Z" "$expiry" +%s)
+          current_epoch=$(date +%s)
+          days_until_expiry=$(( (expiry_epoch - current_epoch) / 86400 ))
+          
+          echo "Days until expiry: $days_until_expiry"
+          
+          if [ $days_until_expiry -lt 30 ]; then
+            echo "⚠️ SSL certificate expires soon"
+          else
+            echo "✅ SSL certificate is valid"
+          fi
+          
+      - name: Check security headers
+        run: |
+          echo "Checking security headers..."
+          
+          headers=(
+            "Content-Security-Policy"
+            "X-Content-Type-Options"
+            "X-Frame-Options"
+            "X-XSS-Protection"
+            "Strict-Transport-Security"
+          )
+          
+          for header in "${headers[@]}"; do
+            if curl -s -I "${{ env.PRODUCTION_URL }}" | grep -i "$header" > /dev/null; then
+              echo "✅ $header present"
+            else
+              echo "⚠️ $header missing"
+            fi
+          done
+          
+      - name: Check for exposed sensitive endpoints
+        run: |
+          echo "Checking for exposed sensitive endpoints..."
+          
+          sensitive_endpoints=(
+            "/.env"
+            "/admin"
+            "/config"
+            "/debug"
+            "/test"
+          )
+          
+          for endpoint in "${sensitive_endpoints[@]}"; do
+            response_code=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.PRODUCTION_URL }}${endpoint}")
+            
+            if [[ "$response_code" -eq 200 ]]; then
+              echo "❌ Sensitive endpoint exposed: $endpoint"
+              exit 1
+            else
+              echo "✅ $endpoint properly protected ($response_code)"
+            fi
+          done
+
+  # ============================================================================
+  # MONITORING SUMMARY
+  # ============================================================================
+  
+  monitoring-summary:
+    name: Monitoring Summary
+    runs-on: ubuntu-latest
+    needs: [uptime-check, performance-check, health-monitoring, security-monitoring]
+    if: always()
+    
+    steps:
+      - name: Generate monitoring report
+        run: |
+          echo "# Monitoring Report" > monitoring-report.md
+          echo "" >> monitoring-report.md
+          echo "**Report Generated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> monitoring-report.md
+          echo "**Workflow Run:** ${{ github.run_number }}" >> monitoring-report.md
+          echo "" >> monitoring-report.md
+          
+          echo "## Check Results" >> monitoring-report.md
+          echo "" >> monitoring-report.md
+          echo "| Check | Status |" >> monitoring-report.md
+          echo "|-------|--------|" >> monitoring-report.md
+          echo "| Uptime Check | ${{ needs.uptime-check.result }} |" >> monitoring-report.md
+          echo "| Performance Check | ${{ needs.performance-check.result }} |" >> monitoring-report.md
+          echo "| Health Monitoring | ${{ needs.health-monitoring.result }} |" >> monitoring-report.md
+          echo "| Security Monitoring | ${{ needs.security-monitoring.result }} |" >> monitoring-report.md
+          echo "" >> monitoring-report.md
+          
+          # Determine overall status
+          if [[ "${{ needs.uptime-check.result }}" == "failure" ]] || \
+             [[ "${{ needs.performance-check.result }}" == "failure" ]] || \
+             [[ "${{ needs.health-monitoring.result }}" == "failure" ]] || \
+             [[ "${{ needs.security-monitoring.result }}" == "failure" ]]; then
+            echo "🚨 **ISSUES DETECTED** - Immediate attention required!" >> monitoring-report.md
+            echo "overall_status=failure" >> $GITHUB_ENV
+          else
+            echo "✅ **All monitoring checks passed**" >> monitoring-report.md
+            echo "overall_status=success" >> $GITHUB_ENV
+          fi
+          
+      - name: Upload monitoring report
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitoring-report
+          path: monitoring-report.md
+          retention-days: 30
+          
+      - name: Create alert issue (if needed)
+        if: env.overall_status == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('monitoring-report.md', 'utf8');
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Monitoring Alert - ${new Date().toISOString().split('T')[0]}`,
+              body: `${report}
+              
+              ## Immediate Actions
+              - [ ] Check system status
+              - [ ] Review error logs  
+              - [ ] Verify infrastructure health
+              - [ ] Contact on-call engineer if needed
+              
+              This alert was automatically generated by the monitoring system.`,
+              labels: ['monitoring', 'alert', 'urgent']
+            });

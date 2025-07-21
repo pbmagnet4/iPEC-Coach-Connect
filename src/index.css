@@ -1,4 +1,5 @@
 @import '@fontsource/inter';
+@import './styles/accessibility.css';
 
 @tailwind base;
 @tailwind components;
@@ -54,4 +55,86 @@
 
 .hover-lift {
   @apply transition-transform duration-300 ease-out hover:-translate-y-1;
+}
+
+/* Mobile-specific styles */
+@layer utilities {
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  .select-none {
+    user-select: none;
+  }
+  
+  /* Safe area support for notched devices */
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-area-inset-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-area-inset-right {
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Device simulation styles */
+.device-simulation {
+  max-width: var(--simulated-width);
+  max-height: var(--simulated-height);
+  margin: 0 auto;
+  border: 2px solid #ccc;
+  overflow: hidden;
+}
+
+.device-indicator {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 10000;
+}
+
+/* Accessibility inspector styles */
+.inspect-touch * {
+  outline: 1px solid transparent !important;
+}
+
+.inspect-touch *:hover {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+}
+
+.inspect-contrast * {
+  position: relative;
+}
+
+.inspect-contrast *:hover::after {
+  content: attr(data-contrast-ratio);
+  position: absolute;
+  top: -25px;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 10000;
+}
+
+.inspect-focus *:focus {
+  outline: 3px solid #f59e0b !important;
+  outline-offset: 2px !important;
 }

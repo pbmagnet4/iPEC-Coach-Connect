@@ -1,0 +1,290 @@
+name: Security Scanning
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run security scan daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # ============================================================================
+  # DEPENDENCY SECURITY SCANNING
+  # ============================================================================
+  
+  dependency-scan:
+    name: Dependency Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: false
+        
+      - name: Generate dependency report
+        run: |
+          npm audit --json > dependency-audit.json
+          npm ls --all --json > dependency-tree.json
+          
+      - name: Upload dependency reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-reports
+          path: |
+            dependency-audit.json
+            dependency-tree.json
+          retention-days: 30
+
+  # ============================================================================
+  # CODE SECURITY SCANNING
+  # ============================================================================
+  
+  code-security:
+    name: Code Security Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Full history needed for some security tools
+          fetch-depth: 0
+          
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+          
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+        
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        
+      - name: Run Semgrep Security Scan
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/security-audit
+            p/secrets
+            p/javascript
+            p/typescript
+            p/react
+          generateSarif: "1"
+          
+      - name: Upload Semgrep results to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+        if: always()
+
+  # ============================================================================
+  # SECRET SCANNING
+  # ============================================================================
+  
+  secret-scan:
+    name: Secret Detection
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --debug --only-verified
+          
+      - name: Check for hardcoded secrets
+        run: |
+          echo "Checking for potential secrets in codebase..."
+          
+          # Check for common secret patterns
+          if grep -r -E "(password|secret|key|token).*=.*['\"][^'\"]{8,}['\"]" src/ --exclude-dir=node_modules; then
+            echo "❌ Potential hardcoded secrets found!"
+            exit 1
+          fi
+          
+          # Check for API keys
+          if grep -r -E "(api[_-]?key|secret[_-]?key|access[_-]?token)" src/ --exclude-dir=node_modules; then
+            echo "⚠️ API key references found - verify they're not hardcoded"
+          fi
+          
+          echo "✅ No obvious hardcoded secrets detected"
+
+  # ============================================================================
+  # CONTAINER SECURITY (if applicable)
+  # ============================================================================
+  
+  container-scan:
+    name: Container Security Scan
+    runs-on: ubuntu-latest
+    if: false # Enable when using containers
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Build container image
+        run: docker build -t ipec-coach-connect:scan .
+        
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'ipec-coach-connect:scan'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # ============================================================================
+  # SECURITY POLICY VALIDATION
+  # ============================================================================
+  
+  policy-validation:
+    name: Security Policy Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Check security policy files
+        run: |
+          echo "Validating security policy files..."
+          
+          # Check for required security files
+          required_files=(
+            "SECURITY.md"
+            ".github/workflows/security-scan.yml"
+            ".gitignore"
+          )
+          
+          for file in "${required_files[@]}"; do
+            if [[ -f "$file" ]]; then
+              echo "✅ $file exists"
+            else
+              echo "❌ $file missing"
+              exit 1
+            fi
+          done
+          
+      - name: Validate environment variable usage
+        run: |
+          echo "Checking environment variable usage..."
+          
+          # Check that sensitive vars are not hardcoded
+          if grep -r "VITE_SUPABASE_ANON_KEY.*=" src/ --exclude-dir=node_modules; then
+            echo "❌ Supabase key appears to be hardcoded!"
+            exit 1
+          fi
+          
+          if grep -r "STRIPE.*KEY.*=" src/ --exclude-dir=node_modules; then
+            echo "❌ Stripe key appears to be hardcoded!"
+            exit 1
+          fi
+          
+          echo "✅ No hardcoded sensitive variables found"
+          
+      - name: Check CORS configuration
+        run: |
+          echo "Validating CORS configuration..."
+          
+          # Check for wildcard CORS (should be avoided in production)
+          if grep -r "Access-Control-Allow-Origin.*\*" . --exclude-dir=node_modules; then
+            echo "⚠️ Wildcard CORS configuration found - verify this is intentional"
+          fi
+          
+          echo "✅ CORS configuration check completed"
+
+  # ============================================================================
+  # COMPLIANCE REPORTING
+  # ============================================================================
+  
+  compliance-report:
+    name: Generate Compliance Report
+    runs-on: ubuntu-latest
+    needs: [dependency-scan, code-security, secret-scan, policy-validation]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Generate security summary
+        run: |
+          echo "# Security Scan Summary" > security-summary.md
+          echo "" >> security-summary.md
+          echo "**Scan Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> security-summary.md
+          echo "**Repository:** ${{ github.repository }}" >> security-summary.md
+          echo "**Branch:** ${{ github.ref_name }}" >> security-summary.md
+          echo "**Commit:** ${{ github.sha }}" >> security-summary.md
+          echo "" >> security-summary.md
+          
+          echo "## Scan Results" >> security-summary.md
+          echo "" >> security-summary.md
+          echo "| Check | Status |" >> security-summary.md
+          echo "|-------|--------|" >> security-summary.md
+          echo "| Dependency Scan | ${{ needs.dependency-scan.result }} |" >> security-summary.md
+          echo "| Code Security | ${{ needs.code-security.result }} |" >> security-summary.md
+          echo "| Secret Scan | ${{ needs.secret-scan.result }} |" >> security-summary.md
+          echo "| Policy Validation | ${{ needs.policy-validation.result }} |" >> security-summary.md
+          echo "" >> security-summary.md
+          
+          if [[ "${{ needs.dependency-scan.result }}" == "failure" ]] || \
+             [[ "${{ needs.code-security.result }}" == "failure" ]] || \
+             [[ "${{ needs.secret-scan.result }}" == "failure" ]] || \
+             [[ "${{ needs.policy-validation.result }}" == "failure" ]]; then
+            echo "🚨 **SECURITY ISSUES DETECTED** - Immediate action required!" >> security-summary.md
+          else
+            echo "✅ **All security checks passed**" >> security-summary.md
+          fi
+          
+      - name: Upload security summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-summary
+          path: security-summary.md
+          retention-days: 90
+          
+      - name: Comment on PR (if applicable)
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('security-summary.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🔒 Security Scan Results
+              
+              ${summary}`
+            });

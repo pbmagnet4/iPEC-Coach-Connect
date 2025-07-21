@@ -66,4 +66,20 @@ export interface Coach {
   reviewCount: number;
   createdAt: string;
   distance?: number;
+  // Trust signal data
+  trustMetrics?: {
+    verificationLevel: 'bronze' | 'silver' | 'gold' | 'platinum';
+    badges: Array<{
+      type: 'ipec' | 'certified' | 'verified' | 'background' | 'elite' | 'featured' | 'experienced' | 'top_rated';
+      level?: 'bronze' | 'silver' | 'gold' | 'platinum';
+      verified: boolean;
+      date?: string;
+    }>;
+    stats: {
+      totalSessions: number;
+      successRate: number;
+      responseTime: string;
+      yearsExperience: number;
+    };
+  };
 }

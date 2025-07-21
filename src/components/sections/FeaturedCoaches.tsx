@@ -1,10 +1,23 @@
+import React, { useState, useEffect } from 'react';
 import { ChevronRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Container } from '../ui/Container';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
+import { FeaturedCoachSkeleton } from '../ui/skeleton';
+import { ProgressiveImage, AccessibleLoading } from '../ui/loading';
+import { generateBlurDataURL } from '../../hooks/useImageLoading';
 
-const featuredCoaches = [
+interface Coach {
+  id: number;
+  name: string;
+  image: string;
+  specialty: string;
+  rating: number;
+  price: number;
+}
+
+const featuredCoaches: Coach[] = [
   {
     id: 1,
     name: 'Sarah Johnson',
@@ -31,7 +44,44 @@ const featuredCoaches = [
   },
 ];
 
+// Simulate API call to demonstrate loading states
+const useFeaturedCoaches = () => {
+  const [coaches, setCoaches] = useState<Coach[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    // Simulate API call with delay
+    const loadCoaches = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Simulate potential error (5% chance)
+        if (Math.random() < 0.05) {
+          throw new Error('Failed to load featured coaches');
+        }
+        
+        setCoaches(featuredCoaches);
+      } catch (err) {
+        setError(err as Error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCoaches();
+  }, []);
+
+  return { coaches, loading, error, refetch: () => setLoading(true) };
+};
+
 export function FeaturedCoaches() {
+  const { coaches, loading, error, refetch } = useFeaturedCoaches();
+
   return (
     <section className="py-20 bg-white">
       <Container>
@@ -45,41 +95,123 @@ export function FeaturedCoaches() {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {featuredCoaches.map((coach) => (
-            <Card key={coach.id} hover variant="default">
-              <img
-                src={coach.image}
-                alt={coach.name}
-                className="w-full h-48 object-cover"
-              />
-              <Card.Body>
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-xl font-semibold">{coach.name}</h3>
-                  <div className="flex items-center text-yellow-400">
-                    <Star className="h-4 w-4 fill-current" />
-                    <span className="text-gray-600 text-sm ml-1">{coach.rating}</span>
-                  </div>
+        <AccessibleLoading
+          loading={loading}
+          loadingText="Loading featured coaches"
+          completedText="Featured coaches loaded successfully"
+          errorText="Failed to load featured coaches"
+          error={error}
+          announceChanges={true}
+          focusOnComplete={true}
+          data-testid="featured-coaches-section"
+        >
+          {/* Loading state with skeleton */}
+          <FeaturedCoachSkeleton
+            loading={loading}
+            count={3}
+            variant="grid"
+            showRating={true}
+            showPrice={true}
+            showSpecialty={true}
+            data-testid="featured-coaches-skeleton"
+          >
+            {/* Error state */}
+            {error && !loading && (
+              <div className="text-center py-12">
+                <div className="text-red-500 mb-4">
+                  <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z" 
+                    />
+                  </svg>
                 </div>
-                <p className="text-gray-600 mb-4">
-                  {coach.specialty}
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  Unable to load featured coaches
+                </h3>
+                <p className="text-gray-600 mb-4">{error.message}</p>
+                <Button onClick={refetch} variant="primary">
+                  Try Again
+                </Button>
+              </div>
+            )}
+
+            {/* Success state with coaches */}
+            {!loading && !error && coaches.length > 0 && (
+              <div className="grid md:grid-cols-3 gap-8" data-testid="featured-coaches-grid">
+                {coaches.map((coach) => (
+                  <Card key={coach.id} hover variant="default">
+                    {/* Progressive image with blur-to-sharp transition */}
+                    <ProgressiveImage
+                      src={coach.image}
+                      alt={`${coach.name} - Professional Coach`}
+                      placeholder="blur"
+                      blurDataURL={generateBlurDataURL(8, 6, '#f3f4f6')}
+                      className="w-full h-48 object-cover"
+                      priority={coach.id <= 2} // Prioritize first 2 images
+                      quality={80}
+                      showProgress={false}
+                      containerClassName="relative overflow-hidden"
+                      data-testid={`coach-image-${coach.id}`}
+                    />
+                    
+                    <Card.Body>
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-xl font-semibold">{coach.name}</h3>
+                        <div className="flex items-center text-yellow-400">
+                          <Star className="h-4 w-4 fill-current" aria-hidden="true" />
+                          <span className="text-gray-600 text-sm ml-1" aria-label={`Rating: ${coach.rating} out of 5`}>
+                            {coach.rating}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="text-gray-600 mb-4">
+                        {coach.specialty}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-brand-600 font-semibold" aria-label={`Price: $${coach.price} per session`}>
+                          ${coach.price}/session
+                        </span>
+                        <Button
+                          href={`/coaches/${coach.id}`}
+                          variant="primary"
+                          size="sm"
+                          aria-label={`View ${coach.name}'s profile`}
+                        >
+                          View Profile
+                        </Button>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                ))}
+              </div>
+            )}
+
+            {/* Empty state */}
+            {!loading && !error && coaches.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-gray-400 mb-4">
+                  <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" 
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  No featured coaches available
+                </h3>
+                <p className="text-gray-600">
+                  Check back later for our top-rated coaches.
                 </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-brand-600 font-semibold">
-                    ${coach.price}/session
-                  </span>
-                  <Button
-                    href={`/coaches/${coach.id}`}
-                    variant="primary"
-                    size="sm"
-                  >
-                    View Profile
-                  </Button>
-                </div>
-              </Card.Body>
-            </Card>
-          ))}
-        </div>
+              </div>
+            )}
+          </FeaturedCoachSkeleton>
+        </AccessibleLoading>
       </Container>
     </section>
   );

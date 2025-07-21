@@ -1,22 +1,105 @@
-# Logs
-logs
-*.log
+# =================================================================
+# iPEC Coach Connect - Git Ignore Configuration
+# =================================================================
+
+# Dependencies
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Build outputs
+dist/
+dist-ssr/
+build/
+.vite/
+*.tsbuildinfo
+
+# Environment files (CRITICAL - Never commit these!)
+.env
+.env.local
+.env.staging
+.env.production
+.env.*.local
 *.local
 
-# Editor directories and files
+# IDE files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Coverage reports
+coverage/
+*.lcov
+.nyc_output
+
+# Test results
+test-results/
+playwright-report/
+
+# Cache directories
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Temporary files
+.tmp/
+.temp/
+*.tmp
+*.temp
+
+# Vercel deployment files
+.vercel
+
+# Supabase
+.supabase/
+
+# Security and sensitive files
+*.pem
+*.key
+*.cert
+secrets/
+.secrets
+
+# Performance and monitoring
+lighthouse-results/
+.lighthouse/
+
+# Backup files
+*.backup
+*.bak
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Custom project files
+scripts/*.local.js
+config/*.local.json
+
+# Windows
+ehthumbs.db
+Desktop.ini
+
+# Editor files
 *.suo
 *.ntvs*
 *.njsproj
