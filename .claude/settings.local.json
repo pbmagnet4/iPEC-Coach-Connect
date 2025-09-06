@@ -46,7 +46,23 @@
       "Bash(cd:*)",
       "Bash(rm:*)",
       "Bash(npm run dev:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(npm view:*)",
+      "Bash(timeout 30s npm run lint)",
+      "Bash(claude settings location)",
+      "Bash(timeout 15s npm run dev)",
+      "Bash(cp:*)",
+      "mcp__sequential-thinking__sequentialthinking",
+      "Bash(mv:*)",
+      "Bash(curl:*)",
+      "Bash(bash:*)",
+      "Bash(npm run verify:production:*)",
+      "Bash(timeout 5s npm run preview)",
+      "Bash(jobs)",
+      "Bash(wc:*)",
+      "WebSearch",
+      "Bash(npm run test:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

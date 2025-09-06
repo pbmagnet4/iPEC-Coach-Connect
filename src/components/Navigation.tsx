@@ -14,8 +14,12 @@ import {
   LogOut,
   User
 } from 'lucide-react';
-import { useAuth } from '../lib/auth';
-import { useRole, isCoach } from '../lib/roles';
+import { 
+  useLegacyAuth as useAuth, 
+  useLegacyRole as useRole,
+  legacyIsCoach as isCoach,
+  legacySignOut as signOut
+} from '../stores/unified-user-store';
 import { RoleGuard } from './RoleGuard';
 import { Logo } from './ui/Logo';
 import { NotificationCenter } from './NotificationCenter';
@@ -40,30 +44,24 @@ export function Navigation() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const learningLinks = [
+  const coachingLinks = [
     {
-      href: '/learning',
+      href: '/about-coaching',
       icon: Compass,
-      title: 'Learning Home',
-      description: 'Explore all learning resources',
+      title: 'About Coaching',
+      description: 'Learn about professional coaching',
     },
     {
-      href: '/learning/courses',
-      icon: BookMarked,
-      title: 'Courses',
-      description: 'Browse our course catalog',
-    },
-    {
-      href: '/learning/resources',
+      href: '/coaching-resources',
       icon: Library,
-      title: 'Resource Library',
-      description: 'Articles, videos, and tools',
+      title: 'Coaching Resources',
+      description: 'Free articles, videos, and tools',
     },
     {
-      href: '/learning/coaching-basics',
+      href: '/coaching-basics',
       icon: BookOpen,
       title: 'Coaching Basics',
-      description: 'Free introductory course',
+      description: 'Introduction to coaching',
     },
   ];
 
@@ -88,18 +86,18 @@ export function Navigation() {
               </Link>
             </RoleGuard>
 
-            {/* Always show Learning Dropdown */}
+            {/* Always show Coaching Dropdown */}
             <div className="relative group">
               <button 
                 className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors"
                 onClick={() => setIsLearningOpen(!isLearningOpen)}
               >
                 <GraduationCap className="h-5 w-5" />
-                <span className="text-sm font-medium">Learning</span>
+                <span className="text-sm font-medium">Coaching</span>
               </button>
               <div className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <div className="p-4 space-y-4">
-                  {learningLinks.map((link) => {
+                  {coachingLinks.map((link) => {
                     const Icon = link.icon;
                     return (
                       <Link 
@@ -199,9 +197,14 @@ export function Navigation() {
                       <div className="border-t border-gray-100">
                         <button
                           className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                          onClick={() => {
-                            // Handle logout
-                            setIsProfileOpen(false);
+                          onClick={async () => {
+                            try {
+                              await signOut();
+                              setIsProfileOpen(false);
+                            } catch (error) {
+                              console.error('Logout failed:', error);
+                              setIsProfileOpen(false);
+                            }
                           }}
                         >
                           <LogOut className="h-4 w-4" />
@@ -265,18 +268,18 @@ export function Navigation() {
                 </Link>
               </RoleGuard>
 
-              {/* Always show Learning Section */}
+              {/* Always show Coaching Section */}
               <div className="space-y-2">
                 <button 
                   className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors w-full"
                   onClick={() => setIsLearningOpen(!isLearningOpen)}
                 >
                   <GraduationCap className="h-5 w-5" />
-                  <span className="text-sm font-medium">Learning</span>
+                  <span className="text-sm font-medium">Coaching</span>
                 </button>
                 {isLearningOpen && (
                   <div className="pl-7 space-y-2">
-                    {learningLinks.map((link) => (
+                    {coachingLinks.map((link) => (
                       <Link 
                         key={link.href}
                         to={link.href}
@@ -327,9 +330,14 @@ export function Navigation() {
                   </Link>
                   <button
                     className="flex items-center gap-2 text-red-600 hover:text-red-700 transition-colors w-full"
-                    onClick={() => {
-                      // Handle logout
-                      setIsMenuOpen(false);
+                    onClick={async () => {
+                      try {
+                        await signOut();
+                        setIsMenuOpen(false);
+                      } catch (error) {
+                        console.error('Logout failed:', error);
+                        setIsMenuOpen(false);
+                      }
                     }}
                   >
                     <LogOut className="h-5 w-5" />

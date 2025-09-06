@@ -18,12 +18,12 @@ const navigation = {
   ],
   community: [
     { name: 'Discussion Forums', href: '/community' },
-    { name: 'Events', href: '/events' },
-    { name: 'Blog', href: '/blog' },
+    { name: 'Events', href: '/community/events' },
+    { name: 'Groups', href: '/community/groups' },
     { name: 'Success Stories', href: '/success-stories' },
   ],
   resources: [
-    { name: 'Learning Center', href: '/learning' },
+    { name: 'About Coaching', href: '/about-coaching' },
     { name: 'FAQs', href: '/faq' },
     { name: 'Support', href: '/support' },
     { name: 'Contact Us', href: '/contact' },

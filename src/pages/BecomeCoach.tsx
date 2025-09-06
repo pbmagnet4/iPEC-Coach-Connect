@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Award,
@@ -23,6 +23,10 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Badge } from '../components/ui/Badge';
+import { CoachApplicationWizard } from '../components/coach/CoachApplicationWizard';
+import { useUserContext } from '../hooks/useUserContext';
+import { coachApplicationService } from '../services/coach-application.service';
+import type { CoachApplicationWithDetails, Tables } from '../types/database';
 
 const benefits = [
   {
@@ -94,78 +98,140 @@ const faqs = [
 ];
 
 export function BecomeCoach() {
+  const { user, isAuthenticated } = useUserContext();
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    certificationNumber: '',
-    yearsExperience: '',
-    specialties: '',
-    website: '',
-    linkedin: '',
-    resume: null as File | null,
-    certifications: [] as File[],
-    coverLetter: '',
-  });
+  const [showApplication, setShowApplication] = useState(false);
+  const [existingApplication, setExistingApplication] = useState<CoachApplicationWithDetails | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: 'resume' | 'certifications') => {
-    const files = e.target.files;
-    if (!files) return;
-
-    if (field === 'resume') {
-      setFormData(prev => ({ ...prev, resume: files[0] }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        certifications: [...prev.certifications, ...Array.from(files)],
-      }));
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      loadExistingApplication();
     }
-  };
+  }, [isAuthenticated, user]);
 
-  const removeFile = (field: 'resume' | 'certifications', index?: number) => {
-    if (field === 'resume') {
-      setFormData(prev => ({ ...prev, resume: null }));
-    } else if (index !== undefined) {
-      setFormData(prev => ({
-        ...prev,
-        certifications: prev.certifications.filter((_, i) => i !== index),
-      }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('submitting');
-
+  const loadExistingApplication = async () => {
+    if (!user) return;
+    
+    setIsLoading(true);
     try {
-      // Here you would typically submit the form data to your backend
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setStatus('success');
-      
-      // Reset form after success
-      setTimeout(() => {
-        setStatus('idle');
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          certificationNumber: '',
-          yearsExperience: '',
-          specialties: '',
-          website: '',
-          linkedin: '',
-          resume: null,
-          certifications: [],
-          coverLetter: '',
-        });
-      }, 3000);
+      const result = await coachApplicationService.getUserApplication(user.id);
+      if (result.data) {
+        setExistingApplication(result.data);
+      }
     } catch (error) {
-      setStatus('error');
+      console.error('Failed to load existing application:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleApplicationSubmitted = (application: Tables<'coach_applications'>) => {
+    // Refresh the page or redirect to dashboard
+    window.location.href = '/dashboard?message=application-submitted';
+  };
+
+  const handleApplicationSaved = (application: Tables<'coach_applications'>) => {
+    // Update the existing application state
+    loadExistingApplication();
+  };
+
+  // Show application wizard if user is authenticated and wants to apply
+  if (showApplication || (isAuthenticated && existingApplication && !existingApplication.submitted_at)) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <Container>
+          <CoachApplicationWizard
+            existingApplication={existingApplication}
+            onApplicationSubmitted={handleApplicationSubmitted}
+            onApplicationSaved={handleApplicationSaved}
+          />
+        </Container>
+      </div>
+    );
+  }
+
+  // Show existing application status if user has already applied
+  if (isAuthenticated && existingApplication?.submitted_at) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <Container>
+          <div className="max-w-2xl mx-auto">
+            <Card>
+              <Card.Body className="p-8 text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Clock className="h-8 w-8 text-blue-600" />
+                </div>
+                
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  Application Under Review
+                </h2>
+                
+                <div className="mb-6">
+                  <Badge className={getStatusColor(existingApplication.status)}>
+                    {existingApplication.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                  </Badge>
+                </div>
+                
+                <p className="text-gray-600 mb-6">
+                  Your coach application was submitted on{' '}
+                  {new Date(existingApplication.submitted_at).toLocaleDateString()}
+                  {' '}and is currently being reviewed by our team.
+                </p>
+                
+                <div className="bg-blue-50 rounded-lg p-4 mb-6">
+                  <div className="text-left">
+                    <h3 className="font-medium text-blue-900 mb-2">Application Progress</h3>
+                    <div className="w-full bg-blue-200 rounded-full h-2 mb-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                        style={{ width: `${existingApplication.progress}%` }}
+                      />
+                    </div>
+                    <p className="text-sm text-blue-700">{existingApplication.progress}% Complete</p>
+                  </div>
+                </div>
+                
+                <Button
+                  variant="outline"
+                  href="/dashboard"
+                  className="mr-4"
+                >
+                  Go to Dashboard
+                </Button>
+                
+                {existingApplication.status === 'documents_requested' && (
+                  <Button
+                    variant="gradient"
+                    onClick={() => setShowApplication(true)}
+                  >
+                    Update Application
+                  </Button>
+                )}
+              </Card.Body>
+            </Card>
+          </div>
+        </Container>
+      </div>
+    );
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'submitted':
+        return 'bg-blue-100 text-blue-800';
+      case 'under_review':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'documents_requested':
+        return 'bg-orange-100 text-orange-800';
+      case 'interview_scheduled':
+        return 'bg-purple-100 text-purple-800';
+      case 'approved':
+        return 'bg-green-100 text-green-800';
+      case 'rejected':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -192,14 +258,26 @@ export function BecomeCoach() {
               Take your coaching practice to the next level by joining our platform of certified iPEC coaches.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button
-                variant="gradient"
-                size="lg"
-                href="#apply"
-                icon={<Send className="h-5 w-5" />}
-              >
-                Apply Now
-              </Button>
+              {isAuthenticated ? (
+                <Button
+                  variant="gradient"
+                  size="lg"
+                  onClick={() => setShowApplication(true)}
+                  icon={<Send className="h-5 w-5" />}
+                  isLoading={isLoading}
+                >
+                  {existingApplication ? 'Continue Application' : 'Apply Now'}
+                </Button>
+              ) : (
+                <Button
+                  variant="gradient"
+                  size="lg"
+                  href="/auth/login?redirect=/become-coach"
+                  icon={<Send className="h-5 w-5" />}
+                >
+                  Sign In to Apply
+                </Button>
+              )}
               <Button
                 variant="outline"
                 size="lg"
@@ -296,221 +374,35 @@ export function BecomeCoach() {
         </Container>
       </div>
 
-      {/* Application Form */}
+      {/* Application CTA */}
       <Container className="py-20" id="apply">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4">Apply to Join</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Complete the application form below to start your journey with iPEC Coach Connect
+        <div className="text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Join?</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+            Start your journey with iPEC Coach Connect today and take your coaching practice to the next level.
           </p>
+          
+          {isAuthenticated ? (
+            <Button
+              variant="gradient"
+              size="lg"
+              onClick={() => setShowApplication(true)}
+              icon={<Send className="h-5 w-5" />}
+              isLoading={isLoading}
+            >
+              {existingApplication ? 'Continue Application' : 'Start Application'}
+            </Button>
+          ) : (
+            <Button
+              variant="gradient"
+              size="lg"
+              href="/auth/login?redirect=/become-coach"
+              icon={<Send className="h-5 w-5" />}
+            >
+              Sign In to Apply
+            </Button>
+          )}
         </div>
-
-        <Card>
-          <Card.Body className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {status === 'success' && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-2 p-4 bg-green-50 text-green-700 rounded-lg"
-                >
-                  <Star className="h-5 w-5" />
-                  <span>Your application has been submitted successfully! We'll review it and get back to you soon.</span>
-                </motion.div>
-              )}
-
-              {status === 'error' && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-2 p-4 bg-red-50 text-red-700 rounded-lg"
-                >
-                  <HelpCircle className="h-5 w-5" />
-                  <span>Something went wrong. Please try again.</span>
-                </motion.div>
-              )}
-
-              <div className="grid sm:grid-cols-2 gap-6">
-                <Input
-                  label="First Name"
-                  value={formData.firstName}
-                  onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
-                  required
-                />
-                <Input
-                  label="Last Name"
-                  value={formData.lastName}
-                  onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
-                  required
-                />
-                <Input
-                  type="email"
-                  label="Email Address"
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  required
-                />
-                <Input
-                  type="tel"
-                  label="Phone Number"
-                  value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  required
-                />
-              </div>
-
-              <div className="grid sm:grid-cols-2 gap-6">
-                <Input
-                  label="iPEC Certification Number"
-                  value={formData.certificationNumber}
-                  onChange={(e) => setFormData(prev => ({ ...prev, certificationNumber: e.target.value }))}
-                  required
-                />
-                <Input
-                  type="number"
-                  label="Years of Coaching Experience"
-                  value={formData.yearsExperience}
-                  onChange={(e) => setFormData(prev => ({ ...prev, yearsExperience: e.target.value }))}
-                  min="0"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Coaching Specialties
-                </label>
-                <textarea
-                  value={formData.specialties}
-                  onChange={(e) => setFormData(prev => ({ ...prev, specialties: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
-                  rows={3}
-                  placeholder="List your primary coaching specialties and areas of expertise"
-                  required
-                />
-              </div>
-
-              <div className="grid sm:grid-cols-2 gap-6">
-                <Input
-                  label="Website (optional)"
-                  value={formData.website}
-                  onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
-                  placeholder="https://"
-                />
-                <Input
-                  label="LinkedIn Profile (optional)"
-                  value={formData.linkedin}
-                  onChange={(e) => setFormData(prev => ({ ...prev, linkedin: e.target.value }))}
-                  placeholder="https://linkedin.com/in/"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Resume/CV
-                </label>
-                <div className="space-y-2">
-                  {formData.resume && (
-                    <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm">{formData.resume.name}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeFile('resume')}
-                        className="text-gray-400 hover:text-red-500"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  )}
-                  <div className="flex items-center justify-center w-full">
-                    <label className="w-full flex flex-col items-center px-4 py-6 bg-white text-gray-400 rounded-lg tracking-wide uppercase border border-dashed border-gray-300 cursor-pointer hover:bg-gray-50">
-                      <Upload className="h-8 w-8" />
-                      <span className="mt-2 text-sm">Upload Resume/CV</span>
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept=".pdf,.doc,.docx"
-                        onChange={(e) => handleFileChange(e, 'resume')}
-                        required={!formData.resume}
-                      />
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Certifications & Credentials
-                </label>
-                <div className="space-y-2">
-                  {formData.certifications.map((file, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-2 bg-gray-50 rounded-lg"
-                    >
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm">{file.name}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeFile('certifications', index)}
-                        className="text-gray-400 hover:text-red-500"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  ))}
-                  <div className="flex items-center justify-center w-full">
-                    <label className="w-full flex flex-col items-center px-4 py-6 bg-white text-gray-400 rounded-lg tracking-wide uppercase border border-dashed border-gray-300 cursor-pointer hover:bg-gray-50">
-                      <Upload className="h-8 w-8" />
-                      <span className="mt-2 text-sm">Upload Certifications</span>
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept=".pdf,.jpg,.jpeg,.png"
-                        multiple
-                        onChange={(e) => handleFileChange(e, 'certifications')}
-                      />
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Cover Letter
-                </label>
-                <textarea
-                  value={formData.coverLetter}
-                  onChange={(e) => setFormData(prev => ({ ...prev, coverLetter: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
-                  rows={6}
-                  placeholder="Tell us about your coaching philosophy and why you'd like to join iPEC Coach Connect"
-                  required
-                />
-              </div>
-
-              <div className="flex items-center justify-between pt-6 border-t">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Clock className="h-4 w-4" />
-                  <span>Application review time: 5-7 business days</span>
-                </div>
-                <Button
-                  type="submit"
-                  variant="gradient"
-                  icon={<Send className="h-5 w-5" />}
-                  isLoading={status === 'submitting'}
-                >
-                  Submit Application
-                </Button>
-              </div>
-            </form>
-          </Card.Body>
-        </Card>
       </Container>
 
       {/* FAQ Section */}

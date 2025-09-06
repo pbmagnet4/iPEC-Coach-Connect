@@ -125,9 +125,8 @@ export const usePerformanceMonitoring = () => {
   // Set up Core Web Vitals monitoring with fallback to native APIs
   const setupCoreWebVitalsMonitoring = async () => {
     try {
-      // Dynamic import using Function constructor to avoid Vite static analysis
-      const dynamicImport = new Function('specifier', 'return import(specifier)');
-      const { getCLS, getFID, getFCP, getLCP, getTTFB } = await dynamicImport('web-vitals');
+      // Safe dynamic import with proper error handling
+      const { getCLS, getFID, getFCP, getLCP, getTTFB } = await import('web-vitals');
       
       getCLS((metric) => {
         setMetrics(prev => ({ ...prev, cls: metric.value }));

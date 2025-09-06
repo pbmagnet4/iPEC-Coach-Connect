@@ -16,7 +16,10 @@ import {
   CheckCircle,
   AlertCircle,
   Clock,
-  Video
+  Video,
+  Plus,
+  Lock,
+  Trash2
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';
@@ -24,12 +27,11 @@ import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { Avatar } from '../components/ui/Avatar';
 import { Input } from '../components/ui/Input';
-import { useAuth } from '../lib/auth';
-import { useRole, isCoach } from '../lib/roles';
+import { useLegacyAuth, useLegacyRole, legacyIsCoach } from '../stores/unified-user-store';
 
 export function Profile() {
-  const { user } = useAuth();
-  const { role } = useRole();
+  const { user } = useLegacyAuth();
+  const { role } = useLegacyRole();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     firstName: user?.firstName || '',
@@ -124,7 +126,7 @@ export function Profile() {
                           {user?.firstName} {user?.lastName}
                         </h3>
                         <p className="text-gray-600">
-                          {isCoach(role) ? 'iPEC Certified Coach' : 'Client'}
+                          {legacyIsCoach(role) ? 'iPEC Certified Coach' : 'Client'}
                         </p>
                       </div>
                     )}
@@ -180,7 +182,7 @@ export function Profile() {
             </Card>
 
             {/* Coaching Information (For Coaches) */}
-            {isCoach(role) && (
+            {legacyIsCoach(role) && (
               <Card>
                 <Card.Header>
                   <h2 className="text-xl font-semibold">Coaching Details</h2>
@@ -236,7 +238,7 @@ export function Profile() {
             )}
 
             {/* Client Information (For Clients) */}
-            {!isCoach(role) && (
+            {!legacyIsCoach(role) && (
               <Card>
                 <Card.Header>
                   <h2 className="text-xl font-semibold">Coaching Preferences</h2>

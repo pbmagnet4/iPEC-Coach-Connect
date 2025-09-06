@@ -21,8 +21,7 @@ import {
   ChevronRight,
   ChevronDown
 } from 'lucide-react';
-import { useAuth } from '../lib/auth';
-import { useRole } from '../lib/roles';
+import { useLegacyAuth, useLegacyRole } from '../stores/unified-user-store';
 import { RoleGuard } from './RoleGuard';
 import { Logo } from './ui/Logo';
 import { MobileButton } from './ui/MobileButton';
@@ -55,9 +54,9 @@ const bottomNavItems: NavigationItem[] = [
     label: 'Coaches',
   },
   {
-    href: '/learning',
+    href: '/about-coaching',
     icon: GraduationCap,
-    label: 'Learning',
+    label: 'Coaching',
   },
   {
     href: '/community',
@@ -81,8 +80,8 @@ export function MobileNavigation({
   showBottomNav = true, 
   transparentHeader = false 
 }: MobileNavigationProps) {
-  const { user } = useAuth();
-  const { role } = useRole();
+  const { user } = useLegacyAuth();
+  const { role } = useLegacyRole();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
@@ -122,30 +121,24 @@ export function MobileNavigation({
     </a>
   );
 
-  const learningLinks = [
+  const coachingLinks = [
     {
-      href: '/learning',
+      href: '/about-coaching',
       icon: Compass,
-      title: 'Learning Home',
-      description: 'Explore all learning resources',
+      title: 'About Coaching',
+      description: 'Learn about professional coaching',
     },
     {
-      href: '/learning/courses',
-      icon: BookMarked,
-      title: 'Courses',
-      description: 'Browse our course catalog',
-    },
-    {
-      href: '/learning/resources',
+      href: '/coaching-resources',
       icon: Library,
-      title: 'Resource Library',
-      description: 'Articles, videos, and tools',
+      title: 'Coaching Resources',
+      description: 'Free articles, videos, and tools',
     },
     {
-      href: '/learning/coaching-basics',
+      href: '/coaching-basics',
       icon: BookOpen,
       title: 'Coaching Basics',
-      description: 'Free introductory course',
+      description: 'Introduction to coaching',
     },
   ];
 
@@ -195,11 +188,11 @@ export function MobileNavigation({
               <div className="relative group">
                 <button className="flex items-center gap-2 text-gray-700 hover:text-brand-600 transition-colors">
                   <GraduationCap className="h-5 w-5" />
-                  <span className="text-sm font-medium">Learning</span>
+                  <span className="text-sm font-medium">Coaching</span>
                 </button>
                 <div className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                   <div className="p-4 space-y-4">
-                    {learningLinks.map((link) => {
+                    {coachingLinks.map((link) => {
                       const Icon = link.icon;
                       return (
                         <Link 
@@ -436,26 +429,26 @@ export function MobileNavigation({
                         </MobileButton>
                       </RoleGuard>
 
-                      {/* Learning Section */}
+                      {/* Coaching Section */}
                       <div>
                         <MobileButton
                           variant="ghost"
                           size="touch"
                           className="w-full justify-between"
-                          onClick={() => setActiveSubmenu(activeSubmenu === 'learning' ? null : 'learning')}
+                          onClick={() => setActiveSubmenu(activeSubmenu === 'coaching' ? null : 'coaching')}
                         >
                           <div className="flex items-center">
                             <GraduationCap className="h-5 w-5 mr-3" />
-                            Learning
+                            Coaching
                           </div>
                           <ChevronDown className={cn(
                             "h-5 w-5 transition-transform",
-                            activeSubmenu === 'learning' && "rotate-180"
+                            activeSubmenu === 'coaching' && "rotate-180"
                           )} />
                         </MobileButton>
                         
                         <AnimatePresence>
-                          {activeSubmenu === 'learning' && (
+                          {activeSubmenu === 'coaching' && (
                             <motion.div
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: 'auto' }}
@@ -463,7 +456,7 @@ export function MobileNavigation({
                               transition={{ duration: 0.2 }}
                               className="ml-6 mt-2 space-y-2"
                             >
-                              {learningLinks.map((link) => {
+                              {coachingLinks.map((link) => {
                                 const Icon = link.icon;
                                 return (
                                   <MobileButton

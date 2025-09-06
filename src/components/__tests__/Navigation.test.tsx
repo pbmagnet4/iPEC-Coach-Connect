@@ -40,13 +40,10 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-vi.mock('../../lib/auth', () => ({
-  useAuth: () => mockUseAuth(),
-}));
-
-vi.mock('../../lib/roles', () => ({
-  useRole: () => mockUseRole(),
-  isCoach: (role: string) => role === 'coach',
+vi.mock('../../stores/unified-user-store', () => ({
+  useLegacyAuth: () => mockUseAuth(),
+  useLegacyRole: () => mockUseRole(),
+  legacyIsCoach: (role: string) => role === 'coach',
 }));
 
 vi.mock('../RoleGuard', () => ({
@@ -380,22 +377,20 @@ describe('Navigation Component', () => {
       });
     });
 
-    it('should contain correct learning dropdown links', async () => {
+    it('should contain correct coaching dropdown links', async () => {
       renderNavigation(<Navigation />);
 
-      const learningSection = screen.getByText('Learning').closest('div');
-      fireEvent.mouseEnter(learningSection!);
+      const coachingSection = screen.getByText('Coaching').closest('div');
+      fireEvent.mouseEnter(coachingSection!);
 
       await waitFor(() => {
-        const learningHome = screen.getByText('Learning Home').closest('a');
-        const courses = screen.getByText('Courses').closest('a');
-        const resources = screen.getByText('Resource Library').closest('a');
+        const aboutCoaching = screen.getByText('About Coaching').closest('a');
+        const resources = screen.getByText('Coaching Resources').closest('a');
         const basics = screen.getByText('Coaching Basics').closest('a');
 
-        expect(learningHome).toHaveAttribute('href', '/learning');
-        expect(courses).toHaveAttribute('href', '/learning/courses');
-        expect(resources).toHaveAttribute('href', '/learning/resources');
-        expect(basics).toHaveAttribute('href', '/learning/coaching-basics');
+        expect(aboutCoaching).toHaveAttribute('href', '/about-coaching');
+        expect(resources).toHaveAttribute('href', '/coaching-resources');
+        expect(basics).toHaveAttribute('href', '/coaching-basics');
       });
     });
 

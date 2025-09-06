@@ -148,14 +148,20 @@ export function Community() {
               </Card.Header>
               <Card.Body>
                 <div className="space-y-6">
-                  {mockData.featuredDiscussions.map((discussion) => (
+                  {featuredDiscussions.length === 0 ? (
+                    <div className="text-center py-8 text-gray-500">
+                      <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                      <p>No discussions yet. Be the first to start a conversation!</p>
+                    </div>
+                  ) : (
+                    featuredDiscussions.map((discussion) => (
                     <div
                       key={discussion.id}
                       className="flex gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                     >
                       <Avatar
-                        src={discussion.author.image}
-                        alt={discussion.author.name}
+                        src={discussion.author?.avatar_url || undefined}
+                        alt={discussion.author?.full_name || 'User'}
                         size="lg"
                       />
                       <div className="flex-1">
@@ -167,12 +173,14 @@ export function Community() {
                               </a>
                             </h3>
                             <p className="text-sm text-gray-600">
-                              Started by {discussion.author.name}
+                              Started by {discussion.author?.full_name || 'Anonymous'}
                             </p>
                           </div>
-                          <Badge variant="default">
-                            {discussion.category}
-                          </Badge>
+                          {discussion.group?.name && (
+                            <Badge variant="default">
+                              {discussion.group.name}
+                            </Badge>
+                          )}
                         </div>
                         <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
                           <span className="flex items-center gap-1">

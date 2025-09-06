@@ -1,5 +1,5 @@
 import React from 'react';
-import { handleGoogleSignIn } from '../lib/auth';
+import { legacyHandleGoogleSignIn } from '../stores/unified-user-store';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/Button';
 
@@ -24,7 +24,7 @@ export function GoogleSignInButton({
   const handleClick = async () => {
     setIsLoading(true);
     try {
-      const user = await handleGoogleSignIn();
+      const user = await legacyHandleGoogleSignIn();
       onSuccess?.();
       navigate(redirectTo);
     } catch (error) {

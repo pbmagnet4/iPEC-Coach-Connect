@@ -127,7 +127,7 @@ export function createNotification(type: NotificationType, data: any): Omit<Noti
         type,
         title: 'New Resource Available',
         message: `${data.resourceName} has been added to your library`,
-        actionUrl: `/learning/resources/${data.resourceId}`,
+        actionUrl: `/coaching-resources`,
         actionLabel: 'View Resource',
         metadata: data,
       };

@@ -274,7 +274,7 @@ export function CoachList() {
           <div className="flex-1">
             <div className="flex justify-between items-center mb-6">
               <p className="text-gray-600">
-                Showing <span className="font-semibold">24</span> coaches
+                Showing <span className="font-semibold">{coaches.length}</span> of <span className="font-semibold">{pagination.totalCount}</span> coaches
               </p>
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-600">Sort by:</label>
@@ -283,11 +283,10 @@ export function CoachList() {
                   onChange={(e) => setSortBy(e.target.value)}
                   className="border border-gray-300 rounded-lg px-3 py-1"
                 >
-                  <option value="relevance">Relevance</option>
                   <option value="rating">Highest Rated</option>
-                  <option value="price_low">Price: Low to High</option>
-                  <option value="price_high">Price: High to Low</option>
-                  <option value="availability">Earliest Available</option>
+                  <option value="hourly_rate">Price: Low to High</option>
+                  <option value="experience_years">Most Experienced</option>
+                  <option value="created_at">Newest Members</option>
                 </select>
               </div>
             </div>

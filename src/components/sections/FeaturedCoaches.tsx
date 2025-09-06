@@ -7,76 +7,70 @@ import { Button } from '../ui/Button';
 import { FeaturedCoachSkeleton } from '../ui/skeleton';
 import { ProgressiveImage, AccessibleLoading } from '../ui/loading';
 import { generateBlurDataURL } from '../../hooks/useImageLoading';
+import { coachManagementService, type CoachProfile } from '../../services/coach.service';
+import { toast } from '../ui/Toast';
 
-interface Coach {
-  id: number;
+interface FeaturedCoach {
+  id: string;
   name: string;
-  image: string;
+  image: string | null;
   specialty: string;
   rating: number;
   price: number;
 }
 
-const featuredCoaches: Coach[] = [
-  {
-    id: 1,
-    name: 'Sarah Johnson',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80',
-    specialty: 'Career Transitions & Leadership Development',
-    rating: 4.9,
-    price: 150,
-  },
-  {
-    id: 2,
-    name: 'Michael Chen',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80',
-    specialty: 'Executive Coaching & Team Development',
-    rating: 4.8,
-    price: 175,
-  },
-  {
-    id: 3,
-    name: 'Emily Rodriguez',
-    image: 'https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?auto=format&fit=crop&q=80',
-    specialty: 'Personal Growth & Life Balance',
-    rating: 4.9,
-    price: 135,
-  },
-];
+// This will be replaced with real API call - no more static data
 
-// Simulate API call to demonstrate loading states
+// Real API call to fetch featured coaches
 const useFeaturedCoaches = () => {
-  const [coaches, setCoaches] = useState<Coach[]>([]);
+  const [coaches, setCoaches] = useState<FeaturedCoach[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    // Simulate API call with delay
-    const loadCoaches = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Simulate potential error (5% chance)
-        if (Math.random() < 0.05) {
-          throw new Error('Failed to load featured coaches');
+  const loadCoaches = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Fetch top-rated coaches from the real API
+      const result = await coachManagementService.searchCoaches(
+        {}, // No filters - get all coaches
+        { 
+          limit: 3, 
+          orderBy: 'rating', 
+          orderDirection: 'desc' 
         }
-        
-        setCoaches(featuredCoaches);
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
+      );
+      
+      if (result.error) {
+        throw new Error(result.error.message);
       }
-    };
+      
+      // Transform API data to component format
+      const featuredCoaches: FeaturedCoach[] = result.data!.data.map((coach: CoachProfile) => ({
+        id: coach.id,
+        name: coach.profile?.full_name || 'Coach',
+        image: coach.profile?.avatar_url || null,
+        specialty: coach.specializations?.[0] || 'iPEC Coach',
+        rating: coach.rating || 5.0,
+        price: coach.hourly_rate || 150,
+      }));
+      
+      setCoaches(featuredCoaches);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load featured coaches';
+      setError(new Error(errorMessage));
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadCoaches();
   }, []);
 
-  return { coaches, loading, error, refetch: () => setLoading(true) };
+  return { coaches, loading, error, refetch: loadCoaches };
 };
 
 export function FeaturedCoaches() {
@@ -145,12 +139,12 @@ export function FeaturedCoaches() {
                   <Card key={coach.id} hover variant="default">
                     {/* Progressive image with blur-to-sharp transition */}
                     <ProgressiveImage
-                      src={coach.image}
+                      src={coach.image || 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80'}
                       alt={`${coach.name} - Professional Coach`}
                       placeholder="blur"
                       blurDataURL={generateBlurDataURL(8, 6, '#f3f4f6')}
                       className="w-full h-48 object-cover"
-                      priority={coach.id <= 2} // Prioritize first 2 images
+                      priority={coaches.indexOf(coach) < 2} // Prioritize first 2 images
                       quality={80}
                       showProgress={false}
                       containerClassName="relative overflow-hidden"

@@ -96,7 +96,7 @@ export function HowItWorks() {
                     <div className="relative">
                       <div className="absolute -inset-4 bg-gradient-to-br from-brand-100 to-blue-100 rounded-full opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
                       <div className="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500 to-blue-500 text-white">
-                        <Icon className="h-8 w-8" />
+                        <Icon className="h-8 w-8" aria-hidden="true" />
                       </div>
                     </div>
                     <span className="text-4xl font-bold text-brand-600/20">0{index + 1}</span>
@@ -121,6 +121,7 @@ export function HowItWorks() {
             variant="gradient"
             size="lg"
             className="mx-auto"
+            aria-label="Learn more about our coaching process"
           >
             Learn More About Our Process
           </Button>

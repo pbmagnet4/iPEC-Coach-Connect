@@ -9,13 +9,18 @@ import {
   Clock,
   Globe,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Loader2
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Badge } from '../components/ui/Badge';
+import { TextArea } from '../components/ui/TextArea';
+import { Select } from '../components/ui/Select';
+import { useForm } from '../hooks/useForm';
+import { contactValidationSchemas, FormValidator } from '../lib/form-validation';
 
 const contactInfo = {
   email: 'contact@ipeccoach.com',
@@ -42,34 +47,67 @@ const contactInfo = {
   },
 };
 
-export function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
+interface ContactFormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  category: 'general' | 'technical' | 'billing' | 'coaching' | 'other';
+  priority: 'low' | 'normal' | 'high' | 'urgent';
+}
 
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('submitting');
-
-    try {
-      // Here you would typically make an API call to submit the form
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-
-      // Reset success message after 3 seconds
-      setTimeout(() => {
-        setStatus('idle');
-      }, 3000);
-    } catch (error) {
-      setStatus('error');
+// Mock contact service - replace with actual implementation
+const contactService = {
+  async submitMessage(data: ContactFormData) {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Simulate success/failure
+    if (Math.random() > 0.1) {
+      return { success: true, id: `msg_${Date.now()}` };
+    } else {
+      throw new Error('Failed to send message. Please try again.');
     }
-  };
+  }
+};
+
+export function Contact() {
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [submitError, setSubmitError] = useState<string>('');
+
+  const form = useForm<ContactFormData>({
+    schema: contactValidationSchemas.contact,
+    initialData: {
+      name: '',
+      email: '',
+      subject: '',
+      message: '',
+      category: 'general',
+      priority: 'normal',
+    },
+    onSubmit: async (data) => {
+      setSubmitStatus('submitting');
+      setSubmitError('');
+      
+      try {
+        await contactService.submitMessage(data);
+        setSubmitStatus('success');
+        form.resetForm();
+
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+        }, 5000);
+      } catch (error) {
+        setSubmitStatus('error');
+        setSubmitError(error instanceof Error ? error.message : 'Failed to send message');
+      }
+    },
+    validateOnChange: true,
+    validateOnBlur: true,
+    debounceMs: 300,
+    focusOnError: true,
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -90,80 +128,135 @@ export function Contact() {
           {/* Contact Form */}
           <Card>
             <Card.Body className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {status === 'error' && (
+              <form onSubmit={form.handleSubmit()} className="space-y-6">
+                {/* Error Message */}
+                {submitStatus === 'error' && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-2 p-4 bg-red-50 text-red-700 rounded-lg"
+                    className="flex items-center gap-2 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg"
                   >
-                    <AlertCircle className="h-5 w-5" />
-                    <span>Something went wrong. Please try again.</span>
+                    <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                    <span>{submitError || 'Something went wrong. Please try again.'}</span>
                   </motion.div>
                 )}
 
-                {status === 'success' && (
+                {/* Success Message */}
+                {submitStatus === 'success' && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-2 p-4 bg-green-50 text-green-700 rounded-lg"
+                    className="flex items-center gap-2 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg"
                   >
-                    <CheckCircle className="h-5 w-5" />
-                    <span>Your message has been sent successfully!</span>
+                    <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium">Message sent successfully!</p>
+                      <p className="text-sm">We'll get back to you within 24 hours.</p>
+                    </div>
                   </motion.div>
                 )}
 
+                {/* Form Fields */}
                 <div className="grid sm:grid-cols-2 gap-6">
                   <Input
-                    label="Your Name"
-                    value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    required
+                    {...form.getFieldProps('name')}
+                    label="Your Name *"
+                    placeholder="Enter your full name"
+                    icon={<MessageSquare className="h-5 w-5" />}
                   />
                   <Input
+                    {...form.getFieldProps('email')}
                     type="email"
-                    label="Email Address"
-                    value={formData.email}
-                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    required
+                    label="Email Address *"
+                    placeholder="your.email@example.com"
+                    icon={<Mail className="h-5 w-5" />}
                   />
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <Select
+                    {...form.getFieldProps('category')}
+                    label="Category"
+                    placeholder="Select a category"
+                  >
+                    <option value="general">General Inquiry</option>
+                    <option value="technical">Technical Support</option>
+                    <option value="billing">Billing Question</option>
+                    <option value="coaching">Coaching Services</option>
+                    <option value="other">Other</option>
+                  </Select>
+                  
+                  <Select
+                    {...form.getFieldProps('priority')}
+                    label="Priority"
+                  >
+                    <option value="low">Low</option>
+                    <option value="normal">Normal</option>
+                    <option value="high">High</option>
+                    <option value="urgent">Urgent</option>
+                  </Select>
                 </div>
 
                 <Input
-                  label="Subject"
-                  value={formData.subject}
-                  onChange={(e) => setFormData(prev => ({ ...prev, subject: e.target.value }))}
-                  required
+                  {...form.getFieldProps('subject')}
+                  label="Subject *"
+                  placeholder="Brief description of your inquiry"
                 />
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Message
-                  </label>
-                  <textarea
-                    value={formData.message}
-                    onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                    rows={6}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
-                    placeholder="How can we help you?"
-                    required
-                  />
-                </div>
+                <TextArea
+                  {...form.getFieldProps('message')}
+                  label="Message *"
+                  placeholder="Please provide details about your inquiry..."
+                  rows={6}
+                  helpText={`${form.getFieldValue('message')?.length || 0} characters`}
+                />
 
-                <div className="flex items-center justify-between pt-4">
+                {/* Form Actions */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Clock className="h-4 w-4" />
                     <span>Response time: within 24 hours</span>
                   </div>
-                  <Button
-                    type="submit"
-                    variant="gradient"
-                    icon={<Send className="h-5 w-5" />}
-                    isLoading={status === 'submitting'}
-                  >
-                    Send Message
-                  </Button>
+                  
+                  <div className="flex gap-3">
+                    {form.formState.isDirty && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => form.resetForm()}
+                        disabled={form.formState.isSubmitting}
+                      >
+                        Reset
+                      </Button>
+                    )}
+                    
+                    <Button
+                      type="submit"
+                      variant="gradient"
+                      disabled={!form.formState.isValid || form.formState.isSubmitting}
+                      className="min-w-[140px]"
+                    >
+                      {form.formState.isSubmitting ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="h-4 w-4 mr-2" />
+                          Send Message
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
+
+                {/* Form Status */}
+                {form.formState.isDirty && !form.formState.isValid && (
+                  <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+                    <p>Please fill in all required fields correctly before submitting.</p>
+                  </div>
+                )}
               </form>
             </Card.Body>
           </Card>

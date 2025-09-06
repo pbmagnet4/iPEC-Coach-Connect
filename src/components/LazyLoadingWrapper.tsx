@@ -243,11 +243,8 @@ export const LazyEmblaCarousel = withLazyLoading(
 // Chart components with fallback (react-chartjs-2 not installed)
 export const LazyChart = withLazyLoading(
   () => {
-    // Use Function constructor to avoid Vite static analysis
-    const dynamicImport = new Function('specifier', 'return import(specifier)');
-    return dynamicImport('react-chartjs-2').then(module => ({ default: module.Line })).catch(() => {
-    // Fallback component when react-chartjs-2 is not available
-    return {
+    // Return fallback component since react-chartjs-2 is not installed
+    return Promise.resolve({
       default: ({ data, options, ...props }: any) => (
         <div className="w-full h-64 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 border-2 border-dashed border-gray-300">
           <div className="text-center">
@@ -259,7 +256,6 @@ export const LazyChart = withLazyLoading(
           </div>
         </div>
       )
-    };
     });
   },
   {
@@ -272,11 +268,8 @@ export const LazyChart = withLazyLoading(
 // Rich text editor with fallback (@tiptap/react not installed)
 export const LazyRichTextEditor = withLazyLoading(
   () => {
-    // Use Function constructor to avoid Vite static analysis
-    const dynamicImport = new Function('specifier', 'return import(specifier)');
-    return dynamicImport('@tiptap/react').then(module => ({ default: module.EditorContent })).catch(() => {
-    // Fallback component when @tiptap/react is not available
-    return {
+    // Return fallback component since @tiptap/react is not installed
+    return Promise.resolve({
       default: ({ content, onChange, ...props }: any) => (
         <div className="w-full min-h-32 p-3 border border-gray-300 rounded-md bg-gray-50 flex items-center justify-center text-gray-500">
           <div className="text-center">
@@ -288,7 +281,6 @@ export const LazyRichTextEditor = withLazyLoading(
           </div>
         </div>
       )
-    };
     });
   },
   {

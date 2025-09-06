@@ -1,14 +1,14 @@
 import React from 'react';
-import { UserRole, useRole } from '../lib/roles';
+import { LegacyUserRole, useLegacyRole } from '../stores/unified-user-store';
 
 interface RoleGuardProps {
   children: React.ReactNode;
-  roles: UserRole[];
+  roles: LegacyUserRole[];
   fallback?: React.ReactNode;
 }
 
 export function RoleGuard({ children, roles, fallback = null }: RoleGuardProps) {
-  const { role } = useRole();
+  const { role } = useLegacyRole();
 
   if (!role || !roles.includes(role)) {
     return fallback;

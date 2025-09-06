@@ -190,8 +190,15 @@ export const preloadRouteResources = (route: string): void => {
       { url: '/assets/js/pages-community.js', type: 'script', priority: 'high' },
       { url: '/assets/js/components-ui.js', type: 'script', priority: 'medium' }
     ],
-    '/learning': [
-      { url: '/assets/js/pages-learning.js', type: 'script', priority: 'high' },
+    '/about-coaching': [
+      { url: '/assets/js/pages-coaching.js', type: 'script', priority: 'high' },
+      { url: '/assets/js/animation-engine.js', type: 'script', priority: 'low' }
+    ],
+    '/coaching-resources': [
+      { url: '/assets/js/pages-coaching.js', type: 'script', priority: 'high' }
+    ],
+    '/coaching-basics': [
+      { url: '/assets/js/pages-coaching.js', type: 'script', priority: 'high' },
       { url: '/assets/js/animation-engine.js', type: 'script', priority: 'low' }
     ]
   };
@@ -304,12 +311,9 @@ export const initPerformanceMonitoring = (): void => {
     // Monitor bundle sizes
     monitorBundleSize();
     
-    // Monitor Core Web Vitals with runtime conditional loading
-    // Using eval to avoid Vite static analysis
-    const webVitalsPath = 'web-vitals';
+    // Monitor Core Web Vitals with safe dynamic loading
     try {
-      const dynamicImport = new Function('specifier', 'return import(specifier)');
-      dynamicImport(webVitalsPath).then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
         getCLS(console.log);
         getFID(console.log);
         getFCP(console.log);

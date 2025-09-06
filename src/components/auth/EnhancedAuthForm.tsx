@@ -34,7 +34,7 @@ import { GoogleSignInButton } from '../GoogleSignInButton';
 import { authService } from '../../services/auth.service';
 import { getRateLimitStatus } from '../../lib/rate-limiter';
 import { logSecurity } from '../../lib/secure-logger';
-import type { UserRole } from '../../lib/roles';
+import type { LegacyUserRole } from '../../stores/unified-user-store';
 import { AuthTrustSignals, QuickAuthTrustFooter } from '../trust/AuthTrustSignals';
 import { EmailInputTrust, PrivacyAssurance } from '../trust/TrustMicrocopy';
 
@@ -51,7 +51,7 @@ interface FormData {
   confirmPassword: string;
   fullName: string;
   phone: string;
-  role: UserRole;
+  role: LegacyUserRole;
   agreeToTerms: boolean;
 }
 
@@ -586,30 +586,8 @@ export function EnhancedAuthForm({ mode, onModeChange, onSuccess, redirectTo }: 
       {renderRateLimitWarning()}
       
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Enhanced error message */}
-        {enhancedError && (
-          <div className="space-y-3">
-            <ErrorMessage
-              error={{
-                ...enhancedError,
-                quickActions: [
-                  ...(enhancedError.quickActions || []),
-                  ...(enhancedError.category === 'auth' ? [{
-                    label: enhancedError.title.includes('Locked') ? 'Unlock Account' : 'Reset Password',
-                    action: handleStartRecoveryFlow,
-                    variant: 'secondary' as const
-                  }] : [])
-                ]
-              }}
-              onRetry={handleErrorRetry}
-              onDismiss={() => setEnhancedError(null)}
-              className="mb-4"
-            />
-          </div>
-        )}
-
-        {/* Legacy error display for backwards compatibility */}
-        {errors.form && !enhancedError && (
+        {/* Error display */}
+        {errors.form && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
             <div className="flex items-start gap-2">
               <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
@@ -737,13 +715,7 @@ export function EnhancedAuthForm({ mode, onModeChange, onSuccess, redirectTo }: 
 
             <GoogleSignInButton
               onError={(error) => {
-                const errorContext: ErrorContext = {
-                  operation: 'oauth_google',
-                  location: window.location.pathname
-                };
-                const enhancedErrorMessage = getErrorMessage('OAUTH_ERROR', errorContext);
-                setEnhancedError(enhancedErrorMessage);
-                trackError(enhancedErrorMessage, errorContext, error);
+                setErrors({ form: error.message || 'Google sign-in failed. Please try again.' });
               }}
               redirectTo={redirectTo}
             />
@@ -802,22 +774,7 @@ export function EnhancedAuthForm({ mode, onModeChange, onSuccess, redirectTo }: 
         )}
       </div>
 
-      {/* Recovery Flow Modal */}
-      {activeFlow && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="max-w-lg w-full">
-            <ErrorRecoveryFlow
-              flow={activeFlow}
-              onComplete={() => {
-                endFlow();
-                // Optionally trigger form retry or success
-                setEnhancedError(null);
-              }}
-              onCancel={endFlow}
-            />
-          </div>
-        </div>
-      )}
+      {/* Recovery Flow Modal - TODO: Implement when error recovery system is complete */}
     </div>
   );
 }

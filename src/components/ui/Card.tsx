@@ -80,3 +80,14 @@ Card.Footer = function CardFooter({ children, className }: Omit<CardProps, 'vari
     </div>
   );
 };
+
+// Export alternative names for consistency with analytics components
+export const CardHeader = Card.Header;
+export const CardContent = Card.Body;
+export function CardTitle({ children, className }: Omit<CardProps, 'variant' | 'hover'>) {
+  return (
+    <h3 className={cn("text-lg font-semibold text-gray-900", className)}>
+      {children}
+    </h3>
+  );
+}

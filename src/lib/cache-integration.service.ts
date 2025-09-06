@@ -455,7 +455,7 @@ class CacheIntegrationService {
       type: 'learning',
       key: 'learning_resources_popular',
       fetchFn: async () => {
-        return fetch('/api/learning-resources?popular=true').then(res => res.json());
+        return fetch('/api/coaching-resources?popular=true').then(res => res.json());
       },
       ttl: CACHE_STRATEGIES.LEARNING_RESOURCES.ttlByLevel[CacheLevel.L1_MEMORY]
     });

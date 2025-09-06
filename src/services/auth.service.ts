@@ -34,6 +34,8 @@ import {
   type SecureSessionData,
   type SessionValidationResult 
 } from '../lib/session-security';
+import { mfaService } from './mfa.service';
+import type { MFASettings } from './mfa.service';
 import { userProfileCache, cacheUtils } from '../lib/cache';
 import { memoryManager } from '../lib/memory-manager';
 import type { 
@@ -61,6 +63,9 @@ export interface AuthState {
   concurrentSessions: number;
   sessionExpiresAt: number | null;
   requiresRefresh: boolean;
+  mfaSettings: MFASettings | null;
+  requiresMFA: boolean;
+  mfaVerified: boolean;
 }
 
 // Auth operation result types
@@ -118,6 +123,9 @@ class AuthService {
     concurrentSessions: 0,
     sessionExpiresAt: null,
     requiresRefresh: false,
+    mfaSettings: null,
+    requiresMFA: false,
+    mfaVerified: false,
   };
 
   // Memory management
@@ -153,6 +161,8 @@ class AuthService {
 
         if (event === 'SIGNED_IN' && session?.user) {
           await this.loadUserData(session.user);
+          // Check if MFA is required after successful login
+          await this.checkMFARequirement(session.user);
         } else if (event === 'SIGNED_OUT') {
           // Clear cache and secure session data on sign out
           const currentUser = this.currentState.user;
@@ -189,6 +199,9 @@ class AuthService {
             concurrentSessions: 0,
             sessionExpiresAt: null,
             requiresRefresh: false,
+            mfaSettings: null,
+            requiresMFA: false,
+            mfaVerified: false,
           });
         } else if (event === 'TOKEN_REFRESHED' && session) {
           // Refresh secure session as well
@@ -389,8 +402,28 @@ class AuthService {
 
       const session = await supabaseUtils.getCurrentSession();
 
+      // Load MFA settings
+      let mfaSettings: MFASettings | null = null;
+      let requiresMFA = false;
+      let mfaVerified = false;
+      
+      try {
+        mfaSettings = await mfaService.getMFASettings(user.id);
+        if (mfaSettings?.mfa_enabled) {
+          requiresMFA = true;
+          // Check if device is trusted to bypass MFA
+          const deviceTrusted = await mfaService.isDeviceTrusted(user.id);
+          mfaVerified = deviceTrusted;
+        }
+      } catch (error) {
+        logSecurity('Failed to load MFA settings', 'medium', {
+          userId: user.id,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        });
+      }
+      
       // Store sensitive data securely
-      await this.storeSecureAuthData({ user, profile, coach, role });
+      await this.storeSecureAuthData({ user, profile, coach, role, mfaSettings });
       
       // Create secure session
       let secureSession: SecureSessionData | null = null;
@@ -431,6 +464,9 @@ class AuthService {
         concurrentSessions,
         sessionExpiresAt,
         requiresRefresh,
+        mfaSettings,
+        requiresMFA,
+        mfaVerified,
       });
     } catch (error) {
       console.error('Failed to load user data:', error);
@@ -946,6 +982,197 @@ class AuthService {
   }
 
   /**
+   * Check MFA requirement after login
+   */
+  private async checkMFARequirement(user: SupabaseAuthUser): Promise<void> {
+    try {
+      const mfaSettings = await mfaService.getMFASettings(user.id);
+      if (mfaSettings?.mfa_enabled) {
+        const deviceTrusted = await mfaService.isDeviceTrusted(user.id);
+        
+        this.updateState({
+          mfaSettings,
+          requiresMFA: true,
+          mfaVerified: deviceTrusted
+        });
+        
+        if (!deviceTrusted) {
+          logAuth('MFA verification required', true, {
+            userId: user.id,
+            deviceTrusted: false
+          });
+        }
+      }
+    } catch (error) {
+      logSecurity('MFA requirement check failed', 'medium', {
+        userId: user.id,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  /**
+   * Verify MFA code and complete authentication
+   */
+  public async verifyMFA(code: string, trustDevice?: boolean): Promise<AuthResult<void>> {
+    try {
+      const { user } = this.currentState;
+      if (!user) {
+        throw new SupabaseError('User not authenticated');
+      }
+      
+      const result = await mfaService.verifyMFALogin(user.id, code);
+      
+      if (result.success) {
+        // Handle device trust if requested
+        if (trustDevice && result.requiresDeviceTrust) {
+          try {
+            await mfaService.trustDevice(user.id, 'Current Device');
+          } catch (trustError) {
+            // Continue even if device trust fails
+            console.warn('Device trust failed:', trustError);
+          }
+        }
+        
+        this.updateState({
+          mfaVerified: true,
+          requiresMFA: false
+        });
+        
+        logAuth('MFA verification successful', true, {
+          userId: user.id
+        });
+        
+        return { data: undefined };
+      } else {
+        throw new SupabaseError('Invalid MFA code');
+      }
+    } catch (error) {
+      const supabaseError = error instanceof SupabaseError 
+        ? error 
+        : handleSupabaseError(error);
+      
+      logAuth('MFA verification failed', false, {
+        userId: this.currentState.user?.id,
+        error: supabaseError.message
+      });
+      
+      return { error: supabaseError };
+    }
+  }
+
+  /**
+   * Get MFA settings for current user
+   */
+  public async getMFASettings(): Promise<AuthResult<MFASettings>> {
+    try {
+      const { user } = this.currentState;
+      if (!user) {
+        throw new SupabaseError('User not authenticated');
+      }
+      
+      const mfaSettings = await mfaService.getMFASettings(user.id);
+      
+      if (mfaSettings) {
+        this.updateState({ mfaSettings });
+        return { data: mfaSettings };
+      } else {
+        throw new SupabaseError('MFA settings not found');
+      }
+    } catch (error) {
+      const supabaseError = error instanceof SupabaseError 
+        ? error 
+        : handleSupabaseError(error);
+      
+      return { error: supabaseError };
+    }
+  }
+
+  /**
+   * Initialize MFA setup
+   */
+  public async initializeMFA(): Promise<AuthResult<any>> {
+    try {
+      const { user } = this.currentState;
+      if (!user) {
+        throw new SupabaseError('User not authenticated');
+      }
+      
+      const enrollmentData = await mfaService.initializeMFA(user.id);
+      
+      return { data: enrollmentData };
+    } catch (error) {
+      const supabaseError = error instanceof SupabaseError 
+        ? error 
+        : handleSupabaseError(error);
+      
+      return { error: supabaseError };
+    }
+  }
+
+  /**
+   * Complete MFA enrollment
+   */
+  public async completeMFAEnrollment(code: string, deviceName?: string): Promise<AuthResult<void>> {
+    try {
+      const { user } = this.currentState;
+      if (!user) {
+        throw new SupabaseError('User not authenticated');
+      }
+      
+      const result = await mfaService.verifyAndEnableMFA(user.id, code, deviceName);
+      
+      if (result.success) {
+        // Reload MFA settings
+        const mfaSettings = await mfaService.getMFASettings(user.id);
+        this.updateState({ 
+          mfaSettings,
+          requiresMFA: true,
+          mfaVerified: true
+        });
+        
+        return { data: undefined };
+      } else {
+        throw new SupabaseError('Invalid verification code');
+      }
+    } catch (error) {
+      const supabaseError = error instanceof SupabaseError 
+        ? error 
+        : handleSupabaseError(error);
+      
+      return { error: supabaseError };
+    }
+  }
+
+  /**
+   * Disable MFA
+   */
+  public async disableMFA(verificationCode: string): Promise<AuthResult<void>> {
+    try {
+      const { user } = this.currentState;
+      if (!user) {
+        throw new SupabaseError('User not authenticated');
+      }
+      
+      await mfaService.disableMFA(user.id, verificationCode);
+      
+      this.updateState({
+        mfaSettings: null,
+        requiresMFA: false,
+        mfaVerified: false
+      });
+      
+      return { data: undefined };
+    } catch (error) {
+      const supabaseError = error instanceof SupabaseError 
+        ? error 
+        : handleSupabaseError(error);
+      
+      return { error: supabaseError };
+    }
+  }
+
+  /**
    * Store sensitive auth data securely
    */
   private async storeSecureAuthData(data: {
@@ -953,6 +1180,7 @@ class AuthService {
     profile: Profile | null;
     coach: Coach | null;
     role: UserRole | null;
+    mfaSettings?: MFASettings | null;
   }): Promise<void> {
     try {
       // Store sensitive user data with encryption
@@ -962,7 +1190,8 @@ class AuthService {
         profileId: data.profile?.id,
         role: data.role,
         lastLogin: new Date().toISOString(),
-        permissions: this.getUserPermissions(data.role, data.coach)
+        permissions: this.getUserPermissions(data.role, data.coach),
+        mfaEnabled: data.mfaSettings?.mfa_enabled || false
       });
 
       logSecurity('Secure auth data stored', 'low', {
@@ -1468,6 +1697,12 @@ export const useAuth = () => {
     getCurrentUserSessions: authService.getCurrentUserSessions.bind(authService),
     invalidateOtherSessions: authService.invalidateOtherSessions.bind(authService),
     getSessionSecurityStats: authService.getSessionSecurityStats.bind(authService),
+    // MFA methods
+    verifyMFA: authService.verifyMFA.bind(authService),
+    getMFASettings: authService.getMFASettings.bind(authService),
+    initializeMFA: authService.initializeMFA.bind(authService),
+    completeMFAEnrollment: authService.completeMFAEnrollment.bind(authService),
+    disableMFA: authService.disableMFA.bind(authService),
     // Memory management methods
     getMemoryStats: authService.getMemoryStats.bind(authService),
     destroy: authService.destroy.bind(authService)

@@ -124,7 +124,7 @@ export function Benefits() {
                         className="flex flex-col items-center text-center p-4"
                       >
                         <div className="bg-brand-100 text-brand-600 p-3 rounded-lg mb-4">
-                          <Icon className="h-6 w-6" />
+                          <Icon className="h-6 w-6" aria-hidden="true" />
                         </div>
                         <h4 className="font-semibold mb-2">{benefit.title}</h4>
                         <p className="text-gray-600 text-sm">{benefit.description}</p>
@@ -157,7 +157,7 @@ export function Benefits() {
                         className="flex flex-col items-center text-center p-4"
                       >
                         <div className="bg-blue-100 text-blue-600 p-3 rounded-lg mb-4">
-                          <Icon className="h-6 w-6" />
+                          <Icon className="h-6 w-6" aria-hidden="true" />
                         </div>
                         <h4 className="font-semibold mb-2">{benefit.title}</h4>
                         <p className="text-gray-600 text-sm">{benefit.description}</p>

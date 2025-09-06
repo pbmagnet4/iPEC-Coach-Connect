@@ -165,7 +165,13 @@ class BookingService {
         paymentIntentId = await this.processPayment(
           session.id,
           pricing.finalAmount,
-          bookingRequest.paymentMethodId
+          bookingRequest.paymentMethodId,
+          {
+            coachId: bookingRequest.coachId,
+            sessionTypeId: bookingRequest.sessionTypeId,
+            scheduledAt: bookingRequest.scheduledAt,
+            durationMinutes: bookingRequest.durationMinutes
+          }
         );
       }
 
@@ -297,7 +303,8 @@ class BookingService {
       }
 
       // Notify participants
-      await this.sendRescheduleNotification(rescheduleRequest.sessionId, rescheduleRequest.reason);
+      const oldDateTime = session.scheduled_at;
+      await this.sendRescheduleNotification(rescheduleRequest.sessionId, oldDateTime, rescheduleRequest.newDateTime, rescheduleRequest.reason);
 
       // Update calendar events
       await this.updateCalendarEvents(rescheduleRequest.sessionId);
@@ -359,7 +366,7 @@ class BookingService {
       await this.sendCancellationNotification(
         cancellationRequest.sessionId,
         cancellationRequest.reason,
-        cancellationInfo.refundAmount > 0
+        cancellationInfo.refundAmount
       );
 
       // Cancel calendar events
@@ -415,7 +422,7 @@ class BookingService {
         });
       }
 
-      // Send completion notification to client
+      // Send completion notifications
       await this.sendSessionCompletionNotification(completionData.sessionId);
 
       // Suggest next session if requested
@@ -605,35 +612,158 @@ class BookingService {
     return 0;
   }
 
-  private async processPayment(sessionId: string, amount: number, paymentMethodId: string): Promise<string> {
-    // This would integrate with Stripe to process payment
-    // For now, return a mock payment intent ID
-    return `pi_mock_${sessionId}`;
+  private async processPayment(
+    sessionId: string, 
+    amount: number, 
+    paymentMethodId: string,
+    sessionData?: {
+      coachId: string;
+      sessionTypeId: string;
+      scheduledAt: string;
+      durationMinutes: number;
+    }
+  ): Promise<string> {
+    try {
+      const authState = authService.getState();
+      if (!authState.user) {
+        throw new SupabaseError('User not authenticated for payment processing');
+      }
+
+      if (!sessionData) {
+        throw new SupabaseError('Session data required for payment processing');
+      }
+
+      // Use the existing payment service to process the session payment
+      const { sessionBookingService } = await import('./payment.service');
+      const paymentResult = await sessionBookingService.bookSessionWithPayment({
+        coach_id: sessionData.coachId,
+        session_type_id: sessionData.sessionTypeId,
+        scheduled_at: sessionData.scheduledAt,
+        duration_minutes: sessionData.durationMinutes,
+        payment_method_id: paymentMethodId
+      });
+
+      if (!paymentResult.success) {
+        throw new SupabaseError(paymentResult.error || 'Payment processing failed');
+      }
+
+      return paymentResult.payment_intent?.stripe_payment_intent_id || `pi_${sessionId}`;
+    } catch (error) {
+      console.error('Payment processing error:', error);
+      throw error;
+    }
   }
 
   private async generateMeetingUrl(sessionId: string): Promise<string> {
-    // This would integrate with a video conferencing service
-    // For now, return a placeholder URL
-    return `https://meet.ipec-coach-connect.com/session/${sessionId}`;
+    // Generate a unique meeting URL for the session
+    // In production, this would integrate with Zoom, Google Meet, etc.
+    const meetingId = `${sessionId.substring(0, 8)}-${Date.now().toString(36)}`;
+    return `https://meet.ipec-coach-connect.com/session/${meetingId}`;
   }
 
   private async scheduleReminders(sessionId: string) {
-    // Schedule email/SMS reminders
-    // For now, just create a placeholder notification
-    await notificationService.createNotification({
-      user_id: '', // Would be set to client and coach IDs
-      title: 'Session Reminder',
-      message: 'You have an upcoming coaching session',
-      type: 'session',
-    });
+    try {
+      // Get session details to create proper reminders
+      const sessionResult = await sessionService.getSession(sessionId);
+      if (sessionResult.error || !sessionResult.data) {
+        console.error('Failed to get session for reminder scheduling:', sessionResult.error);
+        return;
+      }
+
+      const session = sessionResult.data;
+      const scheduledTime = new Date(session.scheduled_at);
+      const now = new Date();
+
+      // Schedule 24-hour reminder
+      const reminder24h = new Date(scheduledTime.getTime() - 24 * 60 * 60 * 1000);
+      if (reminder24h > now) {
+        await this.createSessionReminder(session, reminder24h, '24 hours');
+      }
+
+      // Schedule 1-hour reminder
+      const reminder1h = new Date(scheduledTime.getTime() - 60 * 60 * 1000);
+      if (reminder1h > now) {
+        await this.createSessionReminder(session, reminder1h, '1 hour');
+      }
+
+      // Schedule 15-minute reminder
+      const reminder15m = new Date(scheduledTime.getTime() - 15 * 60 * 1000);
+      if (reminder15m > now) {
+        await this.createSessionReminder(session, reminder15m, '15 minutes');
+      }
+    } catch (error) {
+      console.error('Error scheduling reminders:', error);
+      // Don't throw error - reminders are not critical to booking flow
+    }
+  }
+
+  private async createSessionReminder(session: any, reminderTime: Date, timeframe: string) {
+    const reminderTitle = `Session Reminder - ${timeframe} until your session`;
+    const reminderMessage = `Your coaching session is scheduled for ${new Date(session.scheduled_at).toLocaleString()}`;
+
+    // Create notifications for both client and coach
+    const notifications = [
+      {
+        user_id: session.client_id,
+        title: reminderTitle,
+        message: reminderMessage,
+        type: 'session' as const,
+      },
+      {
+        user_id: session.coach_id,
+        title: reminderTitle,
+        message: reminderMessage,
+        type: 'session' as const,
+      }
+    ];
+
+    for (const notification of notifications) {
+      if (notification.user_id) {
+        await notificationService.createNotification(notification);
+      }
+    }
   }
 
   private async sendBookingConfirmation(sessionId: string) {
-    // Send confirmation email/notification
+    try {
+      // Use the professional booking notifications service
+      const { bookingNotificationsService } = await import('./booking-notifications.service');
+      await bookingNotificationsService.sendBookingConfirmation(sessionId);
+    } catch (error) {
+      console.error('Error sending booking confirmation:', error);
+      // Don't throw - booking should succeed even if notifications fail
+    }
   }
 
   private async createCalendarEvents(sessionId: string) {
-    // Create calendar events for coach and client
+    try {
+      const sessionResult = await sessionService.getSession(sessionId);
+      if (sessionResult.error || !sessionResult.data) {
+        console.error('Failed to get session for calendar events:', sessionResult.error);
+        return;
+      }
+
+      const session = sessionResult.data;
+      const startTime = new Date(session.scheduled_at);
+      const endTime = new Date(startTime.getTime() + session.duration_minutes * 60000);
+
+      const calendarEvent: CalendarEvent = {
+        title: 'iPEC Coaching Session',
+        description: `Coaching session with iPEC Coach Connect.\n\nSession Notes: ${session.notes || 'No notes provided'}\n\nMeeting URL: ${session.meeting_url}`,
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        location: session.meeting_url || 'Online',
+        attendees: [] // Would include coach and client emails
+      };
+
+      // TODO: Generate .ics file and include in confirmation emails
+      // This would create proper calendar invitations that users can add to their calendars
+      console.log('Calendar event created:', calendarEvent);
+
+    } catch (error) {
+      console.error('Error creating calendar events:', error);
+      // Don't throw - calendar events are nice-to-have
+    }
   }
 
   private async getCancellationPolicy(): Promise<string> {
@@ -647,14 +777,72 @@ class BookingService {
     endDate: string,
     durationMinutes: number
   ): AvailableSlot[] {
-    // Complex algorithm to generate available slots based on:
-    // - Coach availability patterns
-    // - Existing bookings
-    // - Date range
-    // - Required duration
+    const slots: AvailableSlot[] = [];
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const now = new Date();
+
+    // Iterate through each day in the range
+    for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+      const dayOfWeek = date.getDay();
+      
+      // Find availability for this day of week
+      const dayAvailability = availability.filter(slot => slot.day_of_week === dayOfWeek && slot.is_active);
+      
+      for (const availSlot of dayAvailability) {
+        // Parse time slots for this day
+        const [startHour, startMin] = availSlot.start_time.split(':').map(Number);
+        const [endHour, endMin] = availSlot.end_time.split(':').map(Number);
+        
+        let slotStart = new Date(date);
+        slotStart.setHours(startHour, startMin, 0, 0);
+        
+        const slotEnd = new Date(date);
+        slotEnd.setHours(endHour, endMin, 0, 0);
+        
+        // Generate 30-minute slots within this availability window
+        while (slotStart.getTime() + durationMinutes * 60000 <= slotEnd.getTime()) {
+          const currentSlotEnd = new Date(slotStart.getTime() + durationMinutes * 60000);
+          
+          // Skip past time slots
+          if (slotStart <= now) {
+            slotStart.setTime(slotStart.getTime() + 30 * 60000); // Move by 30 minutes
+            continue;
+          }
+          
+          // Check for conflicts with existing bookings
+          const hasConflict = bookings.some(booking => {
+            const bookingStart = new Date(booking.scheduled_at);
+            const bookingEnd = new Date(bookingStart.getTime() + booking.duration_minutes * 60000);
+            
+            return (
+              (slotStart >= bookingStart && slotStart < bookingEnd) ||
+              (currentSlotEnd > bookingStart && currentSlotEnd <= bookingEnd) ||
+              (slotStart <= bookingStart && currentSlotEnd >= bookingEnd)
+            );
+          });
+          
+          if (!hasConflict) {
+            slots.push({
+              startTime: slotStart.toISOString(),
+              endTime: currentSlotEnd.toISOString(),
+              duration: durationMinutes,
+              available: true,
+              coachId: availSlot.coach_id,
+              timezone: availSlot.timezone || 'UTC'
+            });
+          }
+          
+          // Move to next 30-minute slot
+          slotStart.setTime(slotStart.getTime() + 30 * 60000);
+        }
+      }
+    }
     
-    // For now, return empty array
-    return [];
+    // Sort slots by start time
+    slots.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+    
+    return slots;
   }
 
   private async canRescheduleSession(session: Session) {
@@ -672,8 +860,13 @@ class BookingService {
     return { allowed: true };
   }
 
-  private async sendRescheduleNotification(sessionId: string, reason?: string) {
-    // Send notification about reschedule
+  private async sendRescheduleNotification(sessionId: string, oldDateTime: string, newDateTime: string, reason?: string) {
+    try {
+      const { bookingNotificationsService } = await import('./booking-notifications.service');
+      await bookingNotificationsService.sendRescheduleNotifications(sessionId, oldDateTime, newDateTime, reason);
+    } catch (error) {
+      console.error('Error sending reschedule notifications:', error);
+    }
   }
 
   private async updateCalendarEvents(sessionId: string) {
@@ -711,8 +904,13 @@ class BookingService {
     // Process refund through Stripe
   }
 
-  private async sendCancellationNotification(sessionId: string, reason: string, refundProcessed: boolean) {
-    // Send cancellation notification
+  private async sendCancellationNotification(sessionId: string, reason: string, refundAmount: number) {
+    try {
+      const { bookingNotificationsService } = await import('./booking-notifications.service');
+      await bookingNotificationsService.sendCancellationNotifications(sessionId, reason, refundAmount);
+    } catch (error) {
+      console.error('Error sending cancellation notifications:', error);
+    }
   }
 
   private async cancelCalendarEvents(sessionId: string) {
@@ -728,11 +926,21 @@ class BookingService {
   }
 
   private async sendSessionCompletionNotification(sessionId: string) {
-    // Send completion notification to client
+    try {
+      const { bookingNotificationsService } = await import('./booking-notifications.service');
+      await bookingNotificationsService.sendSessionCompletionNotifications(sessionId);
+    } catch (error) {
+      console.error('Error sending completion notifications:', error);
+    }
   }
 
   private async suggestNextSession(sessionId: string) {
-    // Send suggestion for next session booking
+    try {
+      const { bookingNotificationsService } = await import('./booking-notifications.service');
+      await bookingNotificationsService.sendFollowUpSuggestion(sessionId);
+    } catch (error) {
+      console.error('Error sending follow-up suggestion:', error);
+    }
   }
 }
 

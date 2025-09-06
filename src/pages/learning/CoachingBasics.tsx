@@ -129,16 +129,18 @@ export function CoachingBasics() {
               <Button
                 variant="gradient"
                 size="lg"
-                icon={<Play className="h-5 w-5" />}
+                href="/coaches"
+                icon={<Users className="h-5 w-5" />}
               >
-                Start Learning
+                Find a Coach
               </Button>
               <Button
                 variant="outline"
                 size="lg"
+                href="/coaching-resources"
                 className="text-white border-white hover:bg-white/10"
               >
-                Download Guide
+                View Resources
               </Button>
             </div>
             
@@ -234,9 +236,10 @@ export function CoachingBasics() {
                         </span>
                         <Button
                           variant="outline"
-                          icon={<Play className="h-4 w-4" />}
+                          href="/coaches"
+                          icon={<Users className="h-4 w-4" />}
                         >
-                          Start Module
+                          Find a Coach
                         </Button>
                       </div>
                     </div>
@@ -314,15 +317,16 @@ export function CoachingBasics() {
                   Ready to Start Your Journey?
                 </h3>
                 <p className="text-brand-50 mb-6">
-                  Take the first step towards becoming a certified coach with iPEC
+                  Connect with a certified iPEC coach and start your transformation journey
                 </p>
                 <Button
                   variant="gradient"
                   size="lg"
                   className="w-full"
+                  href="/coaches"
                   icon={<ArrowRight className="h-5 w-5" />}
                 >
-                  Learn More About Certification
+                  Find Your Perfect Coach
                 </Button>
               </Card.Body>
             </Card>

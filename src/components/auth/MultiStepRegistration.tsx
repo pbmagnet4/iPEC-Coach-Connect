@@ -378,10 +378,8 @@ export function MultiStepRegistration({
         trackEvent('registration_successful');
         setCurrentStep(3); // Welcome step
         
-        // Delay before calling onSuccess to show welcome message
-        setTimeout(() => {
-          onSuccess?.();
-        }, 2000);
+        // User will manually proceed using the "Continue" button
+        // No automatic redirect - gives user full control
       }
     } catch (error) {
       setErrors({ form: 'An unexpected error occurred. Please try again.' });
@@ -742,6 +740,21 @@ export function MultiStepRegistration({
                   <div className="text-sm text-gray-600">{stat.label}</div>
                 </div>
               ))}
+            </div>
+
+            {/* Manual continue button */}
+            <div className="pt-4">
+              <Button
+                onClick={() => onSuccess?.()}
+                className="w-full"
+                size="lg"
+              >
+                Continue to Get Started
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+              <p className="text-xs text-gray-500 mt-2">
+                Don't forget to check your email to verify your account!
+              </p>
             </div>
           </motion.div>
         );

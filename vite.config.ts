@@ -43,7 +43,7 @@ export default defineConfig(({ command, mode }) => {
       //   }
       // }),
       
-      splitVendorChunkPlugin(),
+      // Remove splitVendorChunkPlugin to prevent empty chunk conflicts
       
       // Compression for production
       // isProduction && compressionPlugin({
@@ -137,11 +137,17 @@ export default defineConfig(({ command, mode }) => {
       target: ['esnext', 'edge88', 'firefox78', 'chrome87', 'safari14'],
       minify: 'terser',
       cssCodeSplit: true,
-      sourcemap: isProduction ? false : 'inline',
+      sourcemap: false, // Disable sourcemaps in production
       chunkSizeWarningLimit: 1000,
       
       // Performance budgets
       assetsInlineLimit: 4096, // Inline assets < 4KB
+      
+      // Prevent empty chunks
+      emptyOutDir: true,
+      
+      // Output optimization
+      reportCompressedSize: false, // Faster builds
       
       // Rollup options for advanced optimization
       rollupOptions: {
@@ -163,136 +169,8 @@ export default defineConfig(({ command, mode }) => {
         },
       
         output: {
-          // Advanced chunk naming with performance hints
-          manualChunks: (id) => {
-            // Critical path optimizations
-            if (id.includes('react/') || id.includes('react-dom/') || id.includes('scheduler/')) {
-              return 'react-core'
-            }
-            
-            if (id.includes('react-router')) {
-              return 'router'
-            }
-            
-            // Heavy UI libraries - separate chunks for better caching
-            if (id.includes('framer-motion')) {
-              return 'animation-engine'
-            }
-            
-            if (id.includes('embla-carousel')) {
-              return 'carousel-engine'
-            }
-            
-            if (id.includes('lucide-react')) {
-              return 'icons'
-            }
-            
-            // Backend services - critical but separate
-            if (id.includes('@supabase/supabase-js')) {
-              return 'backend-core'
-            }
-            
-            if (id.includes('stripe')) {
-              return 'payment-engine'
-            }
-            
-            if (id.includes('ioredis')) {
-              return 'cache-engine'
-            }
-            
-            // Utilities - stable chunks
-            if (id.includes('date-fns')) {
-              return 'date-utils'
-            }
-            
-            if (id.includes('geolib')) {
-              return 'geo-utils'
-            }
-            
-            if (id.includes('zustand')) {
-              return 'state-management'
-            }
-            
-            if (id.includes('class-variance-authority')) {
-              return 'css-utils'
-            }
-            
-            if (id.includes('react-intersection-observer')) {
-              return 'intersection-observer'
-            }
-            
-            // Advanced page chunking with priority
-            if (id.includes('/pages/auth/')) {
-              return 'pages-auth'
-            }
-            
-            if (id.includes('/pages/onboarding/')) {
-              return 'pages-onboarding'
-            }
-            
-            if (id.includes('/pages/community/')) {
-              return 'pages-community'
-            }
-            
-            if (id.includes('/pages/learning/')) {
-              return 'pages-learning'
-            }
-            
-            if (id.includes('/pages/settings/')) {
-              return 'pages-settings'
-            }
-            
-            if (id.includes('/pages/messages/')) {
-              return 'pages-messaging'
-            }
-            
-            // Core pages (high priority)
-            if (id.includes('/pages/Home') || id.includes('/pages/Dashboard') || id.includes('/pages/Profile')) {
-              return 'pages-core'
-            }
-            
-            // Coach-related pages
-            if (id.includes('/pages/Coach') || id.includes('/pages/Booking') || id.includes('/pages/MySessions')) {
-              return 'pages-coaching'
-            }
-            
-            // Info pages (low priority)
-            if (id.includes('/pages/')) {
-              return 'pages-info'
-            }
-            
-            // Component chunking with better granularity
-            if (id.includes('/components/auth/')) {
-              return 'components-auth'
-            }
-            
-            if (id.includes('/components/sections/')) {
-              return 'components-sections'
-            }
-            
-            if (id.includes('/components/ui/')) {
-              return 'components-ui'
-            }
-            
-            if (id.includes('/components/')) {
-              return 'components-common'
-            }
-            
-            // Services chunking
-            if (id.includes('/services/')) {
-              return 'services'
-            }
-            
-            // Hooks and utilities
-            if (id.includes('/hooks/') || id.includes('/lib/')) {
-              return 'utils'
-            }
-            
-            // Fallback for other node_modules
-            if (id.includes('node_modules')) {
-              return 'vendor'
-            }
-          },
+          // Disable manual chunking to prevent empty chunks
+          manualChunks: undefined,
           
           // Optimize asset filenames
           assetFileNames: (assetInfo) => {
@@ -330,14 +208,20 @@ export default defineConfig(({ command, mode }) => {
         compress: {
           drop_console: isProduction,
           drop_debugger: isProduction,
-          pure_funcs: isProduction ? ['console.log', 'console.info'] : [],
-          passes: 2
+          pure_funcs: isProduction ? ['console.log', 'console.info', 'console.debug', 'console.warn'] : [],
+          passes: 2,
+          dead_code: true,
+          unused: true,
+          reduce_vars: true,
+          collapse_vars: true
         },
         mangle: {
-          properties: false
+          properties: false,
+          safari10: true
         },
         format: {
-          comments: false
+          comments: false,
+          ecma: 2020
         }
       }
     },

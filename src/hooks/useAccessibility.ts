@@ -84,21 +84,21 @@ export function useFocusTrap(isActive: boolean) {
     // Store previously focused element
     previouslyFocusedElement.current = document.activeElement as HTMLElement;
 
-    // Focus first element
-    firstFocusableElement?.focus();
+    // Focus first element without scrolling
+    firstFocusableElement?.focus({ preventScroll: true });
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Tab') {
         if (e.shiftKey) {
           // Shift + Tab
           if (document.activeElement === firstFocusableElement) {
-            lastFocusableElement?.focus();
+            lastFocusableElement?.focus({ preventScroll: true });
             e.preventDefault();
           }
         } else {
           // Tab
           if (document.activeElement === lastFocusableElement) {
-            firstFocusableElement?.focus();
+            firstFocusableElement?.focus({ preventScroll: true });
             e.preventDefault();
           }
         }
@@ -109,9 +109,9 @@ export function useFocusTrap(isActive: boolean) {
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      // Restore focus to previously focused element
+      // Restore focus to previously focused element without scrolling
       if (previouslyFocusedElement.current) {
-        previouslyFocusedElement.current.focus();
+        previouslyFocusedElement.current.focus({ preventScroll: true });
       }
     };
   }, [isActive]);
@@ -383,8 +383,12 @@ export function useAccessibility() {
 
   const manageFocus = useCallback((element: HTMLElement) => {
     if (element) {
-      element.focus();
-      element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      element.focus({ preventScroll: true });
+      // Only scroll into view if we're not on initial page load
+      if (document.readyState === 'complete' && window.scrollY > 100) {
+        // Only scroll if we're not at the top of the page (likely initial load)
+        element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
   }, []);
 
@@ -423,24 +427,24 @@ export function useRovingTabIndex<T extends HTMLElement>(
       case 'ArrowRight':
         e.preventDefault();
         const nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-        items[nextIndex]?.focus();
+        items[nextIndex]?.focus({ preventScroll: true });
         setActiveIndex(nextIndex);
         break;
       case 'ArrowUp':
       case 'ArrowLeft':
         e.preventDefault();
         const prevIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-        items[prevIndex]?.focus();
+        items[prevIndex]?.focus({ preventScroll: true });
         setActiveIndex(prevIndex);
         break;
       case 'Home':
         e.preventDefault();
-        items[0]?.focus();
+        items[0]?.focus({ preventScroll: true });
         setActiveIndex(0);
         break;
       case 'End':
         e.preventDefault();
-        items[items.length - 1]?.focus();
+        items[items.length - 1]?.focus({ preventScroll: true });
         setActiveIndex(items.length - 1);
         break;
     }

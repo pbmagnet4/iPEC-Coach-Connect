@@ -6,4 +6,137 @@
  * to avoid repeated login operations and improve test performance.
  */
 
-import { test as setup, expect } from '@playwright/test';\nimport path from 'path';\n\n// File paths for storing authentication states\nconst authFiles = {\n  client: 'playwright/.auth/client.json',\n  coach: 'playwright/.auth/coach.json',\n  admin: 'playwright/.auth/admin.json',\n  user: 'playwright/.auth/user.json', // Generic authenticated user\n};\n\n// Test user credentials for setup\nconst setupUsers = {\n  client: {\n    email: 'test.client@example.com',\n    password: 'ClientPassword123!',\n    role: 'client'\n  },\n  coach: {\n    email: 'test.coach@example.com',\n    password: 'CoachPassword123!',\n    role: 'coach'\n  },\n  admin: {\n    email: 'test.admin@example.com',\n    password: 'AdminPassword123!',\n    role: 'admin'\n  }\n};\n\n/**\n * Helper function to perform login and save auth state\n */\nasync function authenticateUser(\n  page: any, \n  user: typeof setupUsers.client, \n  authFile: string\n) {\n  // Navigate to login page\n  await page.goto('/auth/login');\n  \n  // Wait for login form to be visible\n  await expect(page.locator('[data-testid=\"login-form\"]')).toBeVisible();\n  \n  // Fill login credentials\n  await page.fill('[data-testid=\"login-email\"]', user.email);\n  await page.fill('[data-testid=\"login-password\"]', user.password);\n  \n  // Submit login form\n  await page.click('[data-testid=\"login-submit\"]');\n  \n  // Wait for successful authentication\n  await page.waitForURL('**/dashboard**', { timeout: 10000 });\n  \n  // Verify user is authenticated\n  await expect(page.locator('[data-testid=\"user-menu\"]')).toBeVisible();\n  \n  // Save authentication state\n  await page.context().storageState({ path: authFile });\n  \n  console.log(`✅ Authentication setup complete for ${user.role}: ${authFile}`);\n}\n\n/**\n * Setup authenticated client user\n */\nsetup('authenticate as client', async ({ page }) => {\n  await authenticateUser(page, setupUsers.client, authFiles.client);\n});\n\n/**\n * Setup authenticated coach user\n */\nsetup('authenticate as coach', async ({ page }) => {\n  await authenticateUser(page, setupUsers.coach, authFiles.coach);\n});\n\n/**\n * Setup authenticated admin user\n */\nsetup('authenticate as admin', async ({ page }) => {\n  await authenticateUser(page, setupUsers.admin, authFiles.admin);\n});\n\n/**\n * Setup generic authenticated user (client by default)\n */\nsetup('authenticate as user', async ({ page }) => {\n  await authenticateUser(page, setupUsers.client, authFiles.user);\n});\n\n/**\n * Setup test data and environment\n */\nsetup('prepare test environment', async ({ page }) => {\n  // Check if the application is running\n  try {\n    await page.goto('/');\n    await expect(page.locator('body')).toBeVisible();\n    console.log('✅ Application is accessible');\n  } catch (error) {\n    console.error('❌ Application is not accessible. Make sure the dev server is running.');\n    throw error;\n  }\n  \n  // Verify test database is available (if applicable)\n  if (process.env.NODE_ENV === 'test') {\n    try {\n      // Make a test API call to verify backend\n      const response = await page.request.get('/api/health');\n      if (response.ok()) {\n        console.log('✅ Test API is accessible');\n      }\n    } catch (error) {\n      console.warn('⚠️  Test API not accessible, using frontend-only tests');\n    }\n  }\n  \n  // Clear any existing auth state\n  await page.context().clearCookies();\n  await page.evaluate(() => {\n    localStorage.clear();\n    sessionStorage.clear();\n  });\n  \n  console.log('✅ Test environment prepared');\n});\n\n/**\n * Cleanup setup - runs after all tests\n */\nsetup.afterAll(async () => {\n  console.log('🧹 Authentication setup cleanup complete');\n});
+import { test as setup, expect } from '@playwright/test';
+import path from 'path';
+
+// File paths for storing authentication states
+const authFiles = {
+  client: 'playwright/.auth/client.json',
+  coach: 'playwright/.auth/coach.json',
+  admin: 'playwright/.auth/admin.json',
+  user: 'playwright/.auth/user.json', // Generic authenticated user
+};
+
+// Test user credentials for setup
+const setupUsers = {
+  client: {
+    email: 'test.client@example.com',
+    password: 'ClientPassword123!',
+    role: 'client'
+  },
+  coach: {
+    email: 'test.coach@example.com',
+    password: 'CoachPassword123!',
+    role: 'coach'
+  },
+  admin: {
+    email: 'test.admin@example.com',
+    password: 'AdminPassword123!',
+    role: 'admin'
+  }
+};
+
+/**
+ * Helper function to perform login and save auth state
+ */
+async function authenticateUser(
+  page: any, 
+  user: typeof setupUsers.client, 
+  authFile: string
+) {
+  // Navigate to login page
+  await page.goto('/auth/login');
+  
+  // Wait for login form to be visible
+  await expect(page.locator('[data-testid="login-form"]')).toBeVisible();
+  
+  // Fill login credentials
+  await page.fill('[data-testid="login-email"]', user.email);
+  await page.fill('[data-testid="login-password"]', user.password);
+  
+  // Submit login form
+  await page.click('[data-testid="login-submit"]');
+  
+  // Wait for successful authentication
+  await page.waitForURL('**/dashboard**', { timeout: 10000 });
+  
+  // Verify user is authenticated
+  await expect(page.locator('[data-testid="user-menu"]')).toBeVisible();
+  
+  // Save authentication state
+  await page.context().storageState({ path: authFile });
+  
+  console.log(`✅ Authentication setup complete for ${user.role}: ${authFile}`);
+}
+
+/**
+ * Setup authenticated client user
+ */
+setup('authenticate as client', async ({ page }) => {
+  await authenticateUser(page, setupUsers.client, authFiles.client);
+});
+
+/**
+ * Setup authenticated coach user
+ */
+setup('authenticate as coach', async ({ page }) => {
+  await authenticateUser(page, setupUsers.coach, authFiles.coach);
+});
+
+/**
+ * Setup authenticated admin user
+ */
+setup('authenticate as admin', async ({ page }) => {
+  await authenticateUser(page, setupUsers.admin, authFiles.admin);
+});
+
+/**
+ * Setup generic authenticated user (client by default)
+ */
+setup('authenticate as user', async ({ page }) => {
+  await authenticateUser(page, setupUsers.client, authFiles.user);
+});
+
+/**
+ * Setup test data and environment
+ */
+setup('prepare test environment', async ({ page }) => {
+  // Check if the application is running
+  try {
+    await page.goto('/');
+    await expect(page.locator('body')).toBeVisible();
+    console.log('✅ Application is accessible');
+  } catch (error) {
+    console.error('❌ Application is not accessible. Make sure the dev server is running.');
+    throw error;
+  }
+  
+  // Verify test database is available (if applicable)
+  if (process.env.NODE_ENV === 'test') {
+    try {
+      // Make a test API call to verify backend
+      const response = await page.request.get('/api/health');
+      if (response.ok()) {
+        console.log('✅ Test API is accessible');
+      }
+    } catch (error) {
+      console.warn('⚠️  Test API not accessible, using frontend-only tests');
+    }
+  }
+  
+  // Clear any existing auth state
+  await page.context().clearCookies();
+  await page.evaluate(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+  });
+  
+  console.log('✅ Test environment prepared');
+});
+
+/**
+ * Cleanup setup - runs after all tests
+ */
+setup.afterAll(async () => {
+  console.log('🧹 Authentication setup cleanup complete');
+});

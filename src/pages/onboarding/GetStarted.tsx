@@ -67,7 +67,7 @@ export function GetStarted() {
     try {
       // Here you would typically make an API call to create the account
       // For now, we'll simulate success and redirect
-      navigate('/onboarding');
+      navigate('/dashboard');
     } catch (error) {
       setErrors({
         ...errors,
@@ -109,7 +109,7 @@ export function GetStarted() {
               <GoogleSignInButton
                 label={`Sign up with Google as ${userType === 'coach' ? 'a Coach' : 'a Client'}`}
                 onError={(error) => setErrors({ ...errors, email: error.message })}
-                redirectTo="/onboarding"
+                redirectTo="/dashboard"
               />
             </div>
 

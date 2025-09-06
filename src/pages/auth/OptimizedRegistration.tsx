@@ -157,7 +157,15 @@ export function OptimizedRegistration() {
   // Handle registration success
   const handleRegistrationSuccess = () => {
     trackRegistrationComplete('user_id', 'client'); // Would use actual user data
-    navigate('/dashboard');
+    
+    // Navigate to home page with success state
+    // The registration flow already shows email verification instructions
+    navigate('/', { 
+      state: { 
+        registrationSuccess: true, 
+        message: 'Account created successfully! Please check your email to verify your account.' 
+      }
+    });
   };
 
   // Handle step changes
