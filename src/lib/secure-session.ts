@@ -53,13 +53,13 @@ class SecureSessionManager {
       this.getStorage().setItem(storageKey, encrypted);
 
       logSecurity('Secure session data stored', 'low', {
-        key: key.substring(0, 8) + '...',
+        key: `${key.substring(0, 8)  }...`,
         dataSize: JSON.stringify(data).length,
         hasIntegrityCheck: this.config.enableIntegrityCheck
       });
     } catch (error) {
       logSecurity('Failed to store secure session data', 'medium', {
-        key: key.substring(0, 8) + '...',
+        key: `${key.substring(0, 8)  }...`,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
       throw new Error('Failed to store secure session data');
@@ -87,7 +87,7 @@ class SecureSessionManager {
         this.removeSecureData(key);
         
         logSecurity('Secure session data expired', 'low', {
-          key: key.substring(0, 8) + '...',
+          key: `${key.substring(0, 8)  }...`,
           expiredAt: new Date(expiryTime).toISOString()
         });
         
@@ -101,9 +101,9 @@ class SecureSessionManager {
           this.removeSecureData(key);
           
           logSecurity('Secure session data integrity check failed', 'high', {
-            key: key.substring(0, 8) + '...',
-            expectedChecksum: expectedChecksum.substring(0, 8) + '...',
-            actualChecksum: secureData.checksum.substring(0, 8) + '...'
+            key: `${key.substring(0, 8)  }...`,
+            expectedChecksum: `${expectedChecksum.substring(0, 8)  }...`,
+            actualChecksum: `${secureData.checksum.substring(0, 8)  }...`
           });
           
           throw new Error('Data integrity check failed');
@@ -111,14 +111,14 @@ class SecureSessionManager {
       }
 
       logSecurity('Secure session data retrieved', 'low', {
-        key: key.substring(0, 8) + '...',
-        dataAge: Math.round((Date.now() - secureData.timestamp) / 1000 / 60) + ' minutes'
+        key: `${key.substring(0, 8)  }...`,
+        dataAge: `${Math.round((Date.now() - secureData.timestamp) / 1000 / 60)  } minutes`
       });
 
       return secureData.data as T;
     } catch (error) {
       logSecurity('Failed to retrieve secure session data', 'medium', {
-        key: key.substring(0, 8) + '...',
+        key: `${key.substring(0, 8)  }...`,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
       
@@ -136,7 +136,7 @@ class SecureSessionManager {
     this.getStorage().removeItem(storageKey);
     
     logSecurity('Secure session data removed', 'low', {
-      key: key.substring(0, 8) + '...'
+      key: `${key.substring(0, 8)  }...`
     });
   }
 
@@ -180,7 +180,7 @@ class SecureSessionManager {
     const characteristics = [
       navigator.userAgent,
       navigator.language,
-      screen.width + 'x' + screen.height,
+      `${screen.width  }x${  screen.height}`,
       new Date().getTimezoneOffset().toString(),
       window.location.origin
     ].join('|');
@@ -329,9 +329,9 @@ class SecureSessionManager {
   /**
    * Get debug information about stored sessions
    */
-  getDebugInfo(): { [key: string]: any } {
+  getDebugInfo(): Record<string, any> {
     const storage = this.getStorage();
-    const info: { [key: string]: any } = {};
+    const info: Record<string, any> = {};
     let totalItems = 0;
     let secureItems = 0;
 
@@ -341,7 +341,7 @@ class SecureSessionManager {
         totalItems++;
         if (key.startsWith(this.STORAGE_PREFIX)) {
           secureItems++;
-          const shortKey = key.replace(this.STORAGE_PREFIX, '').substring(0, 8) + '...';
+          const shortKey = `${key.replace(this.STORAGE_PREFIX, '').substring(0, 8)  }...`;
           try {
             const item = storage.getItem(key);
             if (item) {

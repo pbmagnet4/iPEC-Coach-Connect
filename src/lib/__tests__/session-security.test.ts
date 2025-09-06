@@ -9,28 +9,28 @@
  * - Configuration validation
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { 
   createSecureSession, 
-  validateSession, 
-  refreshSession, 
-  invalidateSession,
-  getConcurrentSessions,
-  sessionSecurity,
+  getConcurrentSessions, 
+  invalidateSession, 
+  refreshSession,
   type SecureSessionData,
-  type SessionValidationResult
+  sessionSecurity,
+  type SessionValidationResult,
+  validateSession
 } from '../session-security';
 import { 
-  sessionMiddleware,
-  validateRequest,
   createRequestContext,
-  getSessionStatus
+  getSessionStatus,
+  sessionMiddleware,
+  validateRequest
 } from '../session-security-middleware';
 import { 
-  getSessionSecurityConfig,
-  validateSessionConfig,
   buildCSPString,
-  detectSecurityLevel
+  detectSecurityLevel,
+  getSessionSecurityConfig,
+  validateSessionConfig
 } from '../session-security-config';
 
 // Mock data

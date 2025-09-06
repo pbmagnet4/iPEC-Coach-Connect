@@ -11,8 +11,9 @@
  * - Connection monitoring
  */
 
-import { createClient, SupabaseClient, AuthSession, AuthUser, AuthError } from '@supabase/supabase-js';
-import { Database } from '../types/database';
+import type { AuthError, AuthSession, AuthUser, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from '../types/database';
 import { logAuth, logDatabase, secureLogger } from './secure-logger';
 
 // Environment validation

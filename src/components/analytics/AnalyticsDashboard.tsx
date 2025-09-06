@@ -16,49 +16,49 @@
  * - Exportable reports and data
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  BarChart3,
-  TrendingUp,
-  TrendingDown,
-  Users,
-  Target,
-  Calendar,
-  Clock,
-  DollarSign,
-  Star,
-  Award,
   Activity,
-  Eye,
-  Download,
-  Filter,
-  RefreshCw,
-  ArrowUp,
-  ArrowDown,
-  Minus,
-  PieChart,
-  LineChart,
-  BarChart,
-  Globe,
-  MessageSquare,
-  CheckCircle,
   AlertCircle,
-  Zap,
-  Heart,
+  ArrowDown,
+  ArrowUp,
+  Award,
+  BarChart,
+  BarChart3,
+  BookOpen,
   Brain,
   Briefcase,
-  BookOpen,
-  Shield,
-  Phone,
-  Video,
+  Calendar,
+  CheckCircle,
+  Clock,
+  DollarSign,
+  Download,
+  Eye,
+  Filter,
+  Globe,
+  Heart,
+  LineChart,
+  Mail,
   MapPin,
-  Mail
+  MessageSquare,
+  Minus,
+  Phone,
+  PieChart,
+  RefreshCw,
+  Shield,
+  Star,
+  Target,
+  TrendingDown,
+  TrendingUp,
+  Users,
+  Video,
+  Zap
 } from 'lucide-react';
 import { 
   useAuth, 
-  useUserRoles,
-  useDashboardMetrics 
+  useDashboardMetrics,
+  useUserRoles 
 } from '../../stores/unified-user-store';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';

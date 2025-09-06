@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 /**
  * iPEC Coach Connect Landing Page Test Suite
@@ -408,7 +408,7 @@ test.describe('Landing Page - Accessibility', () => {
 test.describe('Landing Page - Conversion Optimization', () => {
   test('should track key user interactions', async ({ page }) => {
     // Mock analytics tracking
-    let analyticsEvents = [];
+    const analyticsEvents = [];
     await page.exposeFunction('trackEvent', (event) => {
       analyticsEvents.push(event);
     });

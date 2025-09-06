@@ -6,11 +6,11 @@ import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { 
-  Mail, 
-  Lock, 
-  AlertCircle,
-  ArrowRight,
-  LogIn
+  AlertCircle, 
+  ArrowRight, 
+  Lock,
+  LogIn,
+  Mail
 } from 'lucide-react';
 import { GoogleSignInButton } from '../../components/GoogleSignInButton';
 

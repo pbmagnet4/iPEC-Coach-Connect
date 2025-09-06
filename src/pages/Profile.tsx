@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  User,
-  Mail, 
-  Phone, 
-  Calendar, 
-  Edit,
-  Award,
-  Target,
-  Upload,
-  Star,
-  MessageSquare,
-  Bell,
-  ChevronRight,
-  CheckCircle,
   AlertCircle,
+  Award, 
+  Bell, 
+  Calendar, 
+  CheckCircle,
+  ChevronRight,
   Clock,
-  Video,
-  Plus,
+  Edit,
   Lock,
-  Trash2
+  Mail,
+  MessageSquare,
+  Phone,
+  Plus,
+  Star,
+  Target,
+  Trash2,
+  Upload,
+  User,
+  Video
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';
@@ -27,7 +27,7 @@ import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { Avatar } from '../components/ui/Avatar';
 import { Input } from '../components/ui/Input';
-import { useLegacyAuth, useLegacyRole, legacyIsCoach } from '../stores/unified-user-store';
+import { legacyIsCoach, useLegacyAuth, useLegacyRole } from '../stores/unified-user-store';
 
 export function Profile() {
   const { user } = useLegacyAuth();

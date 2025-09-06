@@ -14,11 +14,11 @@
 
 import { notificationService, subscriptionService } from './api.service';
 import { authService } from './auth.service';
-import { supabase, supabaseUtils, subscriptions, handleSupabaseError, SupabaseError } from '../lib/supabase';
+import { handleSupabaseError, subscriptions, supabase, SupabaseError, supabaseUtils } from '../lib/supabase';
 import type {
+  ApiResponse,
   Notification,
   NotificationInsert,
-  ApiResponse,
   PaginatedResponse,
   PaginationOptions,
   RealtimePayload,
@@ -53,12 +53,12 @@ export interface Conversation {
 }
 
 export interface ConversationWithDetails extends Conversation {
-  participantProfiles: Array<{
+  participantProfiles: {
     id: string;
     fullName: string;
     avatarUrl?: string;
     isOnline: boolean;
-  }>;
+  }[];
   messages: Message[];
 }
 
@@ -87,11 +87,11 @@ export interface PushNotificationPayload {
   icon?: string;
   badge?: number;
   data?: Record<string, any>;
-  actions?: Array<{
+  actions?: {
     action: string;
     title: string;
     icon?: string;
-  }>;
+  }[];
 }
 
 export interface TypingIndicator {
@@ -119,7 +119,7 @@ class MessagingService {
         throw new SupabaseError('User not authenticated');
       }
 
-      let conversationId = request.conversationId;
+      let {conversationId} = request;
 
       // Create conversation if it doesn't exist
       if (!conversationId && request.receiverId) {

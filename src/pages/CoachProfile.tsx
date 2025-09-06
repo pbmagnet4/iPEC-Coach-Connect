@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
-  Star,
-  Users,
+  Award,
+  Calendar,
+  CheckCircle,
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
   Clock,
   Globe,
   MapPin,
-  Calendar,
-  CheckCircle,
-  ThumbsUp,
-  ThumbsDown,
-  ChevronRight,
-  ChevronDown,
-  ChevronUp,
-  Video,
   MessageSquare,
-  Award
+  Star,
+  ThumbsDown,
+  ThumbsUp,
+  Users,
+  Video
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';

@@ -260,14 +260,14 @@ export function MobileTextarea({
     // Auto-resize functionality
     if (autoResize && textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight  }px`;
     }
   };
 
   React.useEffect(() => {
     if (autoResize && textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight  }px`;
     }
   }, [autoResize, value]);
 

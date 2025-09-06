@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useImageLoading, useLazyImage } from '../../../hooks/useImageLoading';
 import { ImageLoadingConfig } from '../../../types/loading';
 import { BaseSkeleton } from '../skeleton/BaseSkeleton';

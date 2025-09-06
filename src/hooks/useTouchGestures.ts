@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 // Touch gesture types
 export type SwipeDirection = 'left' | 'right' | 'up' | 'down';

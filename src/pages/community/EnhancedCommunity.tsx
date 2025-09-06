@@ -14,21 +14,21 @@
  * - SEO-friendly public content for discoverability
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  MessageSquare, 
-  Users, 
-  TrendingUp, 
-  Calendar,
-  Search,
-  Plus,
-  ChevronRight,
+  Calendar, 
+  ChevronRight, 
+  Filter, 
   Heart,
   MessageCircle,
+  MessageSquare,
+  Plus,
+  Search,
+  Star,
+  TrendingUp,
   UserPlus,
-  Filter,
-  Star
+  Users
 } from 'lucide-react';
 import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
@@ -37,9 +37,9 @@ import { Badge } from '../../components/ui/Badge';
 import { Avatar } from '../../components/ui/Avatar';
 import { AuthPrompt } from '../../components/community/AuthPrompt';
 import { 
+  AuthAwareBanner, 
   ConditionalAction, 
-  ProgressiveContent, 
-  AuthAwareBanner,
+  ProgressiveContent,
   useAuthAwareActions 
 } from '../../components/community/AuthAwareWrapper';
 import { useUnifiedUserStore } from '../../stores/unified-user-store';

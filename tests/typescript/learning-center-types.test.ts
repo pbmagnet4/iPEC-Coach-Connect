@@ -9,17 +9,17 @@
  * 5. No references to old LMS components exist
  */
 
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
 
 // Type imports that should be available
-type ComponentImports = {
+interface ComponentImports {
   AboutCoaching: unknown;
   CoachingResources: unknown;
   CoachingBasics: unknown;
-};
+}
 
 describe('Learning Center TypeScript Validation', () => {
   const projectRoot = path.resolve(__dirname, '../..');

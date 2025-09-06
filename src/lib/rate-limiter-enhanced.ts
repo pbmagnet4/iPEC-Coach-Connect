@@ -179,7 +179,7 @@ class InMemoryRateLimitStore implements RateLimitStore {
 // Enhanced Rate Limiter class
 export class EnhancedRateLimiter {
   private store: RateLimitStore;
-  private configs: Map<string, RateLimitConfig> = new Map();
+  private configs = new Map<string, RateLimitConfig>();
   private verifiedUsers = new Set<string>();
   private adminOverrides = new Set<string>();
   private accountFailures = new Map<string, number>();
@@ -305,7 +305,7 @@ export class EnhancedRateLimiter {
     const components = [
       navigator.userAgent,
       navigator.language,
-      screen.width + 'x' + screen.height,
+      `${screen.width  }x${  screen.height}`,
       screen.colorDepth,
       new Date().getTimezoneOffset(),
       navigator.hardwareConcurrency || 0,
@@ -804,11 +804,11 @@ export class EnhancedRateLimiter {
     lockedAccounts: number;
     verifiedUsers: number;
     adminOverrides: number;
-    averageDelays: { [operationType: string]: number };
+    averageDelays: Record<string, number>;
   }> {
     const allKeys = await this.store.getAllKeys();
     let blockedCount = 0;
-    const delays: { [operationType: string]: number[] } = {};
+    const delays: Record<string, number[]> = {};
     
     for (const key of allKeys) {
       const record = await this.store.get(key);
@@ -825,7 +825,7 @@ export class EnhancedRateLimiter {
       }
     }
     
-    const averageDelays: { [operationType: string]: number } = {};
+    const averageDelays: Record<string, number> = {};
     for (const [op, delayList] of Object.entries(delays)) {
       averageDelays[op] = delayList.reduce((a, b) => a + b, 0) / delayList.length;
     }

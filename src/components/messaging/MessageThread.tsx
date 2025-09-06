@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { Phone, Video, MoreVertical, ArrowDown, Search } from 'lucide-react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowDown, MoreVertical, Phone, Search, Video } from 'lucide-react';
 import { Avatar } from '../ui/Avatar';
 import { Button } from '../ui/Button';
 import { MessageBubble } from './MessageBubble';
@@ -8,10 +8,10 @@ import { PresenceStatus } from './PresenceStatus';
 import { MessageComposer } from './MessageComposer';
 import type { 
   ConversationWithDetails, 
-  MessageWithDetails, 
-  TypingIndicatorWithUser,
+  EmojiReaction, 
   MessageFormData,
-  EmojiReaction
+  MessageWithDetails,
+  TypingIndicatorWithUser
 } from '../../types/database';
 
 interface MessageThreadProps {
@@ -72,12 +72,12 @@ export function MessageThread({
 
   // Group messages for better UX
   const groupedMessages = useMemo(() => {
-    const groups: Array<{
+    const groups: {
       id: string;
       messages: MessageWithDetails[];
       senderId: string;
       timestamp: string;
-    }> = [];
+    }[] = [];
 
     messages.forEach((message) => {
       const lastGroup = groups[groups.length - 1];

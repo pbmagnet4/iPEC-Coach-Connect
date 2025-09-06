@@ -5,35 +5,35 @@
  * document handling, and the complete onboarding workflow.
  */
 
-import { supabase, supabaseUtils, handleSupabaseError, SupabaseError } from '../lib/supabase';
+import { handleSupabaseError, supabase, SupabaseError, supabaseUtils } from '../lib/supabase';
 import { authService } from './auth.service';
 import { notificationService } from './notifications.service';
 import type {
-  Tables,
-  CoachApplicationWithDetails,
-  CoachApplicationFormData,
+  AdminReviewQueueFilters,
+  ApiResponse,
   ApplicationDocumentWithDetails,
+  ApplicationProgressData,
   ApplicationReferenceWithDetails,
+  ApplicationReviewFormData,
   ApplicationReviewWithDetails,
-  CreateCoachApplicationData,
-  UpdateCoachApplicationData,
+  CoachApplicationApiResponse,
+  CoachApplicationFilters,
+  CoachApplicationFormData,
+  CoachApplicationMetrics,
+  CoachApplicationWithDetails,
   CreateApplicationDocumentData,
   CreateApplicationReferenceData,
   CreateApplicationReviewData,
+  CreateCoachApplicationData,
   DocumentUploadData,
-  ApplicationReviewFormData,
-  InterviewSchedulingData,
   InterviewFeedbackData,
-  CoachApplicationFilters,
-  AdminReviewQueueFilters,
-  CoachApplicationMetrics,
-  ApplicationProgressData,
+  InterviewSchedulingData,
   NotificationTemplateData,
-  ReferenceVerificationRequest,
-  ReferenceResponse,
-  ApiResponse,
   PaginatedResponse,
-  CoachApplicationApiResponse
+  ReferenceResponse,
+  ReferenceVerificationRequest,
+  Tables,
+  UpdateCoachApplicationData
 } from '../types/database';
 
 /**
@@ -875,7 +875,7 @@ class CoachApplicationService {
       return [];
     }
 
-    const status = application.data.status;
+    const {status} = application.data;
     const steps: string[] = [];
 
     switch (status) {
@@ -936,7 +936,7 @@ class CoachApplicationService {
   private async createReviewQueueItem(
     applicationId: string, 
     queueType: Tables<'admin_review_queues'>['queue_type'], 
-    priority: number = 3
+    priority = 3
   ): Promise<void> {
     const queueData = {
       application_id: applicationId,

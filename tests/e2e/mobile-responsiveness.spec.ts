@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 import { devices } from '@playwright/test';
 
 test.describe('Learning Center - Mobile Responsiveness Tests', () => {

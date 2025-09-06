@@ -11,13 +11,13 @@
  * - Data export and deletion
  */
 
-import { profileService, apiService } from './api.service';
+import { apiService, profileService } from './api.service';
 import { authService } from './auth.service';
-import { supabaseUtils, handleSupabaseError, SupabaseError } from '../lib/supabase';
+import { handleSupabaseError, SupabaseError, supabaseUtils } from '../lib/supabase';
 import type {
+  ApiResponse,
   Profile,
   ProfileUpdate,
-  ApiResponse,
   UserRole,
 } from '../types/database';
 

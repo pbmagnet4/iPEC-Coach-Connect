@@ -6,15 +6,15 @@
  */
 
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import {
+  AuthAwareBanner,
   AuthAwareWrapper,
   ConditionalAction,
   ProgressiveContent,
-  withAuthAwareness,
   useAuthAwareActions,
-  AuthAwareBanner
+  withAuthAwareness
 } from '../AuthAwareWrapper';
 import { useUnifiedUserStore } from '../../../stores/unified-user-store';
 

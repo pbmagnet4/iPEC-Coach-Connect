@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
+  AlertCircle, 
   Calendar as CalendarIcon, 
-  Clock, 
-  CreditCard, 
-  Info,
+  CheckCircle, 
   ChevronRight,
-  CheckCircle,
+  Clock,
+  CreditCard,
   Globe,
-  AlertCircle,
+  Info,
   Plus,
   X
 } from 'lucide-react';

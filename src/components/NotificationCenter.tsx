@@ -1,7 +1,7 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, Check, ChevronRight } from 'lucide-react';
-import { useNotifications, type Notification } from '../lib/notifications';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Bell, Check, ChevronRight, X } from 'lucide-react';
+import { type Notification, useNotifications } from '../lib/notifications';
 import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
 import { useNavigate } from 'react-router-dom';

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
 import { 
+  type ConversationFilters, 
   ConversationList, 
-  MessageThread, 
   EmptyConversation,
-  useMessaging,
-  type ConversationFilters 
+  MessageThread,
+  useMessaging 
 } from '../../components/messaging';
 
 export function MessagesLayout() {

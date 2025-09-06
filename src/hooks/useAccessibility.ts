@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Types for accessibility preferences
 interface AccessibilityPreferences {
@@ -151,7 +151,7 @@ export function useScreenReader() {
 
 // Hook for touch target validation
 export function useTouchTargetValidation() {
-  const [violations, setViolations] = useState<Array<{ element: HTMLElement; size: { width: number; height: number } }>>([]);
+  const [violations, setViolations] = useState<{ element: HTMLElement; size: { width: number; height: number } }[]>([]);
 
   const validateTouchTargets = useCallback(() => {
     if (process.env.NODE_ENV !== 'development') return;
@@ -160,7 +160,7 @@ export function useTouchTargetValidation() {
       'button, a, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])'
     );
 
-    const newViolations: Array<{ element: HTMLElement; size: { width: number; height: number } }> = [];
+    const newViolations: { element: HTMLElement; size: { width: number; height: number } }[] = [];
     const minSize = 44; // WCAG AA minimum
 
     interactiveElements.forEach(element => {
@@ -205,23 +205,23 @@ export function useTouchTargetValidation() {
 
 // Hook for color contrast validation
 export function useContrastValidation() {
-  const [contrastViolations, setContrastViolations] = useState<Array<{
+  const [contrastViolations, setContrastViolations] = useState<{
     element: HTMLElement;
     contrast: number;
     required: number;
     colors: { foreground: string; background: string };
-  }>>([]);
+  }[]>([]);
 
   const validateContrast = useCallback(() => {
     if (process.env.NODE_ENV !== 'development') return;
 
     const textElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, button, a, label, input, textarea');
-    const violations: Array<{
+    const violations: {
       element: HTMLElement;
       contrast: number;
       required: number;
       colors: { foreground: string; background: string };
-    }> = [];
+    }[] = [];
 
     textElements.forEach(element => {
       const htmlElement = element as HTMLElement;
@@ -231,7 +231,7 @@ export function useContrastValidation() {
       if (!htmlElement.textContent?.trim()) return;
 
       const fontSize = parseFloat(styles.fontSize);
-      const fontWeight = styles.fontWeight;
+      const {fontWeight} = styles;
       
       // Determine required contrast ratio
       const isLargeText = fontSize >= 18 || (fontSize >= 14 && ['bold', '600', '700', '800', '900'].includes(fontWeight));
@@ -356,7 +356,7 @@ export function useAriaLiveRegion() {
 
 // Hook for managing skip links
 export function useSkipLinks() {
-  const [skipLinks, setSkipLinks] = useState<Array<{ id: string; label: string; href: string }>>([]);
+  const [skipLinks, setSkipLinks] = useState<{ id: string; label: string; href: string }[]>([]);
 
   const addSkipLink = useCallback((id: string, label: string, href: string) => {
     setSkipLinks(prev => [...prev.filter(link => link.id !== id), { id, label, href }]);
@@ -399,7 +399,7 @@ export function useAccessibility() {
 }
 
 // Utility function to generate accessible IDs
-export function useAccessibleId(prefix: string = 'a11y'): string {
+export function useAccessibleId(prefix = 'a11y'): string {
   const id = useRef<string>();
   
   if (!id.current) {
@@ -419,7 +419,7 @@ export function useRovingTabIndex<T extends HTMLElement>(
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (!containerRef.current) return;
 
-    const items = containerRef.current.querySelectorAll(itemSelector) as NodeListOf<T>;
+    const items = containerRef.current.querySelectorAll(itemSelector);
     const currentIndex = Array.from(items).findIndex(item => item === document.activeElement);
 
     switch (e.key) {

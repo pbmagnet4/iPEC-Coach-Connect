@@ -3,26 +3,26 @@
  * Comprehensive notification management interface with real-time updates
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { 
+  AlertCircle, 
   Bell, 
-  X, 
+  Calendar, 
   Check, 
-  Trash2, 
-  Settings, 
-  Filter,
-  MoreHorizontal,
+  CheckCircle, 
   Clock,
-  AlertCircle,
-  CheckCircle,
+  CreditCard,
+  Filter,
   Info,
   MessageSquare,
-  Calendar,
-  CreditCard,
+  MoreHorizontal,
+  Settings,
   Shield,
+  Trash2,
+  X,
   Zap
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '../ui/Button';
 import { useNotifications } from '../../hooks/useNotifications';
 import { formatDistanceToNow } from 'date-fns';

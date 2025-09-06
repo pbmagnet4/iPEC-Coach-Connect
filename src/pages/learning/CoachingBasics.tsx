@@ -1,17 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  BookOpen,
-  Star,
-  Play,
-  ChevronRight,
-  Users,
-  Award,
-  Target,
-  Lightbulb,
   ArrowRight,
+  Award,
+  BookOpen,
   CheckCircle,
-  Clock
+  ChevronRight,
+  Clock,
+  Lightbulb,
+  Play,
+  Star,
+  Target,
+  Users
 } from 'lucide-react';
 import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';

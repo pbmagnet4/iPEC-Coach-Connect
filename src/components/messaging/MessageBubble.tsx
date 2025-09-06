@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Check, CheckCheck, Clock, AlertCircle, MoreVertical, Reply, Heart, Copy, Trash2 } from 'lucide-react';
+import { AlertCircle, Check, CheckCheck, Clock, Copy, Heart, MoreVertical, Reply, Trash2 } from 'lucide-react';
 import { Avatar } from '../ui/Avatar';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Tooltip } from '../ui/Tooltip';
-import type { MessageWithDetails, EmojiReaction, MessageContextMenu } from '../../types/database';
+import type { EmojiReaction, MessageContextMenu, MessageWithDetails } from '../../types/database';
 
 interface MessageBubbleProps {
   message: MessageWithDetails;

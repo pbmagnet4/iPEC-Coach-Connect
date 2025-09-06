@@ -9,9 +9,7 @@ interface PreloadResource {
   crossOrigin?: 'anonymous' | 'use-credentials';
 }
 
-interface DynamicImportCache {
-  [key: string]: Promise<any>;
-}
+type DynamicImportCache = Record<string, Promise<any>>;
 
 // Cache for dynamic imports to prevent duplicate requests
 const importCache: DynamicImportCache = {};

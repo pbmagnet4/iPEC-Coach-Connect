@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Users, 
-  Target, 
+  ArrowRight, 
+  CheckCircle, 
   Compass, 
   Heart,
-  ArrowRight,
-  CheckCircle,
-  Star
+  Star,
+  Target,
+  Users
 } from 'lucide-react';
 import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';

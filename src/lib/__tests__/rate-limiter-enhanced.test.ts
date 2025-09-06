@@ -4,8 +4,9 @@
  * Comprehensive tests for the enhanced rate limiting functionality.
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi, Mock } from 'vitest';
-import { EnhancedRateLimiter, RateLimitStore, AttemptRecord, AccountLockoutRecord } from '../rate-limiter-enhanced';
+import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
+import type { AccountLockoutRecord, AttemptRecord, RateLimitStore } from '../rate-limiter-enhanced';
+import { EnhancedRateLimiter } from '../rate-limiter-enhanced';
 import { logSecurity } from '../secure-logger';
 
 // Mock the secure logger

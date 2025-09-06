@@ -5,11 +5,11 @@
  * in real-time. Only renders in development mode.
  */
 
-import React, { useState, useEffect } from 'react';
-import { Activity, AlertTriangle, CheckCircle, XCircle, BarChart3, Trash2, Settings } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Activity, AlertTriangle, BarChart3, CheckCircle, Settings, Trash2, XCircle } from 'lucide-react';
 import { memoryManager } from '../lib/memory-manager';
 import { useMemoryMonitoring } from '../hooks/useMemoryCleanup';
-import type { MemoryStats, MemoryLeak, MemoryAlert } from '../lib/memory-manager';
+import type { MemoryAlert, MemoryLeak, MemoryStats } from '../lib/memory-manager';
 
 interface MemoryMonitorProps {
   position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
@@ -53,7 +53,7 @@ export function MemoryMonitor({
     const k = 1024;
     const sizes = ['B', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))  } ${  sizes[i]}`;
   };
 
   const formatNumber = (num: number): string => {

@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { injectAxe, checkA11y, getViolations } from 'axe-playwright';
+import { expect, test } from '@playwright/test';
+import { checkA11y, getViolations, injectAxe } from 'axe-playwright';
 
 test.describe('Landing Page Accessibility', () => {
   test.beforeEach(async ({ page }) => {

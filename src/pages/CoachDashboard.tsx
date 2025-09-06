@@ -1,23 +1,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  TrendingUp,
-  Users,
-  Star,
-  DollarSign,
+  BarChart,
+  BookOpen,
   Calendar,
+  ChevronRight,
   Clock,
+  DollarSign,
+  Edit,
+  Eye,
   FileText,
   MessageSquare,
-  Eye,
-  Search,
   MousePointer,
-  BarChart,
-  Edit,
   Plus,
-  ChevronRight,
-  BookOpen,
-  ThumbsUp
+  Search,
+  Star,
+  ThumbsUp,
+  TrendingUp,
+  Users
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';

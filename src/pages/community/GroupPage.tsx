@@ -5,11 +5,11 @@ import { Button } from '../../components/ui/Button';
 import { Avatar } from '../../components/ui/Avatar';
 import { Badge } from '../../components/ui/Badge';
 import { 
-  Users,
-  Calendar,
   BookOpen,
+  Calendar,
+  Plus,
   Settings,
-  Plus
+  Users
 } from 'lucide-react';
 
 export function GroupPage() {

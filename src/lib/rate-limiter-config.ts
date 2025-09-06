@@ -4,8 +4,10 @@
  * Environment-based configuration and setup utilities for the rate limiter.
  */
 
-import { EnhancedRateLimiter, RateLimitStore } from './rate-limiter-enhanced';
-import { RedisRateLimitStore, createRedisRateLimitStore, RedisClient } from './redis-rate-limit-store';
+import type { RateLimitStore } from './rate-limiter-enhanced';
+import { EnhancedRateLimiter } from './rate-limiter-enhanced';
+import type { RedisClient } from './redis-rate-limit-store';
+import { createRedisRateLimitStore, RedisRateLimitStore } from './redis-rate-limit-store';
 import { logSecurity } from './secure-logger';
 
 // Configuration interface for rate limiter setup
@@ -240,7 +242,7 @@ export const RATE_LIMITER_PRESETS = {
 };
 
 // Helper function to get preset by environment
-export function getPresetByEnvironment(env: string = 'development'): RateLimiterSetupConfig {
+export function getPresetByEnvironment(env = 'development'): RateLimiterSetupConfig {
   return RATE_LIMITER_PRESETS[env as keyof typeof RATE_LIMITER_PRESETS] || RATE_LIMITER_PRESETS.development;
 }
 

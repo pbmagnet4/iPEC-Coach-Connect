@@ -14,36 +14,36 @@
  * - Quick-action completion buttons
  */
 
-import React, { useState, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  CheckCircle,
-  Circle,
-  Star,
-  Target,
-  User,
+  AlertCircle,
+  Award,
   Camera,
+  CheckCircle,
+  ChevronDown,
+  ChevronRight,
+  Circle,
+  Clock,
+  Edit,
+  Globe,
   MapPin,
   Phone,
-  Globe,
-  Award,
-  AlertCircle,
-  ChevronRight,
-  ChevronDown,
   Plus,
-  Edit,
+  Star,
+  Target,
   Upload,
-  Clock,
+  User,
   Zap
 } from 'lucide-react';
 import { 
   useAuth, 
-  useOnboarding, 
   useClientProfile, 
-  useCoachApplication,
+  useCoachApplication, 
+  useOnboarding,
   useUserRoles 
 } from '../../stores/unified-user-store';
-import { ExtendedUserRole } from '../../services/enhanced-auth.service';
+import type { ExtendedUserRole } from '../../services/enhanced-auth.service';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { ProgressBar } from '../ui/ProgressBar';

@@ -1,12 +1,12 @@
 import { Container } from './ui/Container';
 import { 
   Facebook, 
-  Twitter, 
   Instagram, 
   Linkedin, 
   Mail, 
+  MapPin, 
   Phone, 
-  MapPin 
+  Twitter 
 } from 'lucide-react';
 
 const navigation = {

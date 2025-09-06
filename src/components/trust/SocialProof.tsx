@@ -5,19 +5,19 @@
  * community engagement and success indicators.
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Users, 
-  Star, 
-  TrendingUp, 
+  ArrowRight, 
+  Award, 
   Calendar, 
-  MessageCircle, 
+  CheckCircle, 
+  Clock, 
   Heart,
-  Award,
-  Clock,
-  CheckCircle,
-  ArrowRight
+  MessageCircle,
+  Star,
+  TrendingUp,
+  Users
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -169,7 +169,7 @@ export function PlatformStats({ className }: { className?: string }) {
   const stats = [
     { 
       icon: Users, 
-      value: animatedStats.totalUsers.toLocaleString() + '+', 
+      value: `${animatedStats.totalUsers.toLocaleString()  }+`, 
       label: 'Trusted Users',
       color: 'text-blue-600'
     },
@@ -181,7 +181,7 @@ export function PlatformStats({ className }: { className?: string }) {
     },
     { 
       icon: TrendingUp, 
-      value: animatedStats.successRate + '%', 
+      value: `${animatedStats.successRate  }%`, 
       label: 'Success Rate',
       color: 'text-purple-600'
     },

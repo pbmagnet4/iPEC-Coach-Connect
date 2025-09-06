@@ -3,13 +3,13 @@
  * Easy-to-use hook for component-level A/B testing
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { abTestingService } from '../services/ab-testing.service';
 import { useUserContext } from './useUserContext';
 import type {
-  UseExperimentResult,
+  ABTestingError,
   ExperimentVariant,
-  ABTestingError
+  UseExperimentResult
 } from '../types/ab-testing';
 
 interface UseExperimentOptions {

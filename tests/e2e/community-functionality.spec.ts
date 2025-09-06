@@ -9,7 +9,8 @@
  * - Browser compatibility
  */
 
-import { test, expect, Page, Locator } from '@playwright/test';
+import type { Page} from '@playwright/test';
+import { expect, Locator, test } from '@playwright/test';
 
 // Test data setup
 const testUrls = {

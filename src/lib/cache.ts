@@ -15,12 +15,12 @@
 
 import { logPerformance, logSecurity } from './secure-logger';
 import {
-  userProfileCache as enhancedUserProfileCache,
-  sessionCache as enhancedSessionCache,
-  generalCache as enhancedGeneralCache,
-  cacheUtils as enhancedCacheUtils,
+  CacheLevel,
   CachePriority,
-  CacheLevel
+  cacheUtils as enhancedCacheUtils,
+  generalCache as enhancedGeneralCache,
+  sessionCache as enhancedSessionCache,
+  userProfileCache as enhancedUserProfileCache
 } from './cache.service';
 
 // Legacy interfaces for backward compatibility
@@ -107,7 +107,7 @@ class MemoryCache {
       
       if (this.config.enableMetrics) {
         logPerformance('Legacy cache set', 0, {
-          key: key.substring(0, 20) + '...',
+          key: `${key.substring(0, 20)  }...`,
           ttl: finalTTL
         });
       }
@@ -184,7 +184,7 @@ class MemoryCache {
   /**
    * Get debug information
    */
-  getDebugInfo(): { [key: string]: any } {
+  getDebugInfo(): Record<string, any> {
     const enhancedDebugInfo = this.enhancedCache.getDebugInfo();
     
     return {
@@ -303,7 +303,7 @@ export const cacheUtils = {
   /**
    * Get cache statistics for all instances
    */
-  getAllStats: (): { [key: string]: CacheMetrics } => {
+  getAllStats: (): Record<string, CacheMetrics> => {
     const enhancedStats = enhancedCacheUtils.getAllStats();
     
     return {
@@ -336,7 +336,7 @@ export const cacheUtils = {
   /**
    * Get comprehensive debug information
    */
-  getDebugInfo: (): { [key: string]: any } => {
+  getDebugInfo: (): Record<string, any> => {
     const enhancedDebugInfo = enhancedCacheUtils.getDebugInfo();
     
     return {

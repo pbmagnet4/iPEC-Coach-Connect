@@ -11,16 +11,16 @@
  * - Stripe Connect integration for payments
  */
 
-import { coachService, apiService } from './api.service';
+import { apiService, coachService } from './api.service';
 import { authService } from './auth.service';
-import { supabase, supabaseUtils, handleSupabaseError, SupabaseError } from '../lib/supabase';
+import { handleSupabaseError, supabase, SupabaseError, supabaseUtils } from '../lib/supabase';
 import type {
+  ApiResponse,
   Coach,
+  CoachFilters,
   CoachInsert,
   CoachUpdate,
   CoachWithProfile,
-  CoachFilters,
-  ApiResponse,
   PaginatedResponse,
   PaginationOptions,
 } from '../types/database';
@@ -95,8 +95,8 @@ export interface CoachAnalytics {
   totalRevenue: number;
   averageRating: number;
   clientRetentionRate: number;
-  monthlySessionCounts: Array<{ month: string; count: number }>;
-  specialtyBreakdown: Array<{ specialty: string; count: number }>;
+  monthlySessionCounts: { month: string; count: number }[];
+  specialtyBreakdown: { specialty: string; count: number }[];
   upcomingSessionsCount: number;
   pendingBookingsCount: number;
 }
@@ -580,7 +580,7 @@ class CoachManagementService {
     }
   }
 
-  private async getMonthlySessionData(coachId: string): Promise<Array<{ month: string; count: number }>> {
+  private async getMonthlySessionData(coachId: string): Promise<{ month: string; count: number }[]> {
     // This would aggregate session data by month
     // For now, return empty array
     return [];

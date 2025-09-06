@@ -5,26 +5,26 @@
 
 import React, { useState } from 'react';
 import { 
-  LineChart, 
-  Line, 
+  Area, 
   AreaChart, 
-  Area,
-  XAxis, 
-  YAxis, 
   CartesianGrid, 
+  Line,
+  LineChart, 
+  ReferenceLine, 
+  ResponsiveContainer, 
   Tooltip, 
-  ResponsiveContainer,
-  ReferenceLine 
+  XAxis,
+  YAxis 
 } from 'recharts';
 import { 
   Activity, 
-  Server, 
+  AlertTriangle, 
+  CheckCircle, 
+  Clock, 
   Cpu, 
   HardDrive, 
-  Wifi, 
-  AlertTriangle, 
-  CheckCircle,
-  Clock,
+  Server,
+  Wifi,
   Zap
 } from 'lucide-react';
 
@@ -33,7 +33,7 @@ interface SystemHealthData {
   memoryUsage: number;
   cpuUsage: number;
   responseTime: number;
-  errors: Array<{ type: string; count: number; trend: number }>;
+  errors: { type: string; count: number; trend: number }[];
 }
 
 interface SystemHealthChartProps {
@@ -183,7 +183,7 @@ export function SystemHealthChart({ data, timeRange }: SystemHealthChartProps) {
   const systemData = generateSystemData();
 
   const customTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-medium mb-2">{label}</p>

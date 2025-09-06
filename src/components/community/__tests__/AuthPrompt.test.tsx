@@ -6,9 +6,9 @@
  */
 
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthPrompt, QuickAuthPrompt, CommunityAuthPrompt } from '../AuthPrompt';
+import { AuthPrompt, CommunityAuthPrompt, QuickAuthPrompt } from '../AuthPrompt';
 import { useUnifiedUserStore } from '../../../stores/unified-user-store';
 
 // Mock the unified user store

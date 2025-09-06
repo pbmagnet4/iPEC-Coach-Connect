@@ -3,22 +3,22 @@
  * Real-time performance metrics visualization and monitoring system
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Activity, 
-  Users, 
-  Clock, 
-  TrendingUp, 
   AlertTriangle, 
-  CheckCircle,
-  Zap,
+  BarChart3, 
+  Calendar, 
+  CheckCircle, 
+  Clock,
+  Download,
   Eye,
   MousePointer,
-  BarChart3,
   PieChart,
-  Download,
   RefreshCw,
-  Calendar
+  TrendingUp,
+  Users,
+  Zap
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
@@ -48,20 +48,20 @@ interface PerformanceMetrics {
     sessionDuration: number;
     bounceRate: number;
     pagesPerSession: number;
-    topPages: Array<{ path: string; views: number; avgTime: number }>;
+    topPages: { path: string; views: number; avgTime: number }[];
   };
   conversions: {
     registrations: number;
     bookings: number;
     subscriptions: number;
-    funnel: Array<{ stage: string; users: number; rate: number }>;
+    funnel: { stage: string; users: number; rate: number }[];
   };
   systemHealth: {
     uptime: number;
     memoryUsage: number;
     cpuUsage: number;
     responseTime: number;
-    errors: Array<{ type: string; count: number; trend: number }>;
+    errors: { type: string; count: number; trend: number }[];
   };
 }
 

@@ -1,4 +1,5 @@
-import React, { Suspense, lazy, ComponentType, ReactElement } from 'react';
+import type { ComponentType, ReactElement } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { LoadingSpinner } from './ui/LoadingSpinner';
 import { ErrorBoundary } from './ErrorBoundary';
 
@@ -75,7 +76,7 @@ export const useSmartPreloading = () => {
     }
     
     // Check network conditions
-    const connection = (navigator as any).connection;
+    const {connection} = (navigator as any);
     if (connection?.saveData) {
       return; // Skip preloading on data saver mode
     }

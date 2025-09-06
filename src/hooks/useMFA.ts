@@ -9,15 +9,15 @@
  * - Error handling and loading states
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { mfaService } from '../services/mfa.service';
 import { useAuth } from '../services/auth.service';
 import type { 
-  MFASettings, 
+  DeviceTrustResult, 
   MFADevice, 
   MFAEnrollmentResult,
-  MFAVerificationResult,
-  DeviceTrustResult 
+  MFASettings,
+  MFAVerificationResult 
 } from '../services/mfa.service';
 
 interface MFAState {

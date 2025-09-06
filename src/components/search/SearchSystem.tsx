@@ -17,51 +17,51 @@
  * - Multi-language search support
  */
 
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Search,
-  Filter,
-  History,
+  AlertCircle,
+  ArrowRight,
+  Award,
   Bookmark,
-  Star,
-  Calendar,
-  User,
-  Target,
   BookOpen,
-  MessageSquare,
-  Mic,
-  MicOff,
-  X,
+  Calendar,
+  CheckCircle,
   ChevronDown,
   ChevronRight,
   Clock,
-  TrendingUp,
-  Zap,
-  MapPin,
   DollarSign,
-  Award,
-  Settings,
-  Eye,
-  Save,
-  Trash2,
   Download,
-  Share2,
-  RefreshCw,
-  AlertCircle,
-  CheckCircle,
+  Eye,
+  Filter,
+  History,
   Loader2,
+  MapPin,
+  MessageSquare,
+  Mic,
+  MicOff,
+  RefreshCw,
+  Save,
+  Search,
+  Settings,
+  Share2,
   SlidersHorizontal,
-  ArrowRight,
-  Sparkles
+  Sparkles,
+  Star,
+  Target,
+  Trash2,
+  TrendingUp,
+  User,
+  X,
+  Zap
 } from 'lucide-react';
 import { 
   useAuth, 
-  useUserRoles,
   useClientProfile,
-  useDashboardMetrics 
+  useDashboardMetrics,
+  useUserRoles 
 } from '../../stores/unified-user-store';
-import { ExtendedUserRole } from '../../services/enhanced-auth.service';
+import type { ExtendedUserRole } from '../../services/enhanced-auth.service';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
@@ -150,15 +150,15 @@ interface SearchAnalytics {
   unique_queries: number;
   avg_results_per_search: number;
   avg_execution_time: number;
-  popular_queries: Array<{
+  popular_queries: {
     query: string;
     count: number;
     avg_click_position: number;
-  }>;
-  popular_filters: Array<{
+  }[];
+  popular_filters: {
     filter: string;
     usage_percentage: number;
-  }>;
+  }[];
   conversion_metrics: {
     search_to_action: number;
     search_to_booking: number;
@@ -207,7 +207,7 @@ const useSearchSystem = () => {
   const performSearch = async (
     query: string, 
     filters: SearchFilters,
-    trackHistory: boolean = true
+    trackHistory = true
   ): Promise<SearchEntity[]> => {
     if (!query.trim() && filters.entity_types.length === 0) {
       setResults([]);
@@ -515,7 +515,7 @@ const useSearchSystem = () => {
 
     setIsListening(true);
     recognitionRef.current.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
+      const {transcript} = event.results[0][0];
       setIsListening(false);
       // Return transcript for parent component to use
       return transcript;
@@ -872,7 +872,7 @@ const SearchFiltersPanel: React.FC<{
 }> = ({ filters, onFiltersChange, onReset }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const entityTypes: Array<{ value: SearchEntity['type']; label: string; icon: any }> = [
+  const entityTypes: { value: SearchEntity['type']; label: string; icon: any }[] = [
     { value: 'coach', label: 'Coaches', icon: User },
     { value: 'session', label: 'Sessions', icon: Calendar },
     { value: 'goal', label: 'Goals', icon: Target },

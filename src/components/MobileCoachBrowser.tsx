@@ -1,19 +1,20 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import React, { useCallback, useRef, useState } from 'react';
+import type { PanInfo } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Heart, 
-  Star, 
-  MapPin, 
+  Award, 
+  ChevronLeft, 
+  ChevronRight, 
   Clock, 
-  Languages, 
-  Award,
-  ChevronLeft,
-  ChevronRight,
-  Filter,
+  Filter, 
+  Heart,
+  Languages,
+  MapPin,
   Search,
+  Star,
   X
 } from 'lucide-react';
-import { useSwipeGesture, useHapticFeedback, useTap } from '../hooks/useTouchGestures';
+import { useHapticFeedback, useSwipeGesture, useTap } from '../hooks/useTouchGestures';
 import { MobileButton } from './ui/MobileButton';
 import { MobileInput } from './ui/MobileInput';
 import { useAccessibility } from '../contexts/AccessibilityContext';

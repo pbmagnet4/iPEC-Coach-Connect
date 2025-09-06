@@ -1,24 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Users, 
-  UserCircle, 
-  Calendar, 
-  BookOpen, 
-  Menu, 
-  Compass, 
   BookMarked, 
+  BookOpen, 
+  Calendar, 
+  Compass, 
   GraduationCap, 
-  Library,
+  Library, 
+  LogOut, 
+  Menu, 
   Settings,
-  LogOut,
-  User
+  User,
+  UserCircle,
+  Users
 } from 'lucide-react';
 import { 
-  useLegacyAuth as useAuth, 
-  useLegacyRole as useRole,
-  legacyIsCoach as isCoach,
-  legacySignOut as signOut
+  legacyIsCoach as isCoach, 
+  legacySignOut as signOut,
+  useLegacyAuth as useAuth,
+  useLegacyRole as useRole
 } from '../stores/unified-user-store';
 import { RoleGuard } from './RoleGuard';
 import { Logo } from './ui/Logo';

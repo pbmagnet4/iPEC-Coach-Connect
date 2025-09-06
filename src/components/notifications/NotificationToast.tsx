@@ -3,20 +3,20 @@
  * Real-time toast notifications with animations and actions
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  X, 
-  Check, 
   AlertTriangle, 
-  Info, 
-  Bell,
-  Calendar,
+  Bell, 
+  Calendar, 
+  Check, 
+  CheckCircle,
   CreditCard,
+  Info,
   MessageSquare,
   Shield,
-  Zap,
-  CheckCircle
+  X,
+  Zap
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import type { Notification } from '../../services/notifications.service';
@@ -261,7 +261,7 @@ export function useToastNotifications() {
 
   const handleToastAction = (notificationId: string, actionLabel: string) => {
     const toast = toasts.find(t => t.id === notificationId);
-    if (toast && toast.actions) {
+    if (toast?.actions) {
       const action = toast.actions.find(a => a.label === actionLabel);
       if (action) {
         action.action();

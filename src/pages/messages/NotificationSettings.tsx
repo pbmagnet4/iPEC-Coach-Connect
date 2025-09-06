@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { Bell, Moon, Filter, Mail } from 'lucide-react';
+import { Bell, Filter, Mail, Moon } from 'lucide-react';
 
 export function NotificationSettings() {
   const [emailNotifications, setEmailNotifications] = React.useState({

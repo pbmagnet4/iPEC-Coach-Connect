@@ -9,7 +9,8 @@
  * Retry Logic: Failed events are retried with exponential backoff
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { webhookService } from '../../services/webhook.service';
 import { errorHandler } from '../../lib/error-handling';
@@ -136,7 +137,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 async function processEventWithRetry(
   event: Stripe.Event,
   requestId: string,
-  attempt: number = 1
+  attempt = 1
 ): Promise<void> {
   try {
     await webhookService.processEvent(event);

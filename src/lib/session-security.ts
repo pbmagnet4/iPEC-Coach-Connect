@@ -15,7 +15,7 @@
 
 import { logSecurity } from './secure-logger';
 import { checkRateLimit, recordAuthAttempt } from './rate-limiter-enhanced';
-import type { SupabaseAuthUser, SupabaseAuthSession } from '../types/database';
+import type { SupabaseAuthSession, SupabaseAuthUser } from '../types/database';
 
 // Session security configuration
 export interface SessionSecurityConfig {
@@ -70,7 +70,7 @@ export interface SecureSessionData {
 export interface SecurityEvent {
   type: 'login' | 'refresh' | 'suspicious_activity' | 'location_change' | 'fingerprint_mismatch' | 'concurrent_session' | 'logout';
   timestamp: number;
-  details: { [key: string]: any };
+  details: Record<string, any>;
   severity: 'low' | 'medium' | 'high' | 'critical';
   action: 'log' | 'warn' | 'block' | 'invalidate';
 }
@@ -99,8 +99,8 @@ export interface ConcurrentSessionInfo {
 
 class SessionSecurityManager {
   private config: SessionSecurityConfig;
-  private sessions: Map<string, SecureSessionData> = new Map();
-  private userSessions: Map<string, Set<string>> = new Map();
+  private sessions = new Map<string, SecureSessionData>();
+  private userSessions = new Map<string, Set<string>>();
   private cleanupInterval?: NodeJS.Timeout;
   private cryptoKey?: CryptoKey;
 
@@ -213,7 +213,7 @@ class SessionSecurityManager {
 
       logSecurity('Secure session created', 'low', {
         userId: user.id,
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         expiresAt: new Date(expiresAt).toISOString(),
         deviceType: sessionData.deviceInfo.type
       });
@@ -308,7 +308,7 @@ class SessionSecurityManager {
       };
     } catch (error) {
       logSecurity('Session validation failed', 'medium', {
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
 
@@ -349,7 +349,7 @@ class SessionSecurityManager {
       await this.updateSession(sessionId, session);
 
       logSecurity('Session refreshed', 'low', {
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         userId: session.userId,
         newExpiresAt: new Date(newExpiresAt).toISOString()
       });
@@ -357,7 +357,7 @@ class SessionSecurityManager {
       return session;
     } catch (error) {
       logSecurity('Session refresh failed', 'medium', {
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
       throw error;
@@ -396,13 +396,13 @@ class SessionSecurityManager {
       await this.removeSession(sessionId);
 
       logSecurity('Session invalidated', 'low', {
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         userId: session.userId,
         reason
       });
     } catch (error) {
       logSecurity('Session invalidation failed', 'medium', {
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -482,13 +482,13 @@ class SessionSecurityManager {
    */
   private async generateSessionFingerprint(): Promise<SessionFingerprint> {
     try {
-      const userAgent = navigator.userAgent;
+      const {userAgent} = navigator;
       const screenResolution = `${screen.width}x${screen.height}`;
       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const language = navigator.language;
-      const platform = navigator.platform;
+      const {language} = navigator;
+      const {platform} = navigator;
       const doNotTrack = navigator.doNotTrack === '1';
-      const cookieEnabled = navigator.cookieEnabled;
+      const {cookieEnabled} = navigator;
       
       // WebGL fingerprinting
       const webgl = this.getWebGLFingerprint();
@@ -813,7 +813,7 @@ class SessionSecurityManager {
     return [
       navigator.userAgent,
       navigator.language,
-      screen.width + 'x' + screen.height,
+      `${screen.width  }x${  screen.height}`,
       new Date().getTimezoneOffset().toString(),
       window.location.origin,
       'ipec-coach-connect-2024'
@@ -897,7 +897,7 @@ class SessionSecurityManager {
       this.sessions.set(session.sessionId, session);
     } catch (error) {
       logSecurity('Failed to store session', 'high', {
-        sessionId: session.sessionId.substring(0, 8) + '...',
+        sessionId: `${session.sessionId.substring(0, 8)  }...`,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
       throw error;
@@ -929,7 +929,7 @@ class SessionSecurityManager {
       return session;
     } catch (error) {
       logSecurity('Failed to get session', 'medium', {
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
       return null;
@@ -944,7 +944,7 @@ class SessionSecurityManager {
       await this.storeSession(session);
     } catch (error) {
       logSecurity('Failed to update session', 'medium', {
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
       throw error;
@@ -960,7 +960,7 @@ class SessionSecurityManager {
       this.sessions.delete(sessionId);
     } catch (error) {
       logSecurity('Failed to remove session', 'medium', {
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -987,13 +987,13 @@ class SessionSecurityManager {
 
       // Log security event
       logSecurity(`Security event: ${event.type}`, event.severity, {
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         userId: session.userId,
         details: event.details
       });
     } catch (error) {
       logSecurity('Failed to add security event', 'medium', {
-        sessionId: sessionId.substring(0, 8) + '...',
+        sessionId: `${sessionId.substring(0, 8)  }...`,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -1136,7 +1136,7 @@ class SessionSecurityManager {
   /**
    * Get session security statistics
    */
-  getSecurityStats(): { [key: string]: any } {
+  getSecurityStats(): Record<string, any> {
     try {
       const stats = {
         totalSessions: this.sessions.size,

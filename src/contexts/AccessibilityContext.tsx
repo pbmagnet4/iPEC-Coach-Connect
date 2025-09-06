@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { 
   useAccessibilityPreferences, 
-  useScreenReader, 
-  useTouchTargetValidation, 
-  useContrastValidation,
+  useAriaLiveRegion, 
+  useContrastValidation, 
   useKeyboardNavigation,
-  useAriaLiveRegion,
-  useSkipLinks
+  useScreenReader,
+  useSkipLinks,
+  useTouchTargetValidation
 } from '../hooks/useAccessibility';
 
 interface AccessibilityContextType {
@@ -29,13 +29,13 @@ interface AccessibilityContextType {
   
   // Validation
   validation: {
-    touchTargetViolations: Array<{ element: HTMLElement; size: { width: number; height: number } }>;
-    contrastViolations: Array<{
+    touchTargetViolations: { element: HTMLElement; size: { width: number; height: number } }[];
+    contrastViolations: {
       element: HTMLElement;
       contrast: number;
       required: number;
       colors: { foreground: string; background: string };
-    }>;
+    }[];
     validateTouchTargets: () => void;
     validateContrast: () => void;
   };

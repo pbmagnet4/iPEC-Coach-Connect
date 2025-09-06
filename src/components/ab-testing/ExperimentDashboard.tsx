@@ -3,16 +3,16 @@
  * Comprehensive dashboard for managing and monitoring A/B tests
  */
 
-import React, { useState, useEffect } from 'react';
-import { Plus, Play, Pause, Stop, Eye, Settings, TrendingUp, Users, Target, AlertTriangle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { AlertTriangle, Eye, Pause, Play, Plus, Settings, Stop, Target, TrendingUp, Users } from 'lucide-react';
 import { abTestingService } from '../../services/ab-testing.service';
 import { featureFlagsService } from '../../services/feature-flags.service';
 import type {
   Experiment,
+  ExperimentListItem,
   ExperimentStatus,
   ExperimentSummary,
-  FeatureFlag,
-  ExperimentListItem
+  FeatureFlag
 } from '../../types/ab-testing';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
@@ -42,7 +42,7 @@ export function ExperimentDashboard({ className = '' }: ExperimentDashboardProps
       // Load experiments
       const experimentsData = selectedStatus === 'all'
         ? await abTestingService.listExperiments()
-        : await abTestingService.listExperiments(selectedStatus as ExperimentStatus);
+        : await abTestingService.listExperiments(selectedStatus);
 
       // Transform to list items
       const experimentsList: ExperimentListItem[] = experimentsData.map(exp => ({

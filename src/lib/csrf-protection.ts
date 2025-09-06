@@ -41,8 +41,8 @@ interface RedirectValidationRule {
 }
 
 class CSRFProtection {
-  private tokens: Map<string, CSRFToken> = new Map();
-  private formTokens: Map<string, CSRFFormToken> = new Map();
+  private tokens = new Map<string, CSRFToken>();
+  private formTokens = new Map<string, CSRFFormToken>();
   private readonly TOKEN_EXPIRY = 15 * 60 * 1000; // 15 minutes
   private readonly FORM_TOKEN_EXPIRY = 60 * 60 * 1000; // 1 hour for forms
   private readonly STORAGE_KEY = 'ipec_csrf_tokens';
@@ -103,7 +103,7 @@ class CSRFProtection {
 
     logSecurity('CSRF token generated', 'low', {
       purpose,
-      tokenId: token.substring(0, 8) + '...',
+      tokenId: `${token.substring(0, 8)  }...`,
       expiresAt: new Date(expiresAt).toISOString(),
       hasNonce: !!csrfToken.nonce,
       hasUserAgent: !!csrfToken.userAgent,
@@ -135,7 +135,7 @@ class CSRFProtection {
 
     logSecurity('CSRF form token generated', 'low', {
       formId,
-      tokenId: token.substring(0, 8) + '...',
+      tokenId: `${token.substring(0, 8)  }...`,
       expiresAt: new Date(expiresAt).toISOString()
     });
 
@@ -159,7 +159,7 @@ class CSRFProtection {
     if (!csrfToken) {
       logSecurity('CSRF token validation failed - token not found', 'high', {
         purpose,
-        tokenId: token.substring(0, 8) + '...',
+        tokenId: `${token.substring(0, 8)  }...`,
         origin: origin || window.location.origin
       });
       return { valid: false, reason: 'Token not found' };
@@ -172,7 +172,7 @@ class CSRFProtection {
       
       logSecurity('CSRF token validation failed - token expired', 'medium', {
         purpose,
-        tokenId: token.substring(0, 8) + '...',
+        tokenId: `${token.substring(0, 8)  }...`,
         expiredAt: new Date(csrfToken.expiresAt).toISOString()
       });
       return { valid: false, reason: 'Token expired' };
@@ -183,7 +183,7 @@ class CSRFProtection {
       logSecurity('CSRF token validation failed - purpose mismatch', 'high', {
         expectedPurpose: purpose,
         actualPurpose: csrfToken.purpose,
-        tokenId: token.substring(0, 8) + '...'
+        tokenId: `${token.substring(0, 8)  }...`
       });
       return { valid: false, reason: 'Purpose mismatch' };
     }
@@ -194,7 +194,7 @@ class CSRFProtection {
       logSecurity('CSRF token validation failed - origin mismatch', 'high', {
         expectedOrigin: csrfToken.origin,
         actualOrigin: currentOrigin,
-        tokenId: token.substring(0, 8) + '...'
+        tokenId: `${token.substring(0, 8)  }...`
       });
       return { valid: false, reason: 'Origin mismatch' };
     }
@@ -203,7 +203,7 @@ class CSRFProtection {
     if (options?.validateNonce && csrfToken.nonce !== options.validateNonce) {
       logSecurity('CSRF token validation failed - nonce mismatch', 'high', {
         purpose,
-        tokenId: token.substring(0, 8) + '...',
+        tokenId: `${token.substring(0, 8)  }...`,
         hasStoredNonce: !!csrfToken.nonce,
         hasProvidedNonce: !!options.validateNonce
       });
@@ -215,7 +215,7 @@ class CSRFProtection {
       if (csrfToken.userAgent !== navigator.userAgent) {
         logSecurity('CSRF token validation failed - user agent mismatch', 'high', {
           purpose,
-          tokenId: token.substring(0, 8) + '...',
+          tokenId: `${token.substring(0, 8)  }...`,
           userAgentChanged: true
         });
         return { valid: false, reason: 'User agent mismatch' };
@@ -226,7 +226,7 @@ class CSRFProtection {
     if (options?.validateSessionId && csrfToken.sessionId !== options.validateSessionId) {
       logSecurity('CSRF token validation failed - session ID mismatch', 'high', {
         purpose,
-        tokenId: token.substring(0, 8) + '...',
+        tokenId: `${token.substring(0, 8)  }...`,
         hasStoredSessionId: !!csrfToken.sessionId,
         hasProvidedSessionId: !!options.validateSessionId
       });
@@ -235,7 +235,7 @@ class CSRFProtection {
 
     logSecurity('CSRF token validated successfully', 'low', {
       purpose,
-      tokenId: token.substring(0, 8) + '...',
+      tokenId: `${token.substring(0, 8)  }...`,
       hasNonce: !!csrfToken.nonce,
       hasUserAgent: !!csrfToken.userAgent,
       hasSessionId: !!csrfToken.sessionId
@@ -257,7 +257,7 @@ class CSRFProtection {
     if (!formToken) {
       logSecurity('CSRF form token validation failed - token not found', 'high', {
         formId,
-        tokenId: token.substring(0, 8) + '...',
+        tokenId: `${token.substring(0, 8)  }...`,
         origin: origin || window.location.origin
       });
       return { valid: false, reason: 'Token not found' };
@@ -270,7 +270,7 @@ class CSRFProtection {
       
       logSecurity('CSRF form token validation failed - token expired', 'medium', {
         formId,
-        tokenId: token.substring(0, 8) + '...',
+        tokenId: `${token.substring(0, 8)  }...`,
         expiredAt: new Date(formToken.expiresAt).toISOString()
       });
       return { valid: false, reason: 'Token expired' };
@@ -281,7 +281,7 @@ class CSRFProtection {
       logSecurity('CSRF form token validation failed - form ID mismatch', 'high', {
         expectedFormId: formId,
         actualFormId: formToken.formId,
-        tokenId: token.substring(0, 8) + '...'
+        tokenId: `${token.substring(0, 8)  }...`
       });
       return { valid: false, reason: 'Form ID mismatch' };
     }
@@ -292,14 +292,14 @@ class CSRFProtection {
       logSecurity('CSRF form token validation failed - origin mismatch', 'high', {
         expectedOrigin: formToken.origin,
         actualOrigin: currentOrigin,
-        tokenId: token.substring(0, 8) + '...'
+        tokenId: `${token.substring(0, 8)  }...`
       });
       return { valid: false, reason: 'Origin mismatch' };
     }
 
     logSecurity('CSRF form token validated successfully', 'low', {
       formId,
-      tokenId: token.substring(0, 8) + '...'
+      tokenId: `${token.substring(0, 8)  }...`
     });
 
     return { valid: true, tokenInfo: formToken };
@@ -326,7 +326,7 @@ class CSRFProtection {
       
       logSecurity('CSRF token consumed', 'low', {
         purpose,
-        tokenId: token.substring(0, 8) + '...',
+        tokenId: `${token.substring(0, 8)  }...`,
         hasNonce: !!options?.validateNonce,
         hasUserAgent: !!options?.validateUserAgent,
         hasSessionId: !!options?.validateSessionId
@@ -353,7 +353,7 @@ class CSRFProtection {
       
       logSecurity('CSRF form token consumed', 'low', {
         formId,
-        tokenId: token.substring(0, 8) + '...'
+        tokenId: `${token.substring(0, 8)  }...`
       });
     }
 
@@ -393,7 +393,7 @@ class CSRFProtection {
       redirectTo: validatedRedirect.url,
       hasNonce: true,
       hasOrigin: true,
-      csrfTokenId: csrfToken.substring(0, 8) + '...'
+      csrfTokenId: `${csrfToken.substring(0, 8)  }...`
     });
 
     return btoa(JSON.stringify(state));
@@ -427,7 +427,7 @@ class CSRFProtection {
         logSecurity('OAuth state validation failed - origin mismatch', 'high', {
           expectedOrigin: state.origin,
           actualOrigin: window.location.origin,
-          stateParam: stateParam.substring(0, 20) + '...'
+          stateParam: `${stateParam.substring(0, 20)  }...`
         });
         return { valid: false, reason: 'Origin mismatch' };
       }
@@ -477,7 +477,7 @@ class CSRFProtection {
     } catch (error) {
       logSecurity('OAuth state validation failed - invalid format', 'high', {
         error: error instanceof Error ? error.message : 'Unknown error',
-        stateParam: stateParam.substring(0, 20) + '...'
+        stateParam: `${stateParam.substring(0, 20)  }...`
       });
       return { valid: false, reason: 'Invalid state format' };
     }
@@ -701,11 +701,11 @@ class CSRFProtection {
   /**
    * Get debug information about current tokens
    */
-  getDebugInfo(): { [key: string]: any } {
-    const debugInfo: { [key: string]: any } = {};
+  getDebugInfo(): Record<string, any> {
+    const debugInfo: Record<string, any> = {};
     
     for (const [token, csrfToken] of this.tokens.entries()) {
-      debugInfo[token.substring(0, 8) + '...'] = {
+      debugInfo[`${token.substring(0, 8)  }...`] = {
         purpose: csrfToken.purpose,
         origin: csrfToken.origin,
         timestamp: new Date(csrfToken.timestamp).toISOString(),

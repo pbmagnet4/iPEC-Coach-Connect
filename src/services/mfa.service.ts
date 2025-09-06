@@ -11,9 +11,9 @@
  * - Audit logging
  */
 
-import { supabase, handleSupabaseError, SupabaseError } from '../lib/supabase';
-import { logSecurity, logAuth } from '../lib/secure-logger';
-import { TOTP, Secret } from 'otpauth';
+import { handleSupabaseError, supabase, SupabaseError } from '../lib/supabase';
+import { logAuth, logSecurity } from '../lib/secure-logger';
+import { Secret, TOTP } from 'otpauth';
 import { generateDeviceFingerprint } from '../lib/device-fingerprint';
 import type { Database } from '../types/database';
 
@@ -107,7 +107,7 @@ class MFAService {
         algorithm: 'SHA1',
         digits: 6,
         period: 30,
-        secret: secret,
+        secret,
       });
 
       // Create MFA settings record
@@ -150,7 +150,7 @@ class MFAService {
 
       return {
         qrCodeUrl: totp.toString(),
-        secret: secret,
+        secret,
         backupCodes: backupCodes || [],
       };
     } catch (error) {
@@ -635,7 +635,7 @@ class MFAService {
       algorithm: 'SHA1',
       digits: 6,
       period: 30,
-      secret: secret,
+      secret,
     });
 
     // Allow for some clock drift (±1 period)
@@ -670,8 +670,8 @@ class MFAService {
   }
 
   private getDeviceInfo() {
-    const userAgent = navigator.userAgent;
-    const platform = navigator.platform;
+    const {userAgent} = navigator;
+    const {platform} = navigator;
 
     let deviceType = 'desktop';
     if (/Mobile|Android|iPhone|iPad/.test(userAgent)) {

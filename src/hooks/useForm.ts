@@ -5,9 +5,9 @@
  * with Zod schema integration, accessibility features, and performance optimizations.
  */
 
-import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import { z } from 'zod';
-import { FormValidator, type ValidationResult, type FormState, type FormActions } from '../lib/form-validation';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { z } from 'zod';
+import { type FormActions, type FormState, FormValidator, type ValidationResult } from '../lib/form-validation';
 import { useDebounce } from './useDebounce';
 
 export interface UseFormOptions<T> {

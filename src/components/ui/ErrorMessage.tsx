@@ -5,25 +5,25 @@
  * help links, and actionable next steps.
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
   AlertCircle, 
   AlertTriangle, 
-  XCircle, 
-  Info, 
-  RefreshCw, 
-  ExternalLink, 
+  CheckCircle, 
   ChevronDown, 
   ChevronUp, 
-  MessageCircle,
-  X,
-  CheckCircle,
+  ExternalLink, 
+  FileText, 
+  Info, 
   LightbulbIcon,
+  MessageCircle,
+  RefreshCw,
   Sparkles,
-  FileText,
   Wifi,
-  WifiOff
+  WifiOff,
+  X,
+  XCircle
 } from 'lucide-react';
 import { Button } from './Button';
 import type { ErrorMessage as ErrorMessageType } from '../../lib/error-messages';

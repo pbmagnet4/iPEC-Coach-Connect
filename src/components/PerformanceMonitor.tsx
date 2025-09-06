@@ -106,7 +106,7 @@ export const usePerformanceMonitoring = () => {
   const collectInitialMetrics = () => {
     if (!window.performance) return;
     
-    const navigation = window.performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+    const navigation = window.performance.getEntriesByType('navigation')[0];
     if (navigation) {
       const domContentLoaded = navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart;
       const loadComplete = navigation.loadEventEnd - navigation.loadEventStart;
@@ -173,7 +173,7 @@ export const usePerformanceMonitoring = () => {
     }
 
     // Fallback TTFB from navigation timing
-    const navigationEntries = window.performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    const navigationEntries = window.performance.getEntriesByType('navigation');
     if (navigationEntries.length > 0) {
       const nav = navigationEntries[0];
       const ttfb = nav.responseStart - nav.requestStart;
@@ -223,7 +223,7 @@ export const usePerformanceMonitoring = () => {
     if (!('memory' in window.performance)) return;
     
     const updateMemoryUsage = () => {
-      const memory = (window.performance as any).memory;
+      const {memory} = (window.performance as any);
       if (memory) {
         setMetrics(prev => ({
           ...prev,
@@ -382,7 +382,7 @@ export const PerformanceMonitor: React.FC<{
     return 'text-red-600';
   };
   
-  const formatValue = (value: number | null, unit: string = 'ms') => {
+  const formatValue = (value: number | null, unit = 'ms') => {
     if (value === null) return 'N/A';
     return `${Math.round(value)}${unit}`;
   };

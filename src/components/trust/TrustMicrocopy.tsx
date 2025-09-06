@@ -7,17 +7,17 @@
 
 import React from 'react';
 import { 
-  Shield, 
-  Lock, 
-  Eye, 
-  Clock, 
+  AlertCircle, 
+  Award, 
   CheckCircle, 
-  Info, 
-  AlertCircle,
-  Users,
-  Award,
-  Heart,
-  MessageCircle
+  Clock, 
+  Eye, 
+  Heart, 
+  Info,
+  Lock,
+  MessageCircle,
+  Shield,
+  Users
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 

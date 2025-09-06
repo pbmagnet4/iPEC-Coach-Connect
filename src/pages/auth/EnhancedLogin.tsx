@@ -16,12 +16,12 @@ import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
 import { EnhancedAuthForm } from '../../components/auth/EnhancedAuthForm';
 import { 
-  Shield, 
-  Users, 
   Award, 
-  CheckCircle,
+  CheckCircle, 
+  LogIn, 
+  Shield,
   Star,
-  LogIn 
+  Users 
 } from 'lucide-react';
 
 type AuthMode = 'signin' | 'signup' | 'reset';

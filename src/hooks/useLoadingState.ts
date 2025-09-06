@@ -1,11 +1,13 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { 
-  LoadingState, 
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type { 
+  LoadingAnalytics, 
   LoadingOptions, 
-  LoadingContext, 
-  UseLoadingReturn, 
+  LoadingState, 
   NetworkQuality,
-  LoadingAnalytics 
+  UseLoadingReturn 
+} from '../types/loading';
+import { 
+  LoadingContext 
 } from '../types/loading';
 
 // Network quality detection
@@ -16,8 +18,8 @@ const detectNetworkQuality = (): NetworkQuality => {
   
   if (!connection) return 'unknown';
   
-  const effectiveType = connection.effectiveType;
-  const downlink = connection.downlink;
+  const {effectiveType} = connection;
+  const {downlink} = connection;
   
   if (effectiveType === '4g' && downlink > 10) return 'fast';
   if (effectiveType === '4g' || (effectiveType === '3g' && downlink > 1.5)) return 'good';
@@ -61,7 +63,7 @@ export function useLoadingState<T = any>(
 
     updateNetworkQuality();
     
-    const connection = (navigator as any).connection;
+    const {connection} = (navigator as any);
     if (connection) {
       connection.addEventListener('change', updateNetworkQuality);
       return () => connection.removeEventListener('change', updateNetworkQuality);

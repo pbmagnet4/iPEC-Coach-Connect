@@ -10,14 +10,14 @@
  * - Mobile-optimized design
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
+  Elements,
   PaymentElement,
-  useStripe,
   useElements,
-  Elements
+  useStripe
 } from '@stripe/react-stripe-js';
-import { stripePromise, getStripeElementsOptions } from '../../services/stripe.service';
+import { getStripeElementsOptions, stripePromise } from '../../services/stripe.service';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { LoadingSpinner } from '../ui/LoadingSpinner';

@@ -11,21 +11,21 @@
  * Uses Stripe Setup Intents for secure payment method collection
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Elements,
   PaymentElement,
-  useStripe,
-  useElements
+  useElements,
+  useStripe
 } from '@stripe/react-stripe-js';
-import { stripePromise, getStripeElementsOptions, stripeService } from '../../services/stripe.service';
+import { getStripeElementsOptions, stripePromise, stripeService } from '../../services/stripe.service';
 import { authService } from '../../services/auth.service';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { ErrorMessage } from '../ui/ErrorMessage';
 import { Modal } from '../ui/Modal';
-import type { PaymentMethod, PaymentCustomer, SetupIntent } from '../../types/database';
+import type { PaymentCustomer, PaymentMethod, SetupIntent } from '../../types/database';
 
 interface PaymentMethodManagerProps {
   customerId?: string;

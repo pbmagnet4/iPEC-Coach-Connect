@@ -6,7 +6,7 @@
  */
 
 import { logSecurity } from './secure-logger';
-import type { ErrorMessage, ErrorContext } from './error-messages';
+import type { ErrorContext, ErrorMessage } from './error-messages';
 
 export interface ErrorAnalytics {
   errorCode: string;

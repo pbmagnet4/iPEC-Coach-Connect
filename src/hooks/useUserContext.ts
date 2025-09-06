@@ -3,7 +3,7 @@
  * Provides user context information needed for experimentation
  */
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '../lib/store';
 import type { UserContext } from '../types/ab-testing';
 
@@ -190,7 +190,7 @@ export function useUserBehaviorTracking() {
     };
 
     // Track time on page
-    let startTime = Date.now();
+    const startTime = Date.now();
     const trackTimeOnPage = () => {
       const timeSpent = Date.now() - startTime;
       console.log('Time on page:', {

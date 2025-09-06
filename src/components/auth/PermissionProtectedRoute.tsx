@@ -13,14 +13,15 @@
  * - Debug mode for development
  */
 
-import React, { useEffect, useState, memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Lock, AlertTriangle, CheckCircle, Loader, User } from 'lucide-react';
-import { useAuth, useUserRoles, useOnboarding } from '../../stores/unified-user-store';
-import { ExtendedUserRole } from '../../services/enhanced-auth.service';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AlertTriangle, CheckCircle, Loader, Lock, Shield, User } from 'lucide-react';
+import { useAuth, useOnboarding, useUserRoles } from '../../stores/unified-user-store';
+import type { ExtendedUserRole } from '../../services/enhanced-auth.service';
 import { MFAProtectedRoute } from './MFAProtectedRoute';
-import { EnhancedRoleGuard, Permission } from './EnhancedRoleGuard';
+import type { Permission } from './EnhancedRoleGuard';
+import { EnhancedRoleGuard } from './EnhancedRoleGuard';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';

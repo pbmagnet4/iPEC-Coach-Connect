@@ -15,30 +15,30 @@
  * - Profile completion tracking
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  User,
-  UserCheck,
-  Target,
-  Users,
-  CreditCard,
-  CheckCircle,
-  ArrowRight,
-  ArrowLeft,
-  Loader,
   AlertCircle,
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle,
+  Clock,
+  CreditCard,
+  Globe,
+  Heart,
+  Loader,
   Mail,
   Phone,
   Shield,
   Star,
-  Heart,
-  Globe,
-  Clock
+  Target,
+  User,
+  UserCheck,
+  Users
 } from 'lucide-react';
-import { useOnboarding, useAuth, useUserRoles, useClientProfile, useCoachApplication } from '../../stores/unified-user-store';
-import { OnboardingStage, ExtendedUserRole } from '../../services/enhanced-auth.service';
+import { useAuth, useClientProfile, useCoachApplication, useOnboarding, useUserRoles } from '../../stores/unified-user-store';
+import type { ExtendedUserRole, OnboardingStage } from '../../services/enhanced-auth.service';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
@@ -428,7 +428,7 @@ const GoalSettingStep: React.FC<OnboardingStepProps> = ({ data, onNext, onPrev, 
     if (goals.length > 0 && focusAreas.length > 0) {
       await onNext({ 
         coachingGoals: goals,
-        focusAreas: focusAreas
+        focusAreas
       });
     }
   };

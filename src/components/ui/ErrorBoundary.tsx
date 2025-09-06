@@ -1,5 +1,6 @@
-import React, { Component, ReactNode } from 'react';
-import { AlertTriangle, RefreshCw, Home, Mail } from 'lucide-react';
+import type { ReactNode } from 'react';
+import React, { Component } from 'react';
+import { AlertTriangle, Home, Mail, RefreshCw } from 'lucide-react';
 import { Button } from './Button';
 
 interface Props {

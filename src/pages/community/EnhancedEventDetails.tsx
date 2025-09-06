@@ -17,20 +17,20 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
+  Bell,
   Calendar,
   Clock,
-  MapPin,
-  Users,
-  Share,
-  ExternalLink,
-  Video,
   Download,
-  Bell,
+  Edit3,
+  ExternalLink,
+  MapPin,
   MessageSquare,
+  Settings,
+  Share,
   Star,
   UserCheck,
-  Settings,
-  Edit3
+  Users,
+  Video
 } from 'lucide-react';
 import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
@@ -231,7 +231,7 @@ export function EnhancedEventDetails() {
       navigator.share({
         title: mockEvent.title,
         text: mockEvent.description,
-        url: url,
+        url,
       });
     } else {
       await navigator.clipboard.writeText(url);

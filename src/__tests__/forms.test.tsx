@@ -5,10 +5,10 @@
  * features implemented across the iPEC Coach Connect application.
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FormValidator, contactValidationSchemas, profileValidationSchemas, allValidationSchemas } from '../lib/form-validation';
+import { allValidationSchemas, contactValidationSchemas, FormValidator, profileValidationSchemas } from '../lib/form-validation';
 import { useForm } from '../hooks/useForm';
 import { Contact } from '../pages/Contact';
 import { Support } from '../pages/Support';

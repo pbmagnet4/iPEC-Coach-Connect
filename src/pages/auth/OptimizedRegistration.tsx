@@ -10,7 +10,7 @@
  * - Performance optimizations
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Container } from '../../components/ui/Container';
@@ -18,21 +18,21 @@ import { Card } from '../../components/ui/Card';
 import { MultiStepRegistration } from '../../components/auth/MultiStepRegistration';
 import { useRegistrationAnalytics } from '../../hooks/useRegistrationAnalytics';
 import { 
-  Shield, 
-  Users, 
+  ArrowLeft, 
   Award, 
-  CheckCircle,
-  Star,
-  Clock,
-  TrendingUp,
-  MessageSquare,
+  CheckCircle, 
   ChevronRight,
-  ArrowLeft,
-  Zap,
+  Clock,
   Heart,
-  Target,
+  MessageSquare,
+  Shield,
   Sparkles,
-  User
+  Star,
+  Target,
+  TrendingUp,
+  User,
+  Users,
+  Zap
 } from 'lucide-react';
 
 const trustSignals = [

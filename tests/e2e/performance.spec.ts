@@ -17,7 +17,7 @@
  * and provides a fast, responsive user experience across all devices.
  */
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { createTestHelpers } from '../utils/test-helpers';
 
 test.describe('Performance Testing', () => {
@@ -161,7 +161,7 @@ test.describe('Performance Testing', () => {
   test.describe('Page Load Performance', () => {
     test('should load critical resources efficiently', async ({ page }) => {
       // Monitor resource loading
-      const resourceTimings: Array<{url: string, duration: number, size: number}> = [];
+      const resourceTimings: {url: string, duration: number, size: number}[] = [];
       
       page.on('response', async (response) => {
         const request = response.request();
@@ -259,7 +259,7 @@ test.describe('Performance Testing', () => {
 
   test.describe('API Performance', () => {
     test('should maintain fast API response times', async ({ page }) => {
-      const apiCalls: Array<{url: string, duration: number, status: number}> = [];
+      const apiCalls: {url: string, duration: number, status: number}[] = [];
       
       page.on('response', (response) => {
         const request = response.request();
@@ -559,7 +559,7 @@ test.describe('Performance Testing', () => {
 
   test.describe('Third-Party Performance Impact', () => {
     test('should minimize third-party script impact', async ({ page }) => {
-      const thirdPartyRequests: Array<{url: string, duration: number}> = [];
+      const thirdPartyRequests: {url: string, duration: number}[] = [];
       
       page.on('response', (response) => {
         const request = response.request();
@@ -592,7 +592,7 @@ test.describe('Performance Testing', () => {
       // Block third-party domains
       await page.route('**/*', (route) => {
         const url = route.request().url();
-        const hostname = new URL(url).hostname;
+        const {hostname} = new URL(url);
         const pageHostname = new URL(page.url() || 'http://localhost').hostname;
         
         if (hostname !== pageHostname && hostname !== 'localhost') {

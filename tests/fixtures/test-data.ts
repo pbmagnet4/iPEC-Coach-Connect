@@ -351,7 +351,7 @@ export function createTestSession(clientId: string, coachId: string, overrides: 
     id: faker.string.uuid(),
     clientId,
     coachId,
-    type: sessionType.type as TestSession['type'],
+    type: sessionType.type,
     title: sessionType.name,
     description: sessionType.description,
     scheduledAt: scheduledAt.toISOString(),
@@ -411,7 +411,7 @@ export function createTestReply(): TestReply {
 export function createTestGroup(): TestGroup {
   return {
     id: faker.string.uuid(),
-    name: faker.company.name() + ' Coaching Circle',
+    name: `${faker.company.name()  } Coaching Circle`,
     description: faker.lorem.paragraph(),
     category: faker.helpers.arrayElement(['Career', 'Wellness', 'Relationships', 'Personal Growth', 'Leadership']),
     memberCount: faker.number.int({ min: 5, max: 50 }),

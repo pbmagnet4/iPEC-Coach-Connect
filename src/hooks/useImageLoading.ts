@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { UseImageLoadingReturn, ImageLoadingConfig } from '../types/loading';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type { ImageLoadingConfig, UseImageLoadingReturn } from '../types/loading';
 
 // Hook for advanced image loading with blur-to-sharp transitions
 export function useImageLoading(
@@ -268,9 +268,9 @@ export function useImageGallery(
 
 // Utility function to generate blur data URL from image
 export function generateBlurDataURL(
-  width: number = 8,
-  height: number = 8,
-  color: string = '#f3f4f6'
+  width = 8,
+  height = 8,
+  color = '#f3f4f6'
 ): string {
   const canvas = document.createElement('canvas');
   canvas.width = width;
@@ -288,7 +288,7 @@ export function generateBlurDataURL(
 // Utility function to create responsive image sources
 export function createResponsiveSources(
   baseSrc: string,
-  breakpoints: { [key: string]: number } = {
+  breakpoints: Record<string, number> = {
     sm: 640,
     md: 768,
     lg: 1024,

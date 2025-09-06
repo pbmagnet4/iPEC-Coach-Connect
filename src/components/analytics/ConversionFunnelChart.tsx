@@ -4,8 +4,8 @@
  */
 
 import React, { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { TrendingDown, Users, Target, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { AlertTriangle, CheckCircle, Target, TrendingDown, Users } from 'lucide-react';
 
 interface FunnelStage {
   stage: string;
@@ -114,7 +114,7 @@ export function ConversionFunnelChart({ data }: ConversionFunnelChartProps) {
   });
 
   const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
       const data = payload[0].payload;
       return (
         <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">

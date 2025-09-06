@@ -13,23 +13,24 @@
  */
 
 import Stripe from 'stripe';
-import { loadStripe, StripeElementsOptions } from '@stripe/stripe-js';
+import type { StripeElementsOptions } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import type {
-  PaymentCustomer,
-  PaymentMethod,
-  PaymentIntent,
-  SetupIntent,
-  Subscription,
-  SubscriptionPlan,
-  PaymentProduct,
-  PaymentPrice,
-  Invoice,
-  PaymentProcessingResult,
-  SubscriptionCreationResult,
-  PaymentMethodSetupData,
   CreatePaymentCustomerData,
   CreatePaymentIntentData,
   CreateSubscriptionData,
+  Invoice,
+  PaymentCustomer,
+  PaymentIntent,
+  PaymentMethod,
+  PaymentMethodSetupData,
+  PaymentPrice,
+  PaymentProcessingResult,
+  PaymentProduct,
+  SetupIntent,
+  Subscription,
+  SubscriptionCreationResult,
+  SubscriptionPlan,
 } from '../types/database';
 import { errorHandler } from '../lib/error-handling';
 import { supabase } from '../lib/supabase';
@@ -610,7 +611,7 @@ export const subscriptionService = {
   /**
    * Cancel a subscription
    */
-  async cancelSubscription(subscriptionId: string, cancelAtPeriodEnd: boolean = true): Promise<Subscription> {
+  async cancelSubscription(subscriptionId: string, cancelAtPeriodEnd = true): Promise<Subscription> {
     try {
       const { data: subscription } = await supabase
         .from('subscriptions')
@@ -788,7 +789,7 @@ export const stripeUtils = {
   /**
    * Format amount in cents to display currency
    */
-  formatAmount(amountInCents: number, currency: string = 'usd'): string {
+  formatAmount(amountInCents: number, currency = 'usd'): string {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currency.toUpperCase()

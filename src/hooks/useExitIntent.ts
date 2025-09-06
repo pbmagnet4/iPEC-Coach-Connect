@@ -9,7 +9,7 @@
  * - Mobile touch gesture detection
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface ExitIntentConfig {
   enabled?: boolean;

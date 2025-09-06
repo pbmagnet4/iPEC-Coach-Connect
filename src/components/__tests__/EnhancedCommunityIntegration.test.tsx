@@ -5,7 +5,7 @@
  * with the main application, ensuring proper routing, navigation, and auth state handling.
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('Enhanced Community Integration', () => {
   describe('Component Imports', () => {

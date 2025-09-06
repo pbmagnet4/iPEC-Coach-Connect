@@ -17,34 +17,34 @@
  * - Smart field validation with helpful feedback
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Mail, 
-  Lock, 
-  User, 
-  Phone, 
-  Shield, 
-  CheckCircle, 
   AlertCircle, 
+  ArrowLeft, 
+  ArrowRight, 
+  Award, 
+  Check, 
+  CheckCircle, 
+  Clock, 
+  Crown, 
   Eye, 
   EyeOff, 
-  ArrowRight, 
-  ArrowLeft,
-  Loader2,
-  Crown,
-  Users,
-  Award,
-  Star,
-  Check,
-  Info,
-  Timer,
-  Sparkles,
-  TrendingUp,
   Heart,
+  Info,
+  Loader2,
+  Lock,
+  Mail,
   MessageSquare,
-  Clock,
+  Phone,
+  Shield,
+  Sparkles,
+  Star,
   Target,
+  Timer,
+  TrendingUp,
+  User,
+  Users,
   Zap
 } from 'lucide-react';
 import { Button } from '../ui/Button';
@@ -74,9 +74,7 @@ interface RegistrationData {
   marketingConsent: boolean;
 }
 
-interface FormErrors {
-  [key: string]: string;
-}
+type FormErrors = Record<string, string>;
 
 interface StepConfig {
   id: string;

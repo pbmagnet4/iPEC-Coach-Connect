@@ -8,7 +8,7 @@
 import { supabase } from '../lib/supabase';
 import { bookingService } from './booking.service';
 import { authService } from './auth.service';
-import type { RealtimePayload, SessionWithDetails, AvailableSlot } from '../types/database';
+import type { AvailableSlot, RealtimePayload, SessionWithDetails } from '../types/database';
 
 export type BookingEventType = 'session_booked' | 'session_cancelled' | 'session_rescheduled' | 'availability_updated';
 
@@ -194,7 +194,7 @@ class RealTimeBookingService {
     coachId: string,
     startTime: string,
     durationMinutes: number,
-    reservationTimeMinutes: number = 10
+    reservationTimeMinutes = 10
   ): Promise<{ success: boolean; reservationId?: string; conflicts?: BookingConflict[] }> {
     try {
       // Check for conflicts first

@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export interface TooltipProps {
   content: React.ReactNode;

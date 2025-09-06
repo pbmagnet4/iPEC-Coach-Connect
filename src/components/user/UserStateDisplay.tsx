@@ -14,46 +14,46 @@
  * - Security and privacy controls
  */
 
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  User,
-  Shield,
-  Settings,
-  Crown,
-  CheckCircle,
   AlertCircle,
+  Award,
+  Bell,
+  Calendar,
+  CheckCircle,
   Clock,
+  Crown,
+  Edit,
   Eye,
   EyeOff,
-  Edit,
-  RefreshCw,
-  Star,
-  Trophy,
-  Target,
-  Calendar,
-  Mail,
-  Phone,
-  MapPin,
   Globe,
-  Palette,
-  Bell,
   Lock,
+  Mail,
+  MapPin,
+  Palette,
+  Phone,
+  RefreshCw,
+  Settings,
+  Shield,
+  Star,
+  Target,
+  Trophy,
   Unlock,
+  User,
   UserCheck,
-  Users,
-  Award
+  Users
 } from 'lucide-react';
 import { 
   useAuth, 
-  useUserRoles, 
-  useOnboarding, 
-  useClientProfile,
-  useCoachApplication,
+  useClientProfile, 
+  useCoachApplication, 
+  useDashboardMetrics,
+  useOnboarding,
   useUserPreferences,
-  useDashboardMetrics 
+  useUserRoles 
 } from '../../stores/unified-user-store';
-import { ExtendedUserRole, OnboardingStage } from '../../services/enhanced-auth.service';
+import type { ExtendedUserRole, OnboardingStage } from '../../services/enhanced-auth.service';
 import { ROLE_DEFINITIONS } from '../../lib/enhanced-roles';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';

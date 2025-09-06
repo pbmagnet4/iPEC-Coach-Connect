@@ -11,7 +11,7 @@
  * provides isolated user contexts for comprehensive testing scenarios.
  */
 
-import { test as setup, expect } from '@playwright/test';
+import { expect, test as setup } from '@playwright/test';
 import path from 'path';
 
 // Authentication file paths for different user roles

@@ -1,25 +1,25 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Users, 
-  UserCircle, 
-  Calendar, 
-  BookOpen, 
-  Menu, 
-  X,
-  Compass, 
   BookMarked, 
+  BookOpen, 
+  Calendar, 
+  ChevronDown, 
+  ChevronRight, 
+  Compass,
   GraduationCap, 
-  Library,
-  Settings,
+  Home, 
+  Library, 
   LogOut,
-  User,
-  Home,
-  Search,
+  Menu,
   MessageCircle,
-  ChevronRight,
-  ChevronDown
+  Search,
+  Settings,
+  User,
+  UserCircle,
+  Users,
+  X
 } from 'lucide-react';
 import { useLegacyAuth, useLegacyRole } from '../stores/unified-user-store';
 import { RoleGuard } from './RoleGuard';

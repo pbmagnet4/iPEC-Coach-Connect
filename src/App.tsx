@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 import { LoadingSpinner } from './components/ui/LoadingSpinner';
@@ -8,12 +8,12 @@ import { LoadingProvider as LazyLoadingProvider } from './components/LazyLoading
 import { LoadingProvider } from './components/ui/progressive/LoadingProvider';
 import { PerformanceMonitor } from './components/PerformanceMonitor';
 import { preloadRouteResources } from './utils/preload';
-import { useScrollRestoration, useSafeIntersectionObserver, useSafeAutofocus } from './hooks/useScrollRestoration';
+import { useSafeAutofocus, useSafeIntersectionObserver, useScrollRestoration } from './hooks/useScrollRestoration';
 import { 
-  ProtectedRoute, 
-  PublicRoute, 
   AuthenticatedRoute, 
-  CoachRoute 
+  CoachRoute, 
+  ProtectedRoute, 
+  PublicRoute 
 } from './components/auth/ProtectedRoute';
 
 // Lazy load all pages for optimal code splitting

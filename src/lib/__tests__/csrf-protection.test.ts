@@ -12,7 +12,7 @@
  * - Cleanup and lifecycle management
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { csrfProtection } from '../csrf-protection';
 import { logSecurity } from '../secure-logger';
 

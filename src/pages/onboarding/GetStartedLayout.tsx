@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface GetStartedLayoutProps {
   children: React.ReactNode;

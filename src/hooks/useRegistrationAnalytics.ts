@@ -9,7 +9,7 @@
  * - A/B testing support
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export interface RegistrationAnalyticsData {
   sessionId: string;
@@ -58,7 +58,7 @@ export interface RegistrationFunnelData {
   google_auth_completed: number;
 }
 
-export function useRegistrationAnalytics(enableTracking: boolean = true) {
+export function useRegistrationAnalytics(enableTracking = true) {
   const [analyticsData, setAnalyticsData] = useState<RegistrationAnalyticsData>(() => ({
     sessionId: generateSessionId(),
     startTime: Date.now(),

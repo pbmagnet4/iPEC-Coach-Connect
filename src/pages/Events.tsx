@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
+  ArrowRight,
   Calendar as CalendarIcon,
-  Search,
-  Filter,
-  MapPin,
-  Clock,
-  Users,
-  Tag,
   ChevronLeft,
   ChevronRight,
+  Clock,
+  Filter,
   Globe,
-  Video,
+  MapPin,
+  Plus,
+  Search,
   Star,
-  ArrowRight,
-  Plus
+  Tag,
+  Users,
+  Video
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';

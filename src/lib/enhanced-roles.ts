@@ -15,8 +15,10 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { enhancedAuthService, ExtendedUserRole, UserRoleAssignment } from '../services/enhanced-auth.service';
-import { useLegacyRole, LegacyUserRole } from '../stores/unified-user-store'; // Import from unified store for compatibility
+import type { ExtendedUserRole, UserRoleAssignment } from '../services/enhanced-auth.service';
+import { enhancedAuthService } from '../services/enhanced-auth.service';
+import type { LegacyUserRole } from '../stores/unified-user-store';
+import { useLegacyRole } from '../stores/unified-user-store'; // Import from unified store for compatibility
 
 // Extended role type that includes all possible roles
 export type { ExtendedUserRole } from '../services/enhanced-auth.service';

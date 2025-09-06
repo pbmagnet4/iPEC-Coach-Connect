@@ -5,7 +5,7 @@
  * A/B test analytics, feature flag evaluation tracking, and statistical analysis.
  */
 
-import { ConversionEvent, RegistrationFunnelData } from '../hooks/useRegistrationAnalytics';
+import type { ConversionEvent, RegistrationFunnelData } from '../hooks/useRegistrationAnalytics';
 import type { UserContext } from '../types/ab-testing';
 
 export interface AnalyticsConfig {
@@ -16,7 +16,7 @@ export interface AnalyticsConfig {
 
 class AnalyticsService {
   private config: AnalyticsConfig;
-  private isEnabled: boolean = true;
+  private isEnabled = true;
 
   constructor(config: AnalyticsConfig = { endpoint: '/api/analytics' }) {
     this.config = config;
@@ -167,7 +167,7 @@ class AnalyticsService {
     experimentId: string,
     variantId: string,
     metricName: string,
-    value: number = 1,
+    value = 1,
     userContext: UserContext,
     properties?: Record<string, any>
   ): Promise<void> {

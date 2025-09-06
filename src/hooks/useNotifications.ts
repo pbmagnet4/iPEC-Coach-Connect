@@ -3,7 +3,7 @@
  * React hook for managing notifications with real-time updates and state management
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { notificationsService } from '../services/notifications.service';
 import type { 
   Notification, 

@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { Container } from '../ui/Container';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
-import { Mail, CheckCircle } from 'lucide-react';
+import { CheckCircle, Mail } from 'lucide-react';
 
 export function Newsletter() {
   const [email, setEmail] = useState('');

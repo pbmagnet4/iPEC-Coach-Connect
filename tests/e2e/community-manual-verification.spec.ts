@@ -5,7 +5,7 @@
  * the current state of the community page functionality.
  */
 
-import { test, expect, Page } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 
 test.describe('Community Page - Manual Verification', () => {
   test('visual verification and functionality documentation', async ({ page }) => {

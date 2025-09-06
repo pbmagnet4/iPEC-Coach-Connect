@@ -5,29 +5,29 @@
 
 import React, { useState } from 'react';
 import { 
-  LineChart, 
-  Line, 
+  Area, 
   AreaChart, 
-  Area,
-  BarChart, 
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis, 
-  YAxis, 
+  Bar, 
+  BarChart,
   CartesianGrid, 
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie, 
+  PieChart, 
+  ResponsiveContainer, 
   Tooltip, 
-  ResponsiveContainer,
-  Legend 
+  XAxis,
+  YAxis 
 } from 'recharts';
-import { Clock, Users, MousePointer, Eye, TrendingUp, TrendingDown } from 'lucide-react';
+import { Clock, Eye, MousePointer, TrendingDown, TrendingUp, Users } from 'lucide-react';
 
 interface UserBehaviorData {
   sessionDuration: number;
   bounceRate: number;
   pagesPerSession: number;
-  topPages: Array<{ path: string; views: number; avgTime: number }>;
+  topPages: { path: string; views: number; avgTime: number }[];
 }
 
 interface UserBehaviorChartProps {
@@ -144,7 +144,7 @@ export function UserBehaviorChart({ data, timeRange }: UserBehaviorChartProps) {
   const deviceData = generateDeviceData();
 
   const customTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-medium mb-2">{label}</p>
@@ -240,7 +240,7 @@ export function UserBehaviorChart({ data, timeRange }: UserBehaviorChartProps) {
               <YAxis tick={{ fontSize: 12 }} stroke="#6B7280" />
               <Tooltip
                 content={({ active, payload, label }) => {
-                  if (active && payload && payload.length) {
+                  if (active && payload?.length) {
                     const data = payload[0].payload;
                     return (
                       <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
@@ -281,7 +281,7 @@ export function UserBehaviorChart({ data, timeRange }: UserBehaviorChartProps) {
               </Pie>
               <Tooltip
                 content={({ active, payload }) => {
-                  if (active && payload && payload.length) {
+                  if (active && payload?.length) {
                     const data = payload[0].payload;
                     return (
                       <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">

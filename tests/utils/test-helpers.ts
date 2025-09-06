@@ -14,8 +14,10 @@
  * and providing consistent testing patterns across the entire test suite.
  */
 
-import { Page, Locator, expect } from '@playwright/test';
-import { TestUser, TestSession, createTestUser, createTestSession } from '../fixtures/test-data';
+import type { Locator, Page} from '@playwright/test';
+import { expect } from '@playwright/test';
+import type { TestUser} from '../fixtures/test-data';
+import { createTestSession, createTestUser, TestSession } from '../fixtures/test-data';
 
 /**
  * Enhanced page interaction utilities with robust error handling
@@ -85,7 +87,7 @@ export class PageHelpers {
   /**
    * Wait for navigation with loading state handling
    */
-  async waitForNavigation(expectedUrl?: string | RegExp, timeout: number = 30000) {
+  async waitForNavigation(expectedUrl?: string | RegExp, timeout = 30000) {
     const startTime = Date.now();
     
     // Wait for navigation to complete
@@ -123,7 +125,7 @@ export class PageHelpers {
   /**
    * Enhanced click with retry mechanism
    */
-  async clickWithRetry(selector: string, maxRetries: number = 3) {
+  async clickWithRetry(selector: string, maxRetries = 3) {
     let lastError: Error | null = null;
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -298,7 +300,7 @@ export class PerformanceHelpers {
    * Monitor API response times
    */
   async monitorApiCalls(callback: () => Promise<void>) {
-    const apiCalls: Array<{ url: string; method: string; responseTime: number; status: number }> = [];
+    const apiCalls: { url: string; method: string; responseTime: number; status: number }[] = [];
     
     this.page.on('response', (response) => {
       const request = response.request();

@@ -10,13 +10,13 @@
  * - Real-time cache metrics
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  useUserProfileCache,
+  useCacheDebug,
+  useCachePerformance,
   useCoachDataCache,
   useSearchResultsCache,
-  useCachePerformance,
-  useCacheDebug
+  useUserProfileCache
 } from '../lib/hooks/useCache';
 import { cacheIntegrationService } from '../lib/cache-integration.service';
 import { Button } from './ui/Button';
@@ -33,7 +33,7 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
   coachId = 'demo-coach-456' 
 }) => {
   const [activeTab, setActiveTab] = useState<'examples' | 'performance' | 'debug'>('examples');
-  const [notifications, setNotifications] = useState<Array<{ id: string; message: string; type: 'success' | 'error' | 'info' }>>([]);
+  const [notifications, setNotifications] = useState<{ id: string; message: string; type: 'success' | 'error' | 'info' }[]>([]);
 
   // Cache hooks demonstrations
   const [userProfileState, userProfileActions] = useUserProfileCache(
@@ -140,7 +140,7 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))  } ${  sizes[i]}`;
   };
 
   const formatPercentage = (value: number): string => {

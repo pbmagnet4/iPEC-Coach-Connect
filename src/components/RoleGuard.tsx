@@ -1,5 +1,6 @@
 import React from 'react';
-import { LegacyUserRole, useLegacyRole } from '../stores/unified-user-store';
+import type { LegacyUserRole} from '../stores/unified-user-store';
+import { useLegacyRole } from '../stores/unified-user-store';
 
 interface RoleGuardProps {
   children: React.ReactNode;

@@ -12,7 +12,7 @@
  * - Development mode memory profiling
  */
 
-import { logSecurity, logPerformance } from './secure-logger';
+import { logPerformance, logSecurity } from './secure-logger';
 
 // Memory management interfaces
 interface MemoryStats {

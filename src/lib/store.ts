@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { User, Coach } from '../types';
-import { LocationData } from './location';
+import type { Coach, User } from '../types';
+import type { LocationData } from './location';
 
 interface AppState {
   user: User | null;

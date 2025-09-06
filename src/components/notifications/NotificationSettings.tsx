@@ -3,25 +3,25 @@
  * Comprehensive notification preferences management interface
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
+  AlertTriangle, 
   Bell, 
-  Mail, 
-  Smartphone, 
-  MessageSquare,
+  Calendar, 
+  Check,
   Clock,
+  CreditCard,
+  Info,
+  Mail,
+  MessageSquare,
+  RefreshCw,
+  Save,
+  Shield,
+  Smartphone,
   Volume2,
   VolumeX,
-  Save,
-  RefreshCw,
-  Check,
   X,
-  Info,
-  Calendar,
-  CreditCard,
-  Shield,
-  Zap,
-  AlertTriangle
+  Zap
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';

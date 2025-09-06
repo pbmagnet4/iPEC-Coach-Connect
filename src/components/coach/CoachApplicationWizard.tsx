@@ -5,23 +5,23 @@
  * coach onboarding process with validation, document upload, and progress tracking.
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
+  AlertCircle,
   ArrowLeft,
   ArrowRight,
-  Check,
-  Upload,
-  X,
-  User,
   Award,
-  FileText,
-  Users,
-  Send,
-  AlertCircle,
+  Check,
   CheckCircle,
   Clock,
-  HelpCircle
+  FileText,
+  HelpCircle,
+  Send,
+  Upload,
+  User,
+  Users,
+  X
 } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
@@ -30,11 +30,11 @@ import { Badge } from '../ui/Badge';
 import { useUserContext } from '../../hooks/useUserContext';
 import { coachApplicationService } from '../../services/coach-application.service';
 import type {
-  CoachApplicationFormData,
   ApplicationReferenceFormData,
+  CoachApplicationFormData,
+  CoachApplicationWithDetails,
   DocumentUploadData,
-  Tables,
-  CoachApplicationWithDetails
+  Tables
 } from '../../types/database';
 
 // Step configuration
@@ -367,7 +367,7 @@ export function CoachApplicationWizard({
           if (files.length > 0) {
             documentsToUpload.push({
               document_type: docType as any,
-              files: files,
+              files,
               is_required: ['resume', 'certifications', 'identity'].includes(docType)
             });
           }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseSkeleton, TextSkeleton, ButtonSkeleton } from './BaseSkeleton';
+import { BaseSkeleton, ButtonSkeleton, TextSkeleton } from './BaseSkeleton';
 
 export interface FormSkeletonProps {
   loading: boolean;

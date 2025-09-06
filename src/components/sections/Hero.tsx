@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Search, MapPin, X, Compass } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Compass, MapPin, Search, X } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { Button } from '../ui/Button';
-import { getLocationSuggestions, LocationSuggestion } from '../../lib/location';
+import type { LocationSuggestion } from '../../lib/location';
+import { getLocationSuggestions } from '../../lib/location';
 
 const specialties = [
   'Career Transition',

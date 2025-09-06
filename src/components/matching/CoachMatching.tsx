@@ -16,50 +16,50 @@
  * - Specialization and certification tracking
  */
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Users,
-  Search,
-  Filter,
-  Star,
-  MapPin,
-  Clock,
+  ArrowRight,
   Award,
-  CheckCircle,
-  Heart,
-  Eye,
-  MessageSquare,
-  Calendar,
-  DollarSign,
-  Globe,
-  Phone,
-  Video,
-  User,
-  Target,
-  Briefcase,
-  Brain,
-  Zap,
-  TrendingUp,
   BookOpen,
-  Shield,
-  Verified,
-  ThumbsUp,
-  MoreVertical,
-  X,
+  Brain,
+  Briefcase,
+  Calendar,
+  CheckCircle,
   ChevronDown,
   ChevronUp,
-  ArrowRight,
+  Clock,
+  DollarSign,
+  Eye,
+  Filter,
+  Globe,
+  Grid,
+  Heart,
+  List,
+  MapPin,
+  MessageSquare,
+  MoreVertical,
+  Phone,
+  Search,
+  Shield,
   Sliders,
   SortAsc,
-  List,
-  Grid
+  Star,
+  Target,
+  ThumbsUp,
+  TrendingUp,
+  User,
+  Users,
+  Verified,
+  Video,
+  X,
+  Zap
 } from 'lucide-react';
 import { 
   useAuth, 
-  useUserRoles, 
-  useClientProfile,
-  useDashboardMetrics 
+  useClientProfile, 
+  useDashboardMetrics,
+  useUserRoles 
 } from '../../stores/unified-user-store';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
@@ -543,7 +543,7 @@ const CoachCard: React.FC<{
   };
 
   const getAvailabilityText = () => {
-    const days = coach.availability.days;
+    const {days} = coach.availability;
     if (days.length === 7) return 'Available 7 days/week';
     if (days.length === 5 && !days.includes('Saturday') && !days.includes('Sunday')) {
       return 'Available weekdays';
@@ -1328,7 +1328,7 @@ export const CoachMatching: React.FC = () => {
 
   // Filter and sort coaches
   const filteredAndSortedCoaches = useMemo(() => {
-    let result = [...coaches];
+    const result = [...coaches];
 
     // Apply sorting
     result.sort((a, b) => {

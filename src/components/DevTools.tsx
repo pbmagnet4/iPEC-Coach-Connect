@@ -5,8 +5,8 @@
  * performance profiling, and debugging tools. Only renders in development mode.
  */
 
-import React, { useState, useEffect } from 'react';
-import { Settings, Activity, Database, Wifi, Bug, Zap, Eye, EyeOff } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Activity, Bug, Database, Eye, EyeOff, Settings, Wifi, Zap } from 'lucide-react';
 import { MemoryMonitor } from './MemoryMonitor';
 import { memoryManager } from '../lib/memory-manager';
 import { authService } from '../services/auth.service';
@@ -94,7 +94,7 @@ export function DevTools({
     const k = 1024;
     const sizes = ['B', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))  } ${  sizes[i]}`;
   };
 
   const formatDuration = (ms: number): string => {

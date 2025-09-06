@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowUp, ChevronUp } from 'lucide-react';
 import { MobileNavigation } from '../MobileNavigation';
 import { MobileButton } from '../ui/MobileButton';

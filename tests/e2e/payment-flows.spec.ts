@@ -11,7 +11,7 @@
  * Uses Stripe test cards and test mode webhooks
  */
 
-import { test, expect, type Page } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
 
 // Test configuration
 const TEST_USER = {
@@ -37,7 +37,7 @@ async function loginUser(page: Page, email: string = TEST_USER.email, password: 
   await page.waitForURL('/dashboard', { timeout: 10000 });
 }
 
-async function fillCardDetails(page: Page, cardNumber: string, expiryMonth: string = '12', expiryYear: string = '2025', cvc: string = '123') {
+async function fillCardDetails(page: Page, cardNumber: string, expiryMonth = '12', expiryYear = '2025', cvc = '123') {
   // Wait for Stripe Elements to load
   const stripeFrame = page.frameLocator('iframe[name*="__privateStripeFrame"]').first();
   await stripeFrame.locator('input[data-elements-stable-field-name="cardNumber"]').fill(cardNumber);

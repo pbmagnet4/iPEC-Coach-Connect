@@ -6,13 +6,13 @@ import { Button } from '../../components/ui/Button';
 import { Avatar } from '../../components/ui/Avatar';
 import { Badge } from '../../components/ui/Badge';
 import { 
-  MessageSquare, 
-  Heart,
-  Share,
-  Bookmark,
+  Bookmark, 
   Flag,
-  ThumbsUp,
-  ThumbsDown
+  Heart,
+  MessageSquare,
+  Share,
+  ThumbsDown,
+  ThumbsUp
 } from 'lucide-react';
 
 export function DiscussionDetails() {

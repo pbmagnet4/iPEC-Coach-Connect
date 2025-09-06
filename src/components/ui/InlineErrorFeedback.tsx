@@ -5,25 +5,25 @@
  * and progressive disclosure for complex validation rules.
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  CheckCircle, 
   AlertCircle, 
-  Info, 
-  Loader2,
+  Calendar, 
+  CheckCircle, 
+  CreditCard,
   Eye,
   EyeOff,
-  Shield,
-  Lock,
-  User,
-  Mail,
-  Phone,
-  CreditCard,
-  Calendar,
-  MapPin,
   Hash,
-  Type
+  Info,
+  Loader2,
+  Lock,
+  Mail,
+  MapPin,
+  Phone,
+  Shield,
+  Type,
+  User
 } from 'lucide-react';
 
 interface ValidationRule {
@@ -46,7 +46,7 @@ interface InlineErrorFeedbackProps {
   className?: string;
 }
 
-const defaultRules: { [key: string]: ValidationRule[] } = {
+const defaultRules: Record<string, ValidationRule[]> = {
   email: [
     { id: 'format', label: 'Valid email format', check: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), errorMessage: 'Please enter a valid email address' },
     { id: 'domain', label: 'Valid domain', check: (v) => !v.includes('@') || v.split('@')[1]?.includes('.'), hint: 'e.g., user@example.com' }
@@ -146,7 +146,7 @@ function getSmartSuggestions(fieldType: string, value: string): string[] {
     const email = value.toLowerCase();
     
     // Common email typos
-    const commonTypos: { [key: string]: string } = {
+    const commonTypos: Record<string, string> = {
       'gmial.com': 'gmail.com',
       'gmai.com': 'gmail.com',
       'yahooo.com': 'yahoo.com',

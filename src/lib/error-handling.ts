@@ -117,13 +117,13 @@ export class AppErrorBase extends Error {
 
 // Specific error types
 export class AuthenticationError extends AppErrorBase {
-  constructor(message: string = 'Authentication failed', code?: string, details?: any) {
+  constructor(message = 'Authentication failed', code?: string, details?: any) {
     super(message, ErrorCategory.AUTHENTICATION, ErrorSeverity.HIGH, code, details);
   }
 }
 
 export class AuthorizationError extends AppErrorBase {
-  constructor(message: string = 'Access denied', code?: string, details?: any) {
+  constructor(message = 'Access denied', code?: string, details?: any) {
     super(message, ErrorCategory.AUTHORIZATION, ErrorSeverity.HIGH, code, details);
   }
 }
@@ -135,31 +135,31 @@ export class ValidationError extends AppErrorBase {
 }
 
 export class NetworkError extends AppErrorBase {
-  constructor(message: string = 'Network request failed', code?: string, details?: any) {
+  constructor(message = 'Network request failed', code?: string, details?: any) {
     super(message, ErrorCategory.NETWORK, ErrorSeverity.MEDIUM, code, details);
   }
 }
 
 export class DatabaseError extends AppErrorBase {
-  constructor(message: string = 'Database operation failed', code?: string, details?: any) {
+  constructor(message = 'Database operation failed', code?: string, details?: any) {
     super(message, ErrorCategory.DATABASE, ErrorSeverity.HIGH, code, details);
   }
 }
 
 export class PaymentError extends AppErrorBase {
-  constructor(message: string = 'Payment processing failed', code?: string, details?: any) {
+  constructor(message = 'Payment processing failed', code?: string, details?: any) {
     super(message, ErrorCategory.PAYMENT, ErrorSeverity.HIGH, code, details);
   }
 }
 
 export class FileUploadError extends AppErrorBase {
-  constructor(message: string = 'File upload failed', code?: string, details?: any) {
+  constructor(message = 'File upload failed', code?: string, details?: any) {
     super(message, ErrorCategory.FILE_UPLOAD, ErrorSeverity.MEDIUM, code, details);
   }
 }
 
 export class RealTimeError extends AppErrorBase {
-  constructor(message: string = 'Real-time connection failed', code?: string, details?: any) {
+  constructor(message = 'Real-time connection failed', code?: string, details?: any) {
     super(message, ErrorCategory.REAL_TIME, ErrorSeverity.MEDIUM, code, details);
   }
 }
@@ -345,7 +345,7 @@ class ErrorHandler {
 
   private transformGenericError(error: Error, context?: Record<string, any>): AppError {
     let category = ErrorCategory.UNKNOWN;
-    let severity = ErrorSeverity.MEDIUM;
+    const severity = ErrorSeverity.MEDIUM;
 
     // Try to categorize based on error message
     const message = error.message.toLowerCase();

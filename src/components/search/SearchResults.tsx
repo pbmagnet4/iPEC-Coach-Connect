@@ -5,29 +5,29 @@
 
 import React, { useState } from 'react';
 import { 
-  Star,
-  MapPin,
-  Clock,
-  DollarSign,
-  User,
-  MessageSquare,
-  Calendar,
+  AlertCircle,
   BookOpen,
-  FileText,
-  ExternalLink,
+  Calendar,
   ChevronLeft,
   ChevronRight,
+  Clock,
+  DollarSign,
+  ExternalLink,
+  FileText,
   Filter,
   Grid,
   List,
   Loader,
-  AlertCircle
+  MapPin,
+  MessageSquare,
+  Star,
+  User
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
-import type { SearchResult, Coach, SearchableContent, SearchFilters } from '../../services/search.service';
+import type { Coach, SearchableContent, SearchFilters, SearchResult } from '../../services/search.service';
 
 interface SearchResultsProps {
   results: SearchResult<any> | null;
@@ -81,7 +81,7 @@ export function SearchResults({
     const maxVisiblePages = 7;
     
     let startPage = Math.max(1, page - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(total_pages, startPage + maxVisiblePages - 1);
+    const endPage = Math.min(total_pages, startPage + maxVisiblePages - 1);
     
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);

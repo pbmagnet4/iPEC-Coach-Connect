@@ -14,13 +14,14 @@
  * - Backward compatibility with existing auth service
  */
 
-import { supabase, supabaseUtils, handleSupabaseError, SupabaseError } from '../lib/supabase';
-import { logAuth, logSecurity, logPerformance } from '../lib/secure-logger';
-import { authService, AuthState, AuthResult } from './auth.service';
+import { handleSupabaseError, supabase, SupabaseError, supabaseUtils } from '../lib/supabase';
+import { logAuth, logPerformance, logSecurity } from '../lib/secure-logger';
+import type { AuthResult, AuthState } from './auth.service';
+import { authService } from './auth.service';
 import type { 
-  SupabaseAuthUser, 
   Profile, 
-  ProfileUpdate,
+  ProfileUpdate, 
+  SupabaseAuthUser,
   UserRole 
 } from '../types/database';
 
@@ -585,7 +586,7 @@ class EnhancedAuthService {
 
       // Reload user data to reflect changes
       if (userId === authService.getState().user?.id) {
-        await this.loadEnhancedUserData(authService.getState().user!);
+        await this.loadEnhancedUserData(authService.getState().user);
       }
 
       logAuth('Role assigned', true, { userId, role, assignedBy });
@@ -613,7 +614,7 @@ class EnhancedAuthService {
 
       // Reload user data to reflect changes
       if (userId === authService.getState().user?.id) {
-        await this.loadEnhancedUserData(authService.getState().user!);
+        await this.loadEnhancedUserData(authService.getState().user);
       }
 
       logAuth('Role removed', true, { userId, role });
@@ -629,7 +630,7 @@ class EnhancedAuthService {
    */
   public async updateOnboardingStage(stage: OnboardingStage, data?: Record<string, any>): Promise<AuthResult<UserState>> {
     try {
-      const user = authService.getState().user;
+      const {user} = authService.getState();
       if (!user) {
         throw new SupabaseError('User not authenticated');
       }
@@ -685,7 +686,7 @@ class EnhancedAuthService {
    */
   public async updateClientProfile(updates: Partial<ClientProfile>): Promise<AuthResult<ClientProfile>> {
     try {
-      const user = authService.getState().user;
+      const {user} = authService.getState();
       if (!user) {
         throw new SupabaseError('User not authenticated');
       }
@@ -724,7 +725,7 @@ class EnhancedAuthService {
    */
   public async submitCoachApplication(applicationData: Partial<CoachApplication>): Promise<AuthResult<CoachApplication>> {
     try {
-      const user = authService.getState().user;
+      const {user} = authService.getState();
       if (!user) {
         throw new SupabaseError('User not authenticated');
       }

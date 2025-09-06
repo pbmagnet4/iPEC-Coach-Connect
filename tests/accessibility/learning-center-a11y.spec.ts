@@ -1,5 +1,5 @@
-import { test, expect, Page } from '@playwright/test';
-import { injectAxe, checkA11y, getViolations } from 'axe-playwright';
+import { expect, Page, test } from '@playwright/test';
+import { checkA11y, getViolations, injectAxe } from 'axe-playwright';
 
 test.describe('Learning Center - Accessibility Compliance Tests', () => {
   const learningRoutes = [
@@ -36,7 +36,7 @@ test.describe('Learning Center - Accessibility Compliance Tests', () => {
 
         // Test Tab navigation
         await page.keyboard.press('Tab');
-        let focusedElement = await page.evaluate(() => document.activeElement?.tagName);
+        const focusedElement = await page.evaluate(() => document.activeElement?.tagName);
         expect(focusedElement).toBeTruthy();
 
         // Navigate through multiple elements
@@ -316,14 +316,14 @@ test.describe('Learning Center - Accessibility Compliance Tests', () => {
 
         // Check for elements that might rely only on color
         const colorOnlyElements = await page.evaluate(() => {
-          const elements: Array<{text: string, className: string}> = [];
+          const elements: {text: string, className: string}[] = [];
           
           // Look for elements with color-based classes but no text indicators
           const colorElements = document.querySelectorAll('.text-red-500, .text-green-500, .text-yellow-500, .bg-red-500, .bg-green-500, .bg-yellow-500');
           
           colorElements.forEach(el => {
             const text = el.textContent?.trim() || '';
-            const className = el.className;
+            const {className} = el;
             
             // Check if element has additional indicators besides color
             const hasIcon = el.querySelector('svg, .icon, [class*="icon"]');

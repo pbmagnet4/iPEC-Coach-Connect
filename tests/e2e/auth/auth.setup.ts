@@ -6,7 +6,7 @@
  * to avoid repeated login operations and improve test performance.
  */
 
-import { test as setup, expect } from '@playwright/test';
+import { expect, test as setup } from '@playwright/test';
 import path from 'path';
 
 // File paths for storing authentication states

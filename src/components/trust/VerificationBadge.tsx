@@ -9,15 +9,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   Award, 
+  BadgeCheck, 
+  Certificate, 
   CheckCircle, 
-  Star, 
-  Shield, 
-  Medal, 
-  Certificate,
-  Users,
+  Clock, 
+  Medal,
+  Shield,
+  Star,
   TrendingUp,
-  Clock,
-  BadgeCheck
+  Users
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 

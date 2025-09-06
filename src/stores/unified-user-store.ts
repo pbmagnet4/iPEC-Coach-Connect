@@ -20,22 +20,24 @@
  */
 
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 // import { temporal } from 'zundo'; // Optional undo/redo functionality
 import { subscribeWithSelector } from 'zustand/middleware';
+import type {
+  AccountStatus,
+  ClientProfile,
+  CoachApplication,
+  ExtendedUserRole,
+  OnboardingStage,
+  UserPermissionOverride,
+  UserRoleAssignment
+} from '../services/enhanced-auth.service';
 import { 
   enhancedAuthService, 
   EnhancedAuthState,
-  ExtendedUserRole,
-  AccountStatus,
-  OnboardingStage,
-  UserState,
-  UserRoleAssignment,
-  ClientProfile,
-  CoachApplication,
-  UserPermissionOverride
+  UserState
 } from '../services/enhanced-auth.service';
 import { supabase } from '../lib/supabase';
 import { logAuth, logPerformance } from '../lib/secure-logger';
@@ -658,8 +660,8 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
 
               calculateMetrics: () => {
                 set((state) => {
-                  const profile = state.profile;
-                  const clientProfile = state.clientProfile;
+                  const {profile} = state;
+                  const {clientProfile} = state;
                   
                   if (!profile) return;
 

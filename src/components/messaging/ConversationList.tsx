@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import { Search, Filter, Plus, Archive, MoreVertical } from 'lucide-react';
+import { Archive, Filter, MoreVertical, Plus, Search } from 'lucide-react';
 import { Avatar } from '../ui/Avatar';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { PresenceStatus } from './PresenceStatus';
 import { InlineTypingIndicator } from './TypingIndicator';
-import type { ConversationWithDetails, ConversationFilters } from '../../types/database';
+import type { ConversationFilters, ConversationWithDetails } from '../../types/database';
 
 interface ConversationListProps {
   conversations: ConversationWithDetails[];

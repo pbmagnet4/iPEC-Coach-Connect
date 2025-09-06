@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
+  AlertCircle,
   Calendar,
+  CheckCircle,
   Clock,
-  User,
-  Video,
+  Download,
+  Edit3,
   MessageCircle,
   MoreHorizontal,
-  CheckCircle,
-  XCircle,
-  AlertCircle,
-  Edit3,
+  Star,
   Trash2,
-  Download,
-  Star
+  User,
+  Video,
+  XCircle
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
-import { bookingService, type SessionWithDetails, type BookingFilters } from '../../services/booking.service';
+import { type BookingFilters, bookingService, type SessionWithDetails } from '../../services/booking.service';
 import { authService } from '../../services/auth.service';
-import { format, isToday, isTomorrow, isPast, addDays } from 'date-fns';
+import { addDays, format, isPast, isToday, isTomorrow } from 'date-fns';
 
 interface SessionManagerProps {
   view?: 'upcoming' | 'past' | 'all';

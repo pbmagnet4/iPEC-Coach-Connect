@@ -15,7 +15,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LogIn, UserPlus, Lock, Users, MessageSquare, Calendar } from 'lucide-react';
+import { Calendar, Lock, LogIn, MessageSquare, UserPlus, Users } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { useUnifiedUserStore } from '../../stores/unified-user-store';

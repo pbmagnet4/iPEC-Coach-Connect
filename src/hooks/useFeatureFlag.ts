@@ -3,12 +3,12 @@
  * Easy-to-use hook for component-level feature flagging
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { featureFlagsService } from '../services/feature-flags.service';
 import { useUserContext } from './useUserContext';
 import type {
-  UseFeatureFlagResult,
-  ABTestingError
+  ABTestingError,
+  UseFeatureFlagResult
 } from '../types/ab-testing';
 
 interface UseFeatureFlagOptions<T = any> {
@@ -180,7 +180,7 @@ export function useFeatureFlag<T = boolean>(
  */
 export function useBooleanFlag(
   flagKey: string,
-  defaultValue: boolean = false,
+  defaultValue = false,
   options?: Omit<UseFeatureFlagOptions<boolean>, 'defaultValue'>
 ): boolean {
   const { value } = useFeatureFlag(flagKey, { ...options, defaultValue });
@@ -224,7 +224,7 @@ export function useStringFlag<T extends string>(
  */
 export function useNumberFlag(
   flagKey: string,
-  defaultValue: number = 0,
+  defaultValue = 0,
   options?: Omit<UseFeatureFlagOptions<number>, 'defaultValue'>
 ): number {
   const { value } = useFeatureFlag(flagKey, { ...options, defaultValue });

@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useEffect, useReducer, useCallback, useRef } from 'react';
-import { 
+import React, { createContext, useCallback, useContext, useEffect, useReducer, useRef } from 'react';
+import type { 
   GlobalLoadingState, 
+  LoadingAnalytics, 
   LoadingContext, 
   LoadingPriority, 
-  NetworkQuality, 
-  LoadingAnalytics,
-  LoadingProviderProps 
+  LoadingProviderProps,
+  NetworkQuality 
 } from '../../../types/loading';
 
 // Loading React context (renamed to avoid conflict with LoadingContext interface)
@@ -120,9 +120,9 @@ const detectNetworkQuality = (): NetworkQuality => {
   
   if (!connection) return 'unknown';
   
-  const effectiveType = connection.effectiveType;
-  const downlink = connection.downlink;
-  const rtt = connection.rtt;
+  const {effectiveType} = connection;
+  const {downlink} = connection;
+  const {rtt} = connection;
   
   // Enhanced network quality detection
   if (effectiveType === '4g' && downlink > 10 && rtt < 100) return 'fast';
@@ -197,7 +197,7 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
     networkCheckInterval.current = setInterval(updateNetworkQuality, 30000); // Check every 30s
 
     // Listen for connection changes
-    const connection = (navigator as any).connection;
+    const {connection} = (navigator as any);
     if (connection) {
       connection.addEventListener('change', updateNetworkQuality);
     }

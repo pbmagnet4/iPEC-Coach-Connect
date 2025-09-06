@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Container } from '../ui/Container';
-import { Search, Users, Calendar, BookOpen } from 'lucide-react';
+import { BookOpen, Calendar, Search, Users } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 const steps = [

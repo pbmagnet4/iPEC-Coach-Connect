@@ -8,15 +8,15 @@
 
 import { vi } from 'vitest';
 import type { 
-  SupabaseAuthUser, 
-  SupabaseAuthSession, 
+  Coach, 
+  CoachInsert, 
   Profile, 
   ProfileInsert, 
-  Coach,
-  CoachInsert,
+  SupabaseAuthSession,
+  SupabaseAuthUser,
   UserRole 
 } from '../types/database';
-import type { AuthState, SignUpData, SignInData, CoachApplicationData } from '../services/auth.service';
+import type { AuthState, CoachApplicationData, SignInData, SignUpData } from '../services/auth.service';
 
 // Test data generation utilities
 export class AuthTestDataFactory {
@@ -115,7 +115,7 @@ export class AuthTestDataFactory {
    */
   static createAuthState(
     role: UserRole = 'client',
-    isAuthenticated: boolean = true,
+    isAuthenticated = true,
     overrides: Partial<AuthState> = {}
   ): AuthState {
     if (!isAuthenticated) {
@@ -317,7 +317,7 @@ export class AuthTestHelpers {
   static async waitForAuthState(
     authService: any,
     predicate: (state: AuthState) => boolean,
-    timeout: number = 5000
+    timeout = 5000
   ): Promise<AuthState> {
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {

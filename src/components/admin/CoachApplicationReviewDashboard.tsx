@@ -5,31 +5,31 @@
  * managing the approval workflow, and tracking application progress.
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Search,
-  Filter,
-  Eye,
-  CheckCircle,
-  XCircle,
-  Clock,
-  FileText,
-  Users,
-  Star,
-  Calendar,
-  ChevronRight,
-  Download,
-  MessageSquare,
   AlertTriangle,
   Award,
-  Mail,
-  Phone,
-  ExternalLink,
-  MoreHorizontal,
-  User,
+  Calendar,
+  CheckCircle,
   CheckSquare,
-  X
+  ChevronRight,
+  Clock,
+  Download,
+  ExternalLink,
+  Eye,
+  FileText,
+  Filter,
+  Mail,
+  MessageSquare,
+  MoreHorizontal,
+  Phone,
+  Search,
+  Star,
+  User,
+  Users,
+  X,
+  XCircle
 } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
@@ -40,9 +40,9 @@ import { useUserContext } from '../../hooks/useUserContext';
 import { coachApplicationService } from '../../services/coach-application.service';
 import { coachIntegrationService } from '../../services/coach-integration.service';
 import type {
-  CoachApplicationWithDetails,
-  CoachApplicationFilters,
   ApplicationReviewFormData,
+  CoachApplicationFilters,
+  CoachApplicationWithDetails,
   Tables
 } from '../../types/database';
 
@@ -369,7 +369,7 @@ export function CoachApplicationReviewDashboard({
       reviewData.experience_rating,
       reviewData.communication_rating,
       reviewData.professionalism_rating
-    ].filter(r => r !== undefined) as number[];
+    ].filter(r => r !== undefined);
 
     if (ratings.length === 0) return undefined;
     return ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Mail,
-  Phone,
-  MapPin,
-  Send,
-  MessageSquare,
+  AlertCircle,
+  CheckCircle,
   Clock,
   Globe,
-  CheckCircle,
-  AlertCircle,
-  Loader2
+  Loader2,
+  Mail,
+  MapPin,
+  MessageSquare,
+  Phone,
+  Send
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';

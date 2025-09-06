@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from 'lucide-react';
 
 // Simple toast implementation for iPEC Coach Connect
 interface Toast {
@@ -138,16 +138,16 @@ export const useToast = () => {
 export const toast = {
   success: (message: string, title?: string) => {
     // This is a fallback implementation - in a real app you'd need the provider
-    console.log(`✅ ${title ? title + ': ' : ''}${message}`);
+    console.log(`✅ ${title ? `${title  }: ` : ''}${message}`);
   },
   error: (message: string, title?: string) => {
-    console.error(`❌ ${title ? title + ': ' : ''}${message}`);
+    console.error(`❌ ${title ? `${title  }: ` : ''}${message}`);
   },
   warning: (message: string, title?: string) => {
-    console.warn(`⚠️ ${title ? title + ': ' : ''}${message}`);
+    console.warn(`⚠️ ${title ? `${title  }: ` : ''}${message}`);
   },
   info: (message: string, title?: string) => {
-    console.info(`ℹ️ ${title ? title + ': ' : ''}${message}`);
+    console.info(`ℹ️ ${title ? `${title  }: ` : ''}${message}`);
   }
 };
 

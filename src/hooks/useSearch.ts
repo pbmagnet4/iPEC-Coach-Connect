@@ -3,8 +3,9 @@
  * Custom hooks for search functionality and state management
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { searchService, SearchFilters, SearchResult } from '../services/search.service';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { SearchFilters, SearchResult } from '../services/search.service';
+import { searchService } from '../services/search.service';
 import { useDebounce } from './useDebounce';
 
 interface UseSearchOptions {
@@ -341,7 +342,7 @@ interface UseSearchFiltersReturn {
   refresh: () => void;
 }
 
-export function useSearchFilters(searchType: string = 'coach'): UseSearchFiltersReturn {
+export function useSearchFilters(searchType = 'coach'): UseSearchFiltersReturn {
   const [filterOptions, setFilterOptions] = useState<Record<string, any[]>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

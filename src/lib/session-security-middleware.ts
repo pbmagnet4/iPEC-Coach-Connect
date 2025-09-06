@@ -10,7 +10,7 @@
  */
 
 import { logSecurity } from './secure-logger';
-import { validateSession, refreshSession, invalidateSession } from './session-security';
+import { invalidateSession, refreshSession, validateSession } from './session-security';
 import { authService } from '../services/auth.service';
 import type { SessionValidationResult } from './session-security';
 
@@ -39,7 +39,7 @@ export interface SessionMiddlewareResult {
 export interface RequestContext {
   url: string;
   method: string;
-  headers?: { [key: string]: string };
+  headers?: Record<string, string>;
   userAgent?: string;
   ipAddress?: string;
   timestamp: number;
@@ -49,8 +49,8 @@ export interface RequestContext {
 
 class SessionSecurityMiddleware {
   private config: SessionMiddlewareConfig;
-  private sessionWarnings: Map<string, number> = new Map();
-  private activityTracker: Map<string, number> = new Map();
+  private sessionWarnings = new Map<string, number>();
+  private activityTracker = new Map<string, number>();
 
   constructor(config: Partial<SessionMiddlewareConfig> = {}) {
     this.config = {
@@ -112,7 +112,7 @@ class SessionSecurityMiddleware {
           await authService.refreshCurrentSession();
           logSecurity('Session auto-refreshed', 'low', {
             userId: user.id,
-            sessionId: secureSession.sessionId.substring(0, 8) + '...',
+            sessionId: `${secureSession.sessionId.substring(0, 8)  }...`,
             context: context.url
           });
         } catch (error) {
@@ -164,7 +164,7 @@ class SessionSecurityMiddleware {
 
     logSecurity('Invalid session detected', 'high', {
       userId: user?.id,
-      sessionId: secureSession?.sessionId?.substring(0, 8) + '...',
+      sessionId: `${secureSession?.sessionId?.substring(0, 8)  }...`,
       error: validation.error,
       context: context.url
     });
@@ -210,7 +210,7 @@ class SessionSecurityMiddleware {
 
     logSecurity('Security violation detected', validation.securityRisk || 'medium', {
       userId: user?.id,
-      sessionId: secureSession?.sessionId?.substring(0, 8) + '...',
+      sessionId: `${secureSession?.sessionId?.substring(0, 8)  }...`,
       riskLevel: validation.securityRisk,
       context: context.url,
       action: validation.action
@@ -281,10 +281,10 @@ class SessionSecurityMiddleware {
 
     // Log activity for security monitoring
     logSecurity('Session activity tracked', 'low', {
-      sessionId: sessionId.substring(0, 8) + '...',
+      sessionId: `${sessionId.substring(0, 8)  }...`,
       url: context.url,
       method: context.method,
-      userAgent: context.userAgent?.substring(0, 50) + '...'
+      userAgent: `${context.userAgent?.substring(0, 50)  }...`
     });
   }
 
@@ -295,7 +295,7 @@ class SessionSecurityMiddleware {
     try {
       const event = new CustomEvent('sessionWarning', {
         detail: {
-          sessionId: sessionId.substring(0, 8) + '...',
+          sessionId: `${sessionId.substring(0, 8)  }...`,
           timeUntilExpiry: Math.ceil(timeUntilExpiry / 60000),
           message: `Session expires in ${Math.ceil(timeUntilExpiry / 60000)} minutes`
         }
@@ -310,7 +310,7 @@ class SessionSecurityMiddleware {
   /**
    * Create request context from current environment
    */
-  createRequestContext(url: string, method: string = 'GET'): RequestContext {
+  createRequestContext(url: string, method = 'GET'): RequestContext {
     return {
       url,
       method,
@@ -470,7 +470,7 @@ export const shouldRefreshSession = sessionMiddleware.shouldRefreshSession.bind(
 export const getSessionStatus = sessionMiddleware.getSessionStatus.bind(sessionMiddleware);
 
 // Export interceptors
-export const axiosRequestInterceptor = sessionMiddleware.axiosRequestInterceptor;
-export const fetchRequestInterceptor = sessionMiddleware.fetchRequestInterceptor;
+export const {axiosRequestInterceptor} = sessionMiddleware;
+export const {fetchRequestInterceptor} = sessionMiddleware;
 
 export default sessionMiddleware;

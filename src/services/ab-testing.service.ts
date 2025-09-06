@@ -6,17 +6,17 @@
 import { supabase } from '../lib/supabase';
 import { analyticsService } from './analytics.service';
 import type {
+  ABTestingError,
+  ConversionEvent,
+  CreateExperimentPayload,
   Experiment,
   ExperimentAssignment,
-  ExperimentVariant,
   ExperimentResult,
-  ExperimentSummary,
-  ConversionEvent,
-  UserContext,
-  ABTestingError,
-  CreateExperimentPayload,
   ExperimentStatus,
-  TrafficAllocation
+  ExperimentSummary,
+  ExperimentVariant,
+  TrafficAllocation,
+  UserContext
 } from '../types/ab-testing';
 
 class ABTestingService {
@@ -258,7 +258,7 @@ class ABTestingService {
     experimentId: string,
     metricName: string,
     userContext: UserContext,
-    value: number = 1,
+    value = 1,
     properties?: Record<string, any>
   ): Promise<void> {
     try {

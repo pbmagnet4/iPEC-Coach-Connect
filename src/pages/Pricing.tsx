@@ -1,20 +1,20 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Check,
-  Star,
-  Shield,
-  Clock,
-  Users,
   ArrowRight,
-  HelpCircle,
-  Calendar,
-  MessageSquare,
-  Video,
-  FileText,
   Award,
+  Calendar,
+  Check,
+  ChevronDown,
   ChevronUp,
-  ChevronDown
+  Clock,
+  FileText,
+  HelpCircle,
+  MessageSquare,
+  Shield,
+  Star,
+  Users,
+  Video
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';

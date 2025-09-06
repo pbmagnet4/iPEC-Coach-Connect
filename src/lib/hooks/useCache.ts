@@ -6,9 +6,9 @@
  * monitoring in React components.
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { cacheIntegrationService } from '../cache-integration.service';
-import { CachePriority, CacheLevel } from '../cache.service';
+import { CacheLevel, CachePriority } from '../cache.service';
 import { logPerformance } from '../secure-logger';
 
 export interface UseCacheOptions {

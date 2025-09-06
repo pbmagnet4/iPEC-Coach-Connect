@@ -5,9 +5,7 @@
  * maintaining useful debugging information for development.
  */
 
-interface LogContext {
-  [key: string]: any;
-}
+type LogContext = Record<string, any>;
 
 interface SecureLogOptions {
   enableConsoleLogging?: boolean;

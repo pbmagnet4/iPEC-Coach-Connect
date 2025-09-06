@@ -16,9 +16,9 @@
  * initial coach discovery through successful session booking and payment.
  */
 
-import { test, expect } from '@playwright/test';
-import { createTestHelpers, createCommonAssertions } from '../utils/test-helpers';
-import { testData, createTestUser, createTestSession } from '../fixtures/test-data';
+import { expect, test } from '@playwright/test';
+import { createCommonAssertions, createTestHelpers } from '../utils/test-helpers';
+import { createTestSession, createTestUser, testData } from '../fixtures/test-data';
 
 test.describe('Coach Booking Flow', () => {
   test.beforeEach(async ({ page }) => {

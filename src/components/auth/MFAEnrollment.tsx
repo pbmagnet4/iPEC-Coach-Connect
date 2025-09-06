@@ -9,18 +9,18 @@
  * - Device trust configuration
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Shield, 
-  Smartphone, 
-  Download, 
-  Copy, 
+  AlertCircle, 
   Check, 
-  AlertCircle,
-  Eye,
+  Copy, 
+  Download, 
+  Eye, 
   EyeOff,
-  QrCode
+  QrCode,
+  Shield,
+  Smartphone
 } from 'lucide-react';
 import { mfaService } from '../../services/mfa.service';
 import type { MFAEnrollmentResult } from '../../services/mfa.service';
@@ -45,7 +45,7 @@ export function MFAEnrollment({ userId, onComplete, onCancel }: MFAEnrollmentPro
 
   // Auto-generate device name based on browser/OS
   useEffect(() => {
-    const userAgent = navigator.userAgent;
+    const {userAgent} = navigator;
     let deviceType = 'Desktop';
     let browser = 'Browser';
 

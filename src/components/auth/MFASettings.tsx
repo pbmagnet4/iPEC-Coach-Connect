@@ -9,30 +9,30 @@
  * - Security audit log
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Shield, 
-  ShieldCheck, 
-  ShieldX,
-  Smartphone, 
-  Monitor,
-  Tablet,
-  Key,
-  Download,
-  Copy,
-  Trash2,
-  AlertTriangle,
+  AlertTriangle, 
+  CheckCircle, 
   Clock,
-  CheckCircle,
+  Copy, 
+  Download,
   Eye,
+  Key,
+  Monitor,
   MoreVertical,
-  RefreshCw
+  RefreshCw,
+  Shield,
+  ShieldCheck,
+  ShieldX,
+  Smartphone,
+  Tablet,
+  Trash2
 } from 'lucide-react';
 import { mfaService } from '../../services/mfa.service';
 import { MFAEnrollment } from './MFAEnrollment';
 import { MFAVerification } from './MFAVerification';
-import type { MFASettings, MFADevice } from '../../services/mfa.service';
+import type { MFADevice, MFASettings } from '../../services/mfa.service';
 
 interface MFASettingsProps {
   userId: string;

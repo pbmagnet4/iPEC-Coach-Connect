@@ -192,7 +192,7 @@ export function getDeviceInfo(): {
   browser: string;
   os: string;
 } {
-  const userAgent = navigator.userAgent;
+  const {userAgent} = navigator;
   
   // Detect device type
   let type: 'desktop' | 'tablet' | 'mobile' = 'desktop';
@@ -243,7 +243,7 @@ export function getDeviceInfo(): {
 export function areFingerprintsSimilar(
   fingerprint1: string, 
   fingerprint2: string, 
-  threshold: number = 0.9
+  threshold = 0.9
 ): boolean {
   if (fingerprint1 === fingerprint2) return true;
   

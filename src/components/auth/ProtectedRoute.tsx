@@ -16,11 +16,13 @@
 
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { 
-  useUnifiedUserStore, 
-  ExtendedUserRole, 
+import type { 
   AccountStatus, 
+  ExtendedUserRole, 
   OnboardingStage 
+} from '../../stores/unified-user-store';
+import { 
+  useUnifiedUserStore 
 } from '../../stores/unified-user-store';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 

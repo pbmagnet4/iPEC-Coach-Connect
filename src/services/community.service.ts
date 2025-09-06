@@ -4,15 +4,15 @@
  * Manages community features including groups, discussions, and member interactions
  */
 
-import { supabase, supabaseUtils, handleSupabaseError, SupabaseError } from '../lib/supabase';
+import { handleSupabaseError, supabase, SupabaseError, supabaseUtils } from '../lib/supabase';
 import { authService } from './auth.service';
 import type {
-  Tables,
-  DiscussionWithDetails,
-  DiscussionReplyWithAuthor,
   ApiResponse,
+  DiscussionReplyWithAuthor,
+  DiscussionWithDetails,
   PaginatedResponse,
   PaginationOptions,
+  Tables,
 } from '../types/database';
 
 // Type definitions
@@ -54,7 +54,7 @@ class CommunityManagementService {
   /**
    * Get featured/popular discussions
    */
-  async getFeaturedDiscussions(limit: number = 10): Promise<ApiResponse<Discussion[]>> {
+  async getFeaturedDiscussions(limit = 10): Promise<ApiResponse<Discussion[]>> {
     try {
       const result = await supabaseUtils.db.safeQuery(async () => {
         return await supabase
@@ -89,7 +89,7 @@ class CommunityManagementService {
   /**
    * Get active groups
    */
-  async getActiveGroups(limit: number = 10): Promise<ApiResponse<Group[]>> {
+  async getActiveGroups(limit = 10): Promise<ApiResponse<Group[]>> {
     try {
       const result = await supabaseUtils.db.safeQuery(async () => {
         return await supabase
@@ -123,7 +123,7 @@ class CommunityManagementService {
   /**
    * Get trending topics (based on recent discussion activity)
    */
-  async getTrendingTopics(limit: number = 10): Promise<ApiResponse<TrendingTopic[]>> {
+  async getTrendingTopics(limit = 10): Promise<ApiResponse<TrendingTopic[]>> {
     try {
       // This is a simplified implementation - in a real app you'd have more sophisticated analytics
       const result = await supabaseUtils.db.safeQuery(async () => {
@@ -167,7 +167,7 @@ class CommunityManagementService {
   /**
    * Get new members (recently joined users)
    */
-  async getNewMembers(limit: number = 10): Promise<ApiResponse<NewMember[]>> {
+  async getNewMembers(limit = 10): Promise<ApiResponse<NewMember[]>> {
     try {
       const result = await supabaseUtils.db.safeQuery(async () => {
         return await supabase

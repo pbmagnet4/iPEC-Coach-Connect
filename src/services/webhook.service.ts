@@ -13,17 +13,17 @@
 
 import Stripe from 'stripe';
 import type {
-  WebhookEvent,
-  PaymentIntent,
-  Subscription,
-  PaymentCustomer,
-  PaymentMethod,
-  Invoice,
-  RevenueRecord,
-  WebhookProcessingResult,
-  CreateWebhookEventData,
   CreatePaymentProcessingLogData,
-  CreateRevenueRecordData
+  CreateRevenueRecordData,
+  CreateWebhookEventData,
+  Invoice,
+  PaymentCustomer,
+  PaymentIntent,
+  PaymentMethod,
+  RevenueRecord,
+  Subscription,
+  WebhookEvent,
+  WebhookProcessingResult
 } from '../types/database';
 import { supabase } from '../lib/supabase';
 import { errorHandler } from '../lib/error-handling';
@@ -486,7 +486,7 @@ export const eventHandlers = {
   async createRevenueRecord(paymentIntent: PaymentIntent, stripePaymentIntent: Stripe.PaymentIntent): Promise<void> {
     try {
       // Get coach revenue share based on entity type
-      let coachRevenueShare = 80.00; // Default
+      const coachRevenueShare = 80.00; // Default
       let coachId: string | null = null;
 
       if (paymentIntent.entity_type === 'session') {

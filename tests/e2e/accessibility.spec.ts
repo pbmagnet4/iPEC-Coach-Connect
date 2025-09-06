@@ -16,7 +16,7 @@
  * and meets international accessibility standards and guidelines.
  */
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { createTestHelpers } from '../utils/test-helpers';
 

@@ -16,10 +16,10 @@
 
 import React, { memo, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, AlertCircle, Loader, Lock, User } from 'lucide-react';
-import { useUserRoles, useAuth } from '../../stores/unified-user-store';
-import { ExtendedUserRole } from '../../services/enhanced-auth.service';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AlertCircle, Loader, Lock, Shield, User } from 'lucide-react';
+import { useAuth, useUserRoles } from '../../stores/unified-user-store';
+import type { ExtendedUserRole } from '../../services/enhanced-auth.service';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
@@ -245,7 +245,7 @@ const DefaultLoadingComponent: React.FC = () => (
 const checkRoleAccess = (
   userRoles: ExtendedUserRole[],
   requiredRoles: ExtendedUserRole[],
-  requireAll: boolean = false
+  requireAll = false
 ): boolean => {
   if (!requiredRoles.length) return true;
   
@@ -259,7 +259,7 @@ const checkRoleAccess = (
 const checkPermissionAccess = (
   checkPermissionFn: (resource: string, action: string) => boolean,
   requiredPermissions: Permission[],
-  requireAll: boolean = false
+  requireAll = false
 ): boolean => {
   if (!requiredPermissions.length) return true;
   

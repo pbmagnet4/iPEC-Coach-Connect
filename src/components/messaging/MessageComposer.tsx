@@ -1,8 +1,8 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { Send, Paperclip, Smile, X, FileImage, File, Loader } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { File, FileImage, Loader, Paperclip, Send, Smile, X } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Tooltip } from '../ui/Tooltip';
-import type { MessageFormData, FileUploadProgress } from '../../types/database';
+import type { FileUploadProgress, MessageFormData } from '../../types/database';
 
 interface MessageComposerProps {
   conversationId: string;
@@ -89,7 +89,7 @@ export function MessageComposer({
 
   // Handle message change
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
+    const {value} = e.target;
     setMessage(value);
     adjustTextareaHeight();
     
@@ -188,7 +188,7 @@ export function MessageComposer({
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))  } ${  sizes[i]}`;
   };
 
   // Check if file is image

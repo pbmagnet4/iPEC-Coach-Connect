@@ -16,42 +16,42 @@
  * - Real-time notifications and reminders
  */
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Calendar,
-  Clock,
-  Video,
-  User,
-  MapPin,
-  DollarSign,
-  Star,
-  MessageSquare,
-  FileText,
-  Download,
-  Upload,
   AlertCircle,
-  CheckCircle,
-  XCircle,
-  RefreshCw,
-  Edit,
-  Trash2,
-  Plus,
-  Filter,
-  Search,
-  Eye,
   Bell,
-  Phone,
-  Mail,
-  ChevronRight,
+  Calendar,
+  CheckCircle,
   ChevronLeft,
-  MoreVertical
+  ChevronRight,
+  Clock,
+  DollarSign,
+  Download,
+  Edit,
+  Eye,
+  FileText,
+  Filter,
+  Mail,
+  MapPin,
+  MessageSquare,
+  MoreVertical,
+  Phone,
+  Plus,
+  RefreshCw,
+  Search,
+  Star,
+  Trash2,
+  Upload,
+  User,
+  Video,
+  XCircle
 } from 'lucide-react';
 import { 
   useAuth, 
-  useUserRoles, 
-  useClientProfile,
-  useDashboardMetrics 
+  useClientProfile, 
+  useDashboardMetrics,
+  useUserRoles 
 } from '../../stores/unified-user-store';
 import { ExtendedUserRole } from '../../services/enhanced-auth.service';
 import { Card } from '../ui/Card';

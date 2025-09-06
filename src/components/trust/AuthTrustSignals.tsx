@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Lock, Eye, CheckCircle, Users, Award, Clock } from 'lucide-react';
+import { Award, CheckCircle, Clock, Eye, Lock, Shield, Users } from 'lucide-react';
 import { SecurityBadge, SecurityTrustBar } from './SecurityBadge';
 import { SocialProof } from './SocialProof';
 import { TrustSignal } from './TrustSignal';

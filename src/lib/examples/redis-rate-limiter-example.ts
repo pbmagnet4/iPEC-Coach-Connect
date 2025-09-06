@@ -284,11 +284,11 @@ async function performAuthentication(email: string, password: string) {
 // Example: Bulk operations with rate limiting
 export async function bulkOperationWithRateLimiting(
   rateLimiter: EnhancedRateLimiter,
-  operations: Array<{
+  operations: {
     email: string;
     operation: 'signin' | 'signup' | 'password_reset';
     ip?: string;
-  }>
+  }[]
 ) {
   const results = [];
 

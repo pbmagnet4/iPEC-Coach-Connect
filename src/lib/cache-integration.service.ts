@@ -15,19 +15,19 @@
  */
 
 import {
-  userProfileCache,
-  coachDataCache,
-  searchResultsCache,
-  learningResourcesCache,
-  sessionDataCache,
-  communityPostsCache,
-  cacheUtils,
-  CachePriority,
+  CACHE_STRATEGIES,
   CacheLevel,
-  CACHE_STRATEGIES
+  CachePriority,
+  cacheUtils,
+  coachDataCache,
+  communityPostsCache,
+  learningResourcesCache,
+  searchResultsCache,
+  sessionDataCache,
+  userProfileCache
 } from './cache.service';
 import { logPerformance, logSecurity } from './secure-logger';
-import type { Profile, Coach, ProfileData, CoachProfile } from '../types/database';
+import type { Coach, CoachProfile, Profile, ProfileData } from '../types/database';
 
 export interface CacheIntegrationConfig {
   enableServiceWorker: boolean;
@@ -42,18 +42,18 @@ export interface CacheWarmingPlan {
   userId: string;
   userRole: 'client' | 'coach' | 'admin';
   priority: CachePriority;
-  resources: Array<{
+  resources: {
     type: 'profile' | 'coach' | 'sessions' | 'learning' | 'community';
     key: string;
     fetchFn: () => Promise<any>;
     ttl?: number;
-  }>;
+  }[];
 }
 
 export interface CacheInvalidationPlan {
   trigger: 'profile_update' | 'coach_update' | 'session_update' | 'role_change' | 'logout';
   patterns: string[];
-  cascadeRules: { [key: string]: string[] };
+  cascadeRules: Record<string, string[]>;
 }
 
 export interface CachePerformanceReport {
@@ -65,15 +65,13 @@ export interface CachePerformanceReport {
     avgResponseTime: number;
     memoryUsage: number;
   };
-  byCache: {
-    [cacheName: string]: {
+  byCache: Record<string, {
       hits: number;
       misses: number;
       hitRate: number;
       size: number;
       efficiency: number;
-    };
-  };
+    }>;
   recommendations: string[];
 }
 
@@ -84,7 +82,7 @@ class CacheIntegrationService {
   private config: CacheIntegrationConfig;
   private serviceWorker: ServiceWorkerRegistration | null = null;
   private performanceMonitor: NodeJS.Timeout | null = null;
-  private warmingPlans: Map<string, CacheWarmingPlan> = new Map();
+  private warmingPlans = new Map<string, CacheWarmingPlan>();
 
   constructor(config: Partial<CacheIntegrationConfig> = {}) {
     this.config = {

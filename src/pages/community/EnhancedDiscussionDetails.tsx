@@ -14,23 +14,23 @@
  * - SEO-friendly content structure
  */
 
-import React, { useState, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  MessageSquare, 
-  Heart,
-  Share,
-  Bookmark,
-  Flag,
-  ThumbsUp,
-  ThumbsDown,
-  Reply,
-  MoreHorizontal,
+  Bookmark, 
   Edit,
-  Trash2,
+  Flag,
+  Heart,
+  MessageSquare,
+  MoreHorizontal,
+  Reply,
   Send,
+  Share,
   Star,
+  ThumbsDown,
+  ThumbsUp,
+  Trash2,
   Users
 } from 'lucide-react';
 import { Container } from '../../components/ui/Container';
@@ -177,8 +177,8 @@ export function EnhancedDiscussionDetails() {
     if (navigator.share) {
       navigator.share({
         title: mockDiscussion.title,
-        text: mockDiscussion.content.substring(0, 100) + '...',
-        url: url,
+        text: `${mockDiscussion.content.substring(0, 100)  }...`,
+        url,
       });
     } else {
       await navigator.clipboard.writeText(url);

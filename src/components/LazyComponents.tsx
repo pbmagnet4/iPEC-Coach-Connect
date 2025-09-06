@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from 'react';
-import { LoadingSpinner, InlineLoadingSpinner } from './ui/LoadingSpinner';
+import React, { lazy, Suspense } from 'react';
+import { InlineLoadingSpinner, LoadingSpinner } from './ui/LoadingSpinner';
 
 // Lazy load heavy components that are not immediately visible
 // Home page sections - loaded when needed

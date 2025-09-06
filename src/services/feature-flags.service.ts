@@ -7,11 +7,11 @@ import { supabase } from '../lib/supabase';
 import { abTestingService } from './ab-testing.service';
 import { analyticsService } from './analytics.service';
 import type {
-  FeatureFlag,
-  UserContext,
   ABTestingError,
+  FeatureFlag,
+  TargetingRule,
   TrafficAllocation,
-  TargetingRule
+  UserContext
 } from '../types/ab-testing';
 
 class FeatureFlagsService {
@@ -157,7 +157,7 @@ class FeatureFlagsService {
       // Check user cache first
       const userCacheKey = `${userContext.user_id}_${userContext.session_id}`;
       const userCache = this.userFlagCache.get(userCacheKey);
-      if (userCache && userCache.has(key)) {
+      if (userCache?.has(key)) {
         const cached = userCache.get(key);
         this.trackFlagEvaluation(key, cached.value, userContext, cached.variant);
         return cached;
@@ -165,7 +165,7 @@ class FeatureFlagsService {
 
       // Get flag configuration
       const flag = await this.getFlag(key);
-      if (!flag || !flag.is_active) {
+      if (!flag?.is_active) {
         const fallbackValue = defaultValue !== undefined ? defaultValue : (flag?.default_value || false);
         const result = {
           value: fallbackValue,
@@ -223,14 +223,14 @@ class FeatureFlagsService {
   /**
    * Get all flags for a user (for dashboard/debugging)
    */
-  async getUserFlags(userContext: UserContext): Promise<Array<{
+  async getUserFlags(userContext: UserContext): Promise<{
     key: string;
     name: string;
     value: any;
     variant: string | null;
     isEnabled: boolean;
     reason: string;
-  }>> {
+  }[]> {
     try {
       const flags = await this.getAllFlags();
       const results = await Promise.allSettled(
@@ -262,7 +262,7 @@ class FeatureFlagsService {
   /**
    * List all feature flags
    */
-  async listFlags(activeOnly: boolean = false): Promise<FeatureFlag[]> {
+  async listFlags(activeOnly = false): Promise<FeatureFlag[]> {
     try {
       let query = supabase.from('feature_flags').select('*');
       
@@ -287,7 +287,7 @@ class FeatureFlagsService {
   /**
    * Get flag usage statistics
    */
-  async getFlagStats(key: string, days: number = 7): Promise<{
+  async getFlagStats(key: string, days = 7): Promise<{
     evaluations: number;
     uniqueUsers: number;
     enabledRate: number;

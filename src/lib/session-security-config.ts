@@ -317,17 +317,17 @@ export function getSessionMiddlewareConfig(environment?: string): SessionMiddlew
   return SESSION_MIDDLEWARE_CONFIG[env] || SESSION_MIDDLEWARE_CONFIG.development;
 }
 
-export function getCSPConfig(environment?: string): { [key: string]: string[] | null } {
+export function getCSPConfig(environment?: string): Record<string, string[] | null> {
   const env = environment || process.env.NODE_ENV || 'development';
   return CSP_CONFIG[env as keyof typeof CSP_CONFIG] || CSP_CONFIG.development;
 }
 
-export function getSecurityHeaders(environment?: string): { [key: string]: string } {
+export function getSecurityHeaders(environment?: string): Record<string, string> {
   const env = environment || process.env.NODE_ENV || 'development';
   return SECURITY_HEADERS[env as keyof typeof SECURITY_HEADERS] || SECURITY_HEADERS.development;
 }
 
-export function getSessionRateLimits(environment?: string): { [key: string]: any } {
+export function getSessionRateLimits(environment?: string): Record<string, any> {
   const env = environment || process.env.NODE_ENV || 'development';
   return SESSION_RATE_LIMITS[env as keyof typeof SESSION_RATE_LIMITS] || SESSION_RATE_LIMITS.development;
 }
@@ -352,8 +352,8 @@ export function buildCSPString(environment?: string): string {
 
 // Security level detector
 export function detectSecurityLevel(): SecurityLevel {
-  const hostname = window.location.hostname;
-  const protocol = window.location.protocol;
+  const {hostname} = window.location;
+  const {protocol} = window.location;
   
   // Enterprise detection
   if (hostname.includes('enterprise') || hostname.includes('corp')) {

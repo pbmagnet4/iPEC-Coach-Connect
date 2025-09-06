@@ -8,21 +8,21 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Play, 
-  Pause, 
-  RotateCcw, 
+  Award, 
+  CheckCircle, 
   Eye, 
   EyeOff, 
+  Heart, 
+  Lock,
+  MessageCircle,
+  Pause,
+  Play,
+  RotateCcw,
   Settings,
-  CheckCircle,
-  Users,
   Shield,
-  Award,
   Star,
   TrendingUp,
-  Heart,
-  MessageCircle,
-  Lock
+  Users
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
@@ -31,26 +31,26 @@ import { Badge } from '../ui/Badge';
 // Trust Signal Components
 import { TrustSignal } from './TrustSignal';
 import { SecurityBadge, SecurityBadgeCollection, SecurityTrustBar } from './SecurityBadge';
-import { VerificationBadge, CoachVerificationPanel } from './VerificationBadge';
+import { CoachVerificationPanel, VerificationBadge } from './VerificationBadge';
 import { 
-  SocialProof, 
+  CommunityTrustIndicators, 
   LiveActivityFeed, 
   PlatformStats, 
-  TestimonialCarousel, 
+  SocialProof, 
   SuccessStories,
-  CommunityTrustIndicators 
+  TestimonialCarousel 
 } from './SocialProof';
 import { AuthTrustSignals, QuickAuthTrustFooter } from './AuthTrustSignals';
-import { BookingTrustSignals, QuickBookingTrustFooter, BookingTrustBanner } from './BookingTrustSignals';
+import { BookingTrustBanner, BookingTrustSignals, QuickBookingTrustFooter } from './BookingTrustSignals';
 import { 
-  TrustMicrocopy, 
-  TrustMicrocopyCollection,
+  BookingGuarantee, 
+  CoachSelectionTrust,
+  CommunityWelcome,
   EmailInputTrust,
   PaymentTrust,
-  CoachSelectionTrust,
-  BookingGuarantee,
   PrivacyAssurance,
-  CommunityWelcome 
+  TrustMicrocopy,
+  TrustMicrocopyCollection 
 } from './TrustMicrocopy';
 
 import { cn } from '../../lib/utils';

@@ -9,7 +9,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { vi } from 'vitest';
-import { useScrollRestoration, useSafeIntersectionObserver, useSafeAutofocus } from '../useScrollRestoration';
+import { useSafeAutofocus, useSafeIntersectionObserver, useScrollRestoration } from '../useScrollRestoration';
 
 // Mock router for testing
 const RouterWrapper = ({ children }: { children: React.ReactNode }) => (

@@ -3,12 +3,12 @@ import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { 
-  Lock,
-  Smartphone,
   History,
   Laptop,
+  Lock,
   LogOut,
-  Shield
+  Shield,
+  Smartphone
 } from 'lucide-react';
 
 const connectedDevices = [

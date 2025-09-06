@@ -4,13 +4,13 @@ import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { 
-  User,
-  Shield,
-  CreditCard,
   Bell,
-  Settings,
   ChevronRight,
-  Trash2
+  CreditCard,
+  Settings,
+  Shield,
+  Trash2,
+  User
 } from 'lucide-react';
 
 const settingsLinks = [

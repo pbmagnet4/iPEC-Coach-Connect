@@ -9,15 +9,15 @@
  * - Accessibility support
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Shield, 
-  Smartphone, 
-  Key, 
-  AlertTriangle,
-  Clock,
-  CheckCircle
+  AlertTriangle, 
+  CheckCircle, 
+  Clock, 
+  Key,
+  Shield,
+  Smartphone
 } from 'lucide-react';
 import { mfaService } from '../../services/mfa.service';
 import type { MFAVerificationResult } from '../../services/mfa.service';
@@ -57,7 +57,7 @@ export function MFAVerification({ userId, onSuccess, onCancel }: MFAVerification
 
   // Auto-generate device name
   useEffect(() => {
-    const userAgent = navigator.userAgent;
+    const {userAgent} = navigator;
     let deviceType = 'Desktop';
     let browser = 'Browser';
 

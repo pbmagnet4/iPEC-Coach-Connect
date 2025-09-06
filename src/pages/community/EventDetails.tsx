@@ -8,10 +8,10 @@ import { Badge } from '../../components/ui/Badge';
 import { 
   Calendar,
   Clock,
+  ExternalLink,
   MapPin,
-  Users,
   Share,
-  ExternalLink
+  Users
 } from 'lucide-react';
 
 export function EventDetails() {

@@ -9,10 +9,10 @@
  * - Error handling and edge cases
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { stripeService, stripeUtils } from '../stripe.service';
 import { supabase } from '../../lib/supabase';
-import type { PaymentCustomer, PaymentMethod, PaymentIntent } from '../../types/database';
+import type { PaymentCustomer, PaymentIntent, PaymentMethod } from '../../types/database';
 
 // Mock Stripe
 const mockStripe = {

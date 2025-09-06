@@ -36,8 +36,8 @@ interface AttemptRecord {
 }
 
 class RateLimiter {
-  private attempts: Map<string, AttemptRecord> = new Map();
-  private configs: Map<string, RateLimitConfig> = new Map();
+  private attempts = new Map<string, AttemptRecord>();
+  private configs = new Map<string, RateLimitConfig>();
 
   constructor() {
     // Default configurations for different operation types
@@ -106,7 +106,7 @@ class RateLimiter {
     const fingerprint = [
       navigator.userAgent,
       navigator.language,
-      screen.width + 'x' + screen.height,
+      `${screen.width  }x${  screen.height}`,
       new Date().getTimezoneOffset(),
       canvas.toDataURL()
     ].join('|');
@@ -350,8 +350,8 @@ class RateLimiter {
   /**
    * Get all current rate limit records (for debugging)
    */
-  getDebugInfo(): { [key: string]: any } {
-    const debugInfo: { [key: string]: any } = {};
+  getDebugInfo(): Record<string, any> {
+    const debugInfo: Record<string, any> = {};
     
     for (const [identifier, record] of this.attempts.entries()) {
       debugInfo[identifier] = {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -6,10 +6,10 @@ import { Input } from '../../components/ui/Input';
 import { TextArea } from '../../components/ui/TextArea';
 import { Select } from '../../components/ui/Select';
 import { Avatar } from '../../components/ui/Avatar';
-import { Upload, Globe, Eye, Save, Loader2, CheckCircle, AlertCircle, Clock } from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, Eye, Globe, Loader2, Save, Upload } from 'lucide-react';
 import { useForm } from '../../hooks/useForm';
 import { profileValidationSchemas } from '../../lib/form-validation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface ProfileFormData {
   firstName: string;

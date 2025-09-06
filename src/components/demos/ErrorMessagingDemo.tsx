@@ -9,25 +9,26 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   AlertCircle, 
+  BarChart3, 
   CheckCircle, 
-  RefreshCw, 
-  Play,
-  Settings,
-  BarChart3,
-  Lightbulb,
-  Shield,
-  Wifi,
   CreditCard,
+  Lightbulb,
   Lock,
-  Mail
+  Mail,
+  Play,
+  RefreshCw,
+  Settings,
+  Shield,
+  Wifi
 } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { ErrorMessage } from '../ui/ErrorMessage';
 import { InlineErrorFeedback } from '../ui/InlineErrorFeedback';
-import { ErrorRecoveryFlow, commonRecoveryFlows, useErrorRecoveryFlow } from '../ui/ErrorRecoveryFlow';
-import { getErrorMessage, ErrorContext } from '../../lib/error-messages';
-import { trackError, trackRecoveryAttempt, getErrorInsights, getErrorSummary } from '../../lib/error-analytics';
+import { commonRecoveryFlows, ErrorRecoveryFlow, useErrorRecoveryFlow } from '../ui/ErrorRecoveryFlow';
+import type { ErrorContext } from '../../lib/error-messages';
+import { getErrorMessage } from '../../lib/error-messages';
+import { getErrorInsights, getErrorSummary, trackError, trackRecoveryAttempt } from '../../lib/error-analytics';
 
 interface DemoScenario {
   id: string;

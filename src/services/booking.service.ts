@@ -12,18 +12,18 @@
  * - Session notes and feedback
  */
 
-import { sessionService, apiService, notificationService } from './api.service';
+import { apiService, notificationService, sessionService } from './api.service';
 import { authService } from './auth.service';
-import { supabase, supabaseUtils, handleSupabaseError, SupabaseError } from '../lib/supabase';
+import { handleSupabaseError, supabase, SupabaseError, supabaseUtils } from '../lib/supabase';
 import type {
-  Session,
-  SessionInsert,
-  SessionUpdate,
-  SessionWithDetails,
-  SessionFilters,
   ApiResponse,
   PaginatedResponse,
   PaginationOptions,
+  Session,
+  SessionFilters,
+  SessionInsert,
+  SessionUpdate,
+  SessionWithDetails,
 } from '../types/database';
 
 // Extended booking interfaces
@@ -213,7 +213,7 @@ class BookingService {
     coachId: string,
     startDate: string,
     endDate: string,
-    durationMinutes: number = 60
+    durationMinutes = 60
   ): Promise<ApiResponse<AvailableSlot[]>> {
     try {
       // Get coach availability pattern
@@ -455,7 +455,7 @@ class BookingService {
 
       // Apply time-based filters
       const now = new Date().toISOString();
-      let sessionFilters: SessionFilters = { ...filters, ...userIdFilter };
+      const sessionFilters: SessionFilters = { ...filters, ...userIdFilter };
 
       if (filters.upcoming) {
         sessionFilters.dateRange = {
@@ -794,7 +794,7 @@ class BookingService {
         const [startHour, startMin] = availSlot.start_time.split(':').map(Number);
         const [endHour, endMin] = availSlot.end_time.split(':').map(Number);
         
-        let slotStart = new Date(date);
+        const slotStart = new Date(date);
         slotStart.setHours(startHour, startMin, 0, 0);
         
         const slotEnd = new Date(date);

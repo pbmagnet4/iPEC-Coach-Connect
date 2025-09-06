@@ -11,26 +11,26 @@
  * - Performance monitoring
  */
 
-import { supabase, supabaseUtils, handleSupabaseError, SupabaseError } from '../lib/supabase';
+import { handleSupabaseError, supabase, SupabaseError, supabaseUtils } from '../lib/supabase';
 import type {
-  Profile,
-  ProfileInsert,
-  ProfileUpdate,
+  ApiResponse,
   Coach,
+  CoachFilters,
   CoachInsert,
   CoachUpdate,
-  Session,
-  SessionInsert,
-  SessionUpdate,
-  SessionWithDetails,
   CoachWithProfile,
   Notification,
   NotificationInsert,
-  CoachFilters,
-  SessionFilters,
-  ApiResponse,
   PaginatedResponse,
+  Profile,
+  ProfileInsert,
+  ProfileUpdate,
   RealtimePayload,
+  Session,
+  SessionFilters,
+  SessionInsert,
+  SessionUpdate,
+  SessionWithDetails,
 } from '../types/database';
 
 // Base API service configuration
@@ -459,7 +459,7 @@ class NotificationService extends BaseApiService {
     userId: string,
     options: PaginationOptions = {}
   ): Promise<ApiResponse<PaginatedResponse<Notification>>> {
-    let query = supabase
+    const query = supabase
       .from('notifications')
       .select('*', { count: 'exact' })
       .eq('user_id', userId);

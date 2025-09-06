@@ -23,7 +23,7 @@
  * - Security-focused testing for authentication vulnerabilities
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthService } from '../auth.service';
 import { SupabaseError } from '../../lib/supabase';
 
@@ -365,7 +365,7 @@ describe('AuthService', () => {
         role: 'client' as const,
       };
 
-      let loadingStates: boolean[] = [];
+      const loadingStates: boolean[] = [];
       authService.onStateChange((state) => {
         loadingStates.push(state.isLoading);
       });
@@ -455,7 +455,7 @@ describe('AuthService', () => {
         password: 'password123',
       };
 
-      let loadingStates: boolean[] = [];
+      const loadingStates: boolean[] = [];
       authService.onStateChange((state) => {
         loadingStates.push(state.isLoading);
       });
@@ -504,7 +504,7 @@ describe('AuthService', () => {
     });
 
     it('should update loading state during OAuth', async () => {
-      let loadingStates: boolean[] = [];
+      const loadingStates: boolean[] = [];
       authService.onStateChange((state) => {
         loadingStates.push(state.isLoading);
       });
@@ -546,7 +546,7 @@ describe('AuthService', () => {
     });
 
     it('should update loading state during signout', async () => {
-      let loadingStates: boolean[] = [];
+      const loadingStates: boolean[] = [];
       authService.onStateChange((state) => {
         loadingStates.push(state.isLoading);
       });

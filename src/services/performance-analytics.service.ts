@@ -26,20 +26,20 @@ export interface PerformanceMetrics {
     sessionDuration: number;
     bounceRate: number;
     pagesPerSession: number;
-    topPages: Array<{ path: string; views: number; avgTime: number }>;
+    topPages: { path: string; views: number; avgTime: number }[];
   };
   conversions: {
     registrations: number;
     bookings: number;
     subscriptions: number;
-    funnel: Array<{ stage: string; users: number; rate: number }>;
+    funnel: { stage: string; users: number; rate: number }[];
   };
   systemHealth: {
     uptime: number;
     memoryUsage: number;
     cpuUsage: number;
     responseTime: number;
-    errors: Array<{ type: string; count: number; trend: number }>;
+    errors: { type: string; count: number; trend: number }[];
   };
 }
 
@@ -89,7 +89,7 @@ export interface SystemMetric {
 class PerformanceAnalyticsService {
   private readonly CACHE_TTL = 60000; // 1 minute
   private readonly BATCH_SIZE = 100;
-  private pendingEvents: Array<WebVitalMeasurement | UserBehaviorEvent | ConversionEvent | SystemMetric> = [];
+  private pendingEvents: (WebVitalMeasurement | UserBehaviorEvent | ConversionEvent | SystemMetric)[] = [];
   private batchTimer: NodeJS.Timeout | null = null;
 
   /**
@@ -526,10 +526,10 @@ class PerformanceAnalyticsService {
     this.pendingEvents = [];
 
     try {
-      const webVitals = events.filter(e => 'metric_name' in e) as WebVitalMeasurement[];
-      const userBehavior = events.filter(e => 'event_type' in e && 'url' in e) as UserBehaviorEvent[];
-      const conversions = events.filter(e => 'event_type' in e && 'funnel_stage' in e) as ConversionEvent[];
-      const systemMetrics = events.filter(e => 'metric_type' in e) as SystemMetric[];
+      const webVitals = events.filter(e => 'metric_name' in e);
+      const userBehavior = events.filter(e => 'event_type' in e && 'url' in e);
+      const conversions = events.filter(e => 'event_type' in e && 'funnel_stage' in e);
+      const systemMetrics = events.filter(e => 'metric_type' in e);
 
       const promises: Promise<any>[] = [];
 

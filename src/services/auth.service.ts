@@ -11,41 +11,41 @@
  * - Error handling and validation
  */
 
-import { supabase, supabaseUtils, handleSupabaseError, SupabaseError } from '../lib/supabase';
-import { logAuth, logSecurity, logPerformance } from '../lib/secure-logger';
+import { handleSupabaseError, supabase, SupabaseError, supabaseUtils } from '../lib/supabase';
+import { logAuth, logPerformance, logSecurity } from '../lib/secure-logger';
 import { 
-  checkRateLimit, 
-  recordAuthAttempt, 
+  addAdminOverride, 
+  addVerifiedUser, 
+  checkRateLimit,
   getRateLimitStatus,
-  unlockAccount,
-  addVerifiedUser,
-  addAdminOverride
+  recordAuthAttempt,
+  unlockAccount
 } from '../lib/rate-limiter-enhanced';
-import { generateOAuthState, clearCSRFTokens } from '../lib/csrf-protection';
-import { setSecureData, getSecureData, removeSecureData, clearAllSecureData } from '../lib/secure-session';
+import { clearCSRFTokens, generateOAuthState } from '../lib/csrf-protection';
+import { clearAllSecureData, getSecureData, removeSecureData, setSecureData } from '../lib/secure-session';
 import { 
-  sessionSecurity, 
   createSecureSession, 
-  validateSession, 
-  refreshSession, 
-  invalidateSession,
-  getConcurrentSessions,
-  invalidateAllOtherSessions,
+  getConcurrentSessions, 
+  invalidateAllOtherSessions, 
+  invalidateSession, 
+  refreshSession,
   type SecureSessionData,
-  type SessionValidationResult 
+  sessionSecurity,
+  type SessionValidationResult,
+  validateSession 
 } from '../lib/session-security';
 import { mfaService } from './mfa.service';
 import type { MFASettings } from './mfa.service';
-import { userProfileCache, cacheUtils } from '../lib/cache';
+import { cacheUtils, userProfileCache } from '../lib/cache';
 import { memoryManager } from '../lib/memory-manager';
 import type { 
-  SupabaseAuthUser, 
-  SupabaseAuthSession, 
+  Coach, 
+  CoachInsert, 
   Profile, 
   ProfileInsert, 
   ProfileUpdate,
-  Coach,
-  CoachInsert,
+  SupabaseAuthSession,
+  SupabaseAuthUser,
   UserRole 
 } from '../types/database';
 
@@ -531,7 +531,7 @@ class AuthService {
       const rateLimitCheck = checkRateLimit('auth.signup', data.email);
       if (!rateLimitCheck.allowed) {
         const error = new SupabaseError(
-          `Too many signup attempts. Please try again ${rateLimitCheck.blockExpires ? 'after ' + new Date(rateLimitCheck.blockExpires).toLocaleTimeString() : 'later'}.`,
+          `Too many signup attempts. Please try again ${rateLimitCheck.blockExpires ? `after ${  new Date(rateLimitCheck.blockExpires).toLocaleTimeString()}` : 'later'}.`,
           'RATE_LIMITED'
         );
         recordAuthAttempt('auth.signup', false, data.email);
@@ -612,7 +612,7 @@ class AuthService {
         const error = new SupabaseError(
           rateLimitCheck.accountLocked
             ? `Account locked due to excessive failed attempts. Please contact support.`
-            : `Too many signin attempts. Please try again ${rateLimitCheck.blockExpires ? 'after ' + new Date(rateLimitCheck.blockExpires).toLocaleTimeString() : 'later'}.`,
+            : `Too many signin attempts. Please try again ${rateLimitCheck.blockExpires ? `after ${  new Date(rateLimitCheck.blockExpires).toLocaleTimeString()}` : 'later'}.`,
           rateLimitCheck.accountLocked ? 'ACCOUNT_LOCKED' : 'RATE_LIMITED'
         );
         
@@ -687,7 +687,7 @@ class AuthService {
       const rateLimitCheck = checkRateLimit('auth.oauth');
       if (!rateLimitCheck.allowed) {
         const error = new SupabaseError(
-          `Too many OAuth attempts. Please try again ${rateLimitCheck.blockExpires ? 'after ' + new Date(rateLimitCheck.blockExpires).toLocaleTimeString() : 'later'}.`,
+          `Too many OAuth attempts. Please try again ${rateLimitCheck.blockExpires ? `after ${  new Date(rateLimitCheck.blockExpires).toLocaleTimeString()}` : 'later'}.`,
           'RATE_LIMITED'
         );
         recordAuthAttempt('auth.oauth', false);
@@ -759,7 +759,7 @@ class AuthService {
       const rateLimitCheck = checkRateLimit('auth.password_reset', data.email);
       if (!rateLimitCheck.allowed) {
         const error = new SupabaseError(
-          `Too many password reset attempts. Please try again ${rateLimitCheck.blockExpires ? 'after ' + new Date(rateLimitCheck.blockExpires).toLocaleTimeString() : 'later'}.`,
+          `Too many password reset attempts. Please try again ${rateLimitCheck.blockExpires ? `after ${  new Date(rateLimitCheck.blockExpires).toLocaleTimeString()}` : 'later'}.`,
           'RATE_LIMITED'
         );
         recordAuthAttempt('auth.password_reset', false, data.email);
@@ -1283,7 +1283,7 @@ class AuthService {
    * Get rate limit status for a user
    */
   public async getRateLimitInfo(email: string): Promise<any> {
-    const user = this.currentState.user;
+    const {user} = this.currentState;
     
     return getRateLimitStatus('auth.signin', {
       clientIdentifier: email,
@@ -1496,13 +1496,13 @@ class AuthService {
   /**
    * Get session security statistics
    */
-  public getSessionSecurityStats(): { [key: string]: any } {
+  public getSessionSecurityStats(): Record<string, any> {
     try {
       const stats = sessionSecurity.getSecurityStats();
       return {
         ...stats,
         currentSession: this.currentState.secureSession ? {
-          sessionId: this.currentState.secureSession.sessionId.substring(0, 8) + '...',
+          sessionId: `${this.currentState.secureSession.sessionId.substring(0, 8)  }...`,
           expiresAt: this.currentState.sessionExpiresAt,
           requiresRefresh: this.currentState.requiresRefresh,
           concurrentSessions: this.currentState.concurrentSessions

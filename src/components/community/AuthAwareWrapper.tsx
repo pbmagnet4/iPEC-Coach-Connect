@@ -14,7 +14,8 @@
 
 import React from 'react';
 import { useUnifiedUserStore } from '../../stores/unified-user-store';
-import { AuthPrompt, AuthPromptAction, AuthPromptStyle } from './AuthPrompt';
+import type { AuthPromptAction, AuthPromptStyle } from './AuthPrompt';
+import { AuthPrompt } from './AuthPrompt';
 import { RoleGuard } from '../RoleGuard';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 

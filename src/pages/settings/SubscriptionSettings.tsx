@@ -3,12 +3,12 @@ import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { 
-  CreditCard,
-  Clock,
-  Download,
   AlertCircle,
+  ArrowRight,
   CheckCircle,
-  ArrowRight
+  Clock,
+  CreditCard,
+  Download
 } from 'lucide-react';
 
 const plans = [

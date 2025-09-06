@@ -97,9 +97,7 @@ export interface Coach {
   };
   availability: {
     timezone: string;
-    schedule: {
-      [day: string]: { start: string; end: string; }[];
-    };
+    schedule: Record<string, { start: string; end: string; }[]>;
   };
   session_types: string[];
   profile_image_url?: string;
@@ -389,7 +387,7 @@ class SearchService {
   /**
    * Get search suggestions based on query and type
    */
-  async getSuggestions(query: string = '', type: string = 'all'): Promise<SearchSuggestion[]> {
+  async getSuggestions(query = '', type = 'all'): Promise<SearchSuggestion[]> {
     const cacheKey = `${this.SUGGESTIONS_CACHE_KEY}_${type}_${query.toLowerCase()}`;
     
     const cached = await cacheService.get<SearchSuggestion[]>(cacheKey);
@@ -424,7 +422,7 @@ class SearchService {
   /**
    * Get available filter options for a search type
    */
-  async getFilterOptions(type: string = 'coach'): Promise<Record<string, any[]>> {
+  async getFilterOptions(type = 'coach'): Promise<Record<string, any[]>> {
     const cacheKey = `filter_options_${type}`;
     
     const cached = await cacheService.get<Record<string, any[]>>(cacheKey);
@@ -492,7 +490,7 @@ class SearchService {
         .insert({
           user_id: userId,
           query: filters.query,
-          filters: filters,
+          filters,
           result_count: resultCount,
           timestamp: new Date().toISOString()
         });

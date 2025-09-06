@@ -27,7 +27,7 @@ export const baseValidationSchemas = {
     .regex(/\d/, 'Password must contain at least one number')
     .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one special character'),
 
-  confirmPassword: (passwordField: string = 'password') => z
+  confirmPassword: (passwordField = 'password') => z
     .string()
     .min(1, 'Please confirm your password'),
 
@@ -272,12 +272,12 @@ export const searchValidationSchemas = {
 // Validation Utilities
 // ========================================
 
-export type ValidationResult<T> = {
+export interface ValidationResult<T> {
   success: boolean;
   data?: T;
   errors?: Record<string, string[]>;
   fieldErrors?: Record<string, string>;
-};
+}
 
 export class FormValidator {
   static validate<T>(

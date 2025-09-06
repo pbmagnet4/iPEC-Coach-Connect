@@ -13,8 +13,8 @@
  * and verify proper handling of authentication state throughout the application.
  */
 
-import { test, expect } from '@playwright/test';
-import { createTestHelpers, createCommonAssertions } from '../utils/test-helpers';
+import { expect, test } from '@playwright/test';
+import { createCommonAssertions, createTestHelpers } from '../utils/test-helpers';
 import { createTestUser, testData } from '../fixtures/test-data';
 
 test.describe('Authentication Flows', () => {

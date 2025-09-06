@@ -3,14 +3,14 @@ import { useInView } from 'react-intersection-observer';
 import { Container } from '../ui/Container';
 import { Card } from '../ui/Card';
 import { 
-  Target, 
-  Users, 
-  Clock, 
-  Shield, 
   Award, 
+  Calendar, 
+  Clock, 
+  MessageSquare, 
+  Shield, 
+  Target,
   TrendingUp,
-  Calendar,
-  MessageSquare
+  Users
 } from 'lucide-react';
 
 const benefits = {

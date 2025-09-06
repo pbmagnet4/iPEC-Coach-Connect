@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProgressBarProps, LoadingOverlayProps } from '../../../types/loading';
+import type { LoadingOverlayProps, ProgressBarProps } from '../../../types/loading';
 
 // Enhanced Progress Bar Component
 export const ProgressBar: React.FC<ProgressBarProps> = ({

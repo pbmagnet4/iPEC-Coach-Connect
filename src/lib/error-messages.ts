@@ -57,7 +57,7 @@ export interface ErrorContext {
 }
 
 class ErrorMessageService {
-  private errorHistory: Map<string, number> = new Map();
+  private errorHistory = new Map<string, number>();
   private readonly MAX_HISTORY_SIZE = 100;
 
   /**
@@ -151,7 +151,7 @@ class ErrorMessageService {
    * Get base error message for error code
    */
   private getBaseErrorMessage(errorCode: string, category: ErrorMessage['category']): ErrorMessage {
-    const errorMessages: { [key: string]: Omit<ErrorMessage, 'category'> } = {
+    const errorMessages: Record<string, Omit<ErrorMessage, 'category'>> = {
       // Authentication Errors
       INVALID_CREDENTIALS: {
         title: 'Sign In Failed',
@@ -547,7 +547,7 @@ class ErrorMessageService {
       const email = context.fieldValue.toLowerCase();
       
       // Common domain corrections
-      const corrections: { [key: string]: string } = {
+      const corrections: Record<string, string> = {
         '@gmial.com': '@gmail.com',
         '@gmai.com': '@gmail.com',
         '@yahooo.com': '@yahoo.com',
@@ -577,7 +577,7 @@ class ErrorMessageService {
   private enhanceWithContext(message: ErrorMessage, context?: ErrorContext): ErrorMessage {
     if (!context) return message;
 
-    let enhancedMessage = { ...message };
+    const enhancedMessage = { ...message };
 
     // Add operation-specific context
     if (context.operation) {
@@ -671,7 +671,7 @@ class ErrorMessageService {
    * Get operation-specific context
    */
   private getOperationContext(operation: string): string | null {
-    const contexts: { [key: string]: string } = {
+    const contexts: Record<string, string> = {
       'signin': 'This happened while trying to sign in.',
       'signup': 'This happened during account registration.',
       'reset_password': 'This happened while resetting your password.',
@@ -742,7 +742,7 @@ class ErrorMessageService {
   /**
    * Get error statistics for debugging
    */
-  getErrorStats(): { [errorCode: string]: number } {
+  getErrorStats(): Record<string, number> {
     return Object.fromEntries(this.errorHistory);
   }
 
@@ -762,7 +762,7 @@ export const getErrorMessage = (error: any, context?: ErrorContext): ErrorMessag
   return errorMessageService.getErrorMessage(error, context);
 };
 
-export const getErrorStats = (): { [errorCode: string]: number } => {
+export const getErrorStats = (): Record<string, number> => {
   return errorMessageService.getErrorStats();
 };
 

@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { useExperiment } from '../../hooks/useExperiment';
-import { Shield, Award, Users, Clock, CheckCircle, Star, Lock, Zap } from 'lucide-react';
+import { Award, CheckCircle, Clock, Lock, Shield, Star, Users, Zap } from 'lucide-react';
 
 /**
  * Hero Trust Signals A/B Test

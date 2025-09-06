@@ -1,27 +1,27 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
+  AlertCircle,
+  ArrowLeft,
+  ArrowRight,
   Calendar as CalendarIcon,
+  CheckCircle,
   Clock,
   CreditCard,
-  CheckCircle,
-  AlertCircle,
-  ArrowRight,
-  ArrowLeft,
-  User,
-  Star,
   DollarSign,
+  Loader2,
   Shield,
-  Loader2
+  Star,
+  User
 } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { BookingCalendar } from './BookingCalendar';
-import { bookingService, type BookingRequest, type AvailableSlot } from '../../services/booking.service';
-import { realTimeBookingService, type BookingConflict } from '../../services/real-time-booking.service';
+import { type AvailableSlot, type BookingRequest, bookingService } from '../../services/booking.service';
+import { type BookingConflict, realTimeBookingService } from '../../services/real-time-booking.service';
 import { coachManagementService, type CoachProfile } from '../../services/coach.service';
 import { authService } from '../../services/auth.service';
 import { format } from 'date-fns';

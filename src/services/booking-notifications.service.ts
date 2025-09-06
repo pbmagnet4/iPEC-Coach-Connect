@@ -13,7 +13,7 @@ import { supabase } from '../lib/supabase';
 import { authService } from './auth.service';
 import { sessionService } from './api.service';
 import { notificationService } from './api.service';
-import type { SessionWithDetails, Profile } from '../types/database';
+import type { Profile, SessionWithDetails } from '../types/database';
 
 export interface NotificationTemplate {
   subject: string;
@@ -71,7 +71,7 @@ class BookingNotificationsService {
   async sendCancellationNotifications(
     sessionId: string, 
     reason: string, 
-    refundAmount: number = 0
+    refundAmount = 0
   ): Promise<void> {
     try {
       const session = await this.getSessionWithDetails(sessionId);
@@ -453,7 +453,7 @@ class BookingNotificationsService {
     const sessionEnd = new Date(sessionStart.getTime() + session.duration_minutes * 60000);
     
     const formatDate = (date: Date) => {
-      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+      return `${date.toISOString().replace(/[-:]/g, '').split('.')[0]  }Z`;
     };
 
     const icsContent = [

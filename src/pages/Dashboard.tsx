@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Calendar,
-  Clock,
-  Target,
-  BookOpen,
-  TrendingUp,
-  Award,
-  ChevronRight,
-  Video,
-  MessageSquare,
   AlertCircle,
-  CheckCircle,
-  FileText,
-  Download,
-  Users,
-  Star,
-  Shield,
-  RefreshCw,
-  User,
-  Trophy,
-  Settings,
+  ArrowRight,
+  Award,
   Bell,
-  MapPin,
-  Phone,
+  BookOpen,
+  Calendar,
+  CheckCircle,
+  ChevronRight,
+  Clock,
+  Download,
   Edit,
-  ArrowRight
+  FileText,
+  MapPin,
+  MessageSquare,
+  Phone,
+  RefreshCw,
+  Settings,
+  Shield,
+  Star,
+  Target,
+  TrendingUp,
+  Trophy,
+  User,
+  Users,
+  Video
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';
@@ -34,11 +34,11 @@ import { Badge } from '../components/ui/Badge';
 import { Avatar } from '../components/ui/Avatar';
 import { 
   useAuth, 
-  useUserRoles, 
-  useOnboarding, 
-  useClientProfile,
-  useCoachApplication,
-  useDashboardMetrics 
+  useClientProfile, 
+  useCoachApplication, 
+  useDashboardMetrics,
+  useOnboarding,
+  useUserRoles 
 } from '../stores/unified-user-store';
 import { sessionService } from '../services/api.service';
 import { coachManagementService } from '../services/coach.service';

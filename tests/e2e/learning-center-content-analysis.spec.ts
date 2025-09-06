@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 
 /**
  * Learning Center Content Analysis Tests
@@ -328,7 +328,7 @@ test.describe('Learning Center Content Analysis', () => {
         approachable: ['you', 'your', 'discover', 'explore', 'learn']
       };
 
-      const toneScores: { [key: string]: number } = {};
+      const toneScores: Record<string, number> = {};
 
       for (const pagePath of learningPages) {
         await page.goto(pagePath);

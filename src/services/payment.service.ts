@@ -12,19 +12,19 @@
  */
 
 import type {
+  CoachPayoutSummary,
+  CoachWithProfile,
+  CreatePaymentProcessingLogData,
   PaymentCustomer,
   PaymentIntent,
-  Subscription,
-  SubscriptionPlan,
-  RevenueRecord,
-  Refund,
-  PaymentSummary,
-  CoachPayoutSummary,
   PaymentProcessingResult,
-  SubscriptionCreationResult,
+  PaymentSummary,
+  Refund,
+  RevenueRecord,
   SessionWithDetails,
-  CoachWithProfile,
-  CreatePaymentProcessingLogData
+  Subscription,
+  SubscriptionCreationResult,
+  SubscriptionPlan
 } from '../types/database';
 import { stripeService } from './stripe.service';
 import { authService } from './auth.service';
@@ -376,7 +376,7 @@ export const subscriptionManagementService = {
   /**
    * Cancel user subscription
    */
-  async cancelSubscription(subscriptionId: string, cancelAtPeriodEnd: boolean = true): Promise<{
+  async cancelSubscription(subscriptionId: string, cancelAtPeriodEnd = true): Promise<{
     success: boolean;
     subscription?: Subscription;
     error?: string;

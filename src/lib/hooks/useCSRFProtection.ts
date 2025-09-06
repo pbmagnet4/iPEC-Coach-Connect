@@ -5,15 +5,15 @@
  * with form handling, validation, and error management.
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { 
-  generateCSRFToken, 
-  generateFormCSRFToken, 
-  validateCSRFToken,
-  validateFormCSRFToken,
-  consumeCSRFToken,
+  clearCSRFTokens, 
+  consumeCSRFToken, 
   consumeFormCSRFToken,
-  clearCSRFTokens
+  generateCSRFToken,
+  generateFormCSRFToken,
+  validateCSRFToken,
+  validateFormCSRFToken
 } from '../csrf-protection';
 import { logSecurity } from '../secure-logger';
 
@@ -93,7 +93,7 @@ export function useCSRFProtection(options: CSRFHookOptions = {}): CSRFHookResult
 
       logSecurity('CSRF token generated via hook', 'low', {
         purpose: overrideOptions?.purpose ?? purpose,
-        tokenId: newToken.substring(0, 8) + '...',
+        tokenId: `${newToken.substring(0, 8)  }...`,
         hasNonce: tokenOptions.includeNonce,
         hasUserAgent: tokenOptions.includeUserAgent
       });
@@ -138,7 +138,7 @@ export function useCSRFProtection(options: CSRFHookOptions = {}): CSRFHookResult
         logSecurity('CSRF token validation failed in hook', 'medium', {
           reason: validation.reason,
           purpose,
-          tokenId: targetToken.substring(0, 8) + '...'
+          tokenId: `${targetToken.substring(0, 8)  }...`
         });
       }
 
@@ -178,7 +178,7 @@ export function useCSRFProtection(options: CSRFHookOptions = {}): CSRFHookResult
         
         logSecurity('CSRF token consumed via hook', 'low', {
           purpose,
-          tokenId: targetToken.substring(0, 8) + '...'
+          tokenId: `${targetToken.substring(0, 8)  }...`
         });
       } else {
         setError(consumption.reason || 'Token consumption failed');
@@ -218,7 +218,7 @@ export function useCSRFProtection(options: CSRFHookOptions = {}): CSRFHookResult
 
   // Check token expiry periodically
   useEffect(() => {
-    if (!tokenInfo || !tokenInfo.isValid) return;
+    if (!tokenInfo?.isValid) return;
 
     const checkExpiry = () => {
       const now = Date.now();
@@ -230,7 +230,7 @@ export function useCSRFProtection(options: CSRFHookOptions = {}): CSRFHookResult
         } : null);
         logSecurity('CSRF token expired in hook', 'low', {
           purpose,
-          tokenId: tokenInfo.token.substring(0, 8) + '...'
+          tokenId: `${tokenInfo.token.substring(0, 8)  }...`
         });
       }
     };
@@ -290,7 +290,7 @@ export function useFormCSRFProtection(formId: string, options: CSRFHookOptions =
 
       logSecurity('CSRF form token generated via hook', 'low', {
         formId,
-        tokenId: newToken.substring(0, 8) + '...'
+        tokenId: `${newToken.substring(0, 8)  }...`
       });
 
       return newToken;
@@ -333,7 +333,7 @@ export function useFormCSRFProtection(formId: string, options: CSRFHookOptions =
         logSecurity('CSRF form token validation failed in hook', 'medium', {
           reason: validation.reason,
           formId,
-          tokenId: targetToken.substring(0, 8) + '...'
+          tokenId: `${targetToken.substring(0, 8)  }...`
         });
       }
 
@@ -373,7 +373,7 @@ export function useFormCSRFProtection(formId: string, options: CSRFHookOptions =
         
         logSecurity('CSRF form token consumed via hook', 'low', {
           formId,
-          tokenId: targetToken.substring(0, 8) + '...'
+          tokenId: `${targetToken.substring(0, 8)  }...`
         });
       } else {
         setError(consumption.reason || 'Form token consumption failed');
@@ -413,7 +413,7 @@ export function useFormCSRFProtection(formId: string, options: CSRFHookOptions =
 
   // Check token expiry periodically
   useEffect(() => {
-    if (!tokenInfo || !tokenInfo.isValid) return;
+    if (!tokenInfo?.isValid) return;
 
     const checkExpiry = () => {
       const now = Date.now();
@@ -425,7 +425,7 @@ export function useFormCSRFProtection(formId: string, options: CSRFHookOptions =
         } : null);
         logSecurity('CSRF form token expired in hook', 'low', {
           formId,
-          tokenId: tokenInfo.token.substring(0, 8) + '...'
+          tokenId: `${tokenInfo.token.substring(0, 8)  }...`
         });
       }
     };

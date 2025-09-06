@@ -5,13 +5,13 @@
  * status updates, and communication throughout the onboarding process.
  */
 
-import { supabase, supabaseUtils, handleSupabaseError, SupabaseError } from '../lib/supabase';
+import { handleSupabaseError, supabase, SupabaseError, supabaseUtils } from '../lib/supabase';
 import { notificationService } from './notifications.service';
 import type {
-  Tables,
   CoachApplicationWithDetails,
+  CreateApplicationNotificationData,
   NotificationTemplateData,
-  CreateApplicationNotificationData
+  Tables
 } from '../types/database';
 
 interface EmailTemplate {
@@ -346,7 +346,7 @@ class CoachNotificationService {
       }
 
       const reference = referenceResult;
-      const application = reference.application;
+      const {application} = reference;
       
       // Build verification URL
       const verificationUrl = `${window.location.origin}/reference-verification?token=${verificationToken}&ref=${referenceId}`;

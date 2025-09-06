@@ -4,10 +4,10 @@ import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { 
-  Users,
-  Search,
+  Filter,
   Plus,
-  Filter
+  Search,
+  Users
 } from 'lucide-react';
 
 const mockGroups = [

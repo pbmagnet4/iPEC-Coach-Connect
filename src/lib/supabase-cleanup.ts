@@ -5,10 +5,10 @@
  * and memory management integration to prevent memory leaks.
  */
 
-import { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
+import type { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import { memoryManager } from './memory-manager';
-import { logSecurity, logPerformance } from './secure-logger';
+import { logPerformance, logSecurity } from './secure-logger';
 
 // Subscription management interfaces
 interface SupabaseSubscription {
@@ -78,7 +78,7 @@ class SupabaseSubscriptionManager {
 
     try {
       // Create or reuse channel
-      let channel = this.getOrCreateChannel(channelName);
+      const channel = this.getOrCreateChannel(channelName);
       
       // Create subscription
       const subscription: SupabaseSubscription = {
@@ -330,7 +330,7 @@ class SupabaseSubscriptionManager {
 
     return Array.from(subscriptionIds)
       .map(id => this.subscriptions.get(id))
-      .filter(sub => sub !== undefined) as SupabaseSubscription[];
+      .filter(sub => sub !== undefined);
   }
 
   /**
@@ -574,7 +574,7 @@ export function useSupabaseSubscription<T = any>(
  */
 export function useSupabaseSubscriptions<T = any>(
   subscriptions: UseSupabaseSubscriptionOptions[],
-  callbacks: Array<(payload: RealtimePostgresChangesPayload<T>) => void>
+  callbacks: ((payload: RealtimePostgresChangesPayload<T>) => void)[]
 ): {
   subscriptionIds: string[];
   allSubscribed: boolean;

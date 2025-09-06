@@ -1,18 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Search,
-  Users,
-  Calendar,
-  Target,
-  MessageSquare,
-  Star,
   ArrowRight,
-  CheckCircle,
   Award,
+  Calendar,
+  CheckCircle,
+  ChevronRight,
   Compass,
+  MessageSquare,
   Play,
-  ChevronRight
+  Search,
+  Star,
+  Target,
+  Users
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';

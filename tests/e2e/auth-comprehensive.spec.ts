@@ -25,7 +25,8 @@
  * - Visual regression testing capabilities
  */
 
-import { test, expect, Page, BrowserContext, Locator } from '@playwright/test';
+import type { Page} from '@playwright/test';
+import { BrowserContext, expect, Locator, test } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 
 // =============================================================================
@@ -327,7 +328,7 @@ class AuthTestHelpers {
     return { result, duration };
   }
 
-  static async waitForAuthRedirect(page: Page, expectedPath: string = '/dashboard') {
+  static async waitForAuthRedirect(page: Page, expectedPath = '/dashboard') {
     await page.waitForURL(`**${expectedPath}`, { timeout: 15000 });
   }
 

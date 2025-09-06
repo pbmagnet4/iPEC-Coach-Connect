@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Calendar,
-  Clock,
-  Video,
-  FileText,
-  Download,
-  Star,
-  MessageSquare,
-  ChevronRight,
   AlertCircle,
+  Calendar,
   CheckCircle,
-  X,
-  MapPin
+  ChevronRight,
+  Clock,
+  Download,
+  FileText,
+  MapPin,
+  MessageSquare,
+  Star,
+  Video,
+  X
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';

@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
+  AlertCircle, 
   Calendar, 
-  Clock, 
+  CheckCircle, 
   ChevronLeft, 
-  ChevronRight, 
-  Loader2,
-  AlertCircle,
+  ChevronRight,
+  Clock,
   Globe,
-  CheckCircle
+  Loader2
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
-import { bookingService, type AvailableSlot } from '../../services/booking.service';
+import { type AvailableSlot, bookingService } from '../../services/booking.service';
 import { coachManagementService } from '../../services/coach.service';
-import { format, addDays, startOfWeek, endOfWeek, isSameDay, parseISO, isToday, isBefore } from 'date-fns';
+import { addDays, endOfWeek, format, isBefore, isSameDay, isToday, parseISO, startOfWeek } from 'date-fns';
 
 interface BookingCalendarProps {
   coachId: string;

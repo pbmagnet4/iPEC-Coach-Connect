@@ -1,15 +1,15 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { messagingService } from '../services/messaging.service';
 import { authService } from '../services/auth.service';
 import type {
-  ConversationWithDetails,
-  MessageWithDetails,
-  SendMessageRequest,
-  MessageFormData,
   ConversationFilters,
-  TypingIndicatorWithUser,
+  ConversationWithDetails,
+  MessageFormData,
+  MessageWithDetails,
   RealtimeMessagePayload,
   RealtimeTypingPayload,
+  SendMessageRequest,
+  TypingIndicatorWithUser,
 } from '../types/database';
 
 interface UseMessagingOptions {
@@ -69,8 +69,8 @@ export function useMessaging(options: UseMessagingOptions = {}) {
   // Load messages for a conversation
   const loadMessages = useCallback(async (
     conversationId: string, 
-    page: number = 1,
-    append: boolean = false
+    page = 1,
+    append = false
   ) => {
     if (!currentUser) return;
 
@@ -116,7 +116,7 @@ export function useMessaging(options: UseMessagingOptions = {}) {
 
     try {
       // Handle file uploads if present
-      let filePromises: Promise<void>[] = [];
+      const filePromises: Promise<void>[] = [];
       
       for (const file of data.files) {
         const sendFileMessage = async () => {

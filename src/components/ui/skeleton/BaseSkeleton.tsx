@@ -1,5 +1,5 @@
 import React from 'react';
-import { SkeletonVariant } from '../../../types/loading';
+import type { SkeletonVariant } from '../../../types/loading';
 
 export interface BaseSkeletonProps extends SkeletonVariant {
   loading: boolean;

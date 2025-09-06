@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { Calendar, MessageSquare, Phone, Video, User, Clock } from 'lucide-react';
+import React, { useCallback, useState } from 'react';
+import { Calendar, Clock, MessageSquare, Phone, User, Video } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';

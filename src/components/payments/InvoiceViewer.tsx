@@ -9,7 +9,7 @@
  * - Subscription invoice handling
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { authService } from '../../services/auth.service';
 import { stripeService } from '../../services/stripe.service';
 import { supabase } from '../../lib/supabase';
@@ -19,7 +19,7 @@ import { Badge } from '../ui/Badge';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { ErrorMessage } from '../ui/ErrorMessage';
 import { Modal } from '../ui/Modal';
-import type { Invoice, InvoiceWithDetails, InvoiceLineItem } from '../../types/database';
+import type { Invoice, InvoiceLineItem, InvoiceWithDetails } from '../../types/database';
 
 interface InvoiceViewerProps {
   className?: string;
@@ -328,7 +328,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({
         {invoice.hosted_invoice_url && (
           <Button
             variant="outline"
-            onClick={() => window.open(invoice.hosted_invoice_url!, '_blank')}
+            onClick={() => window.open(invoice.hosted_invoice_url, '_blank')}
           >
             View in Stripe
           </Button>

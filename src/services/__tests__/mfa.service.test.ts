@@ -9,7 +9,7 @@
  * - Error handling and edge cases
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mfaService } from '../mfa.service';
 import { supabase } from '../../lib/supabase';
 import * as OTPAuth from 'otpauth';

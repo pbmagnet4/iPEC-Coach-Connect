@@ -168,13 +168,13 @@ function formatLastSeen(timestamp: string): string {
 }
 
 interface ConversationPresenceProps {
-  participants: Array<{
+  participants: {
     id: string;
     full_name: string | null;
     avatar_url: string | null;
     is_online: boolean;
     last_seen: string | null;
-  }>;
+  }[];
   currentUserId: string;
   className?: string;
 }

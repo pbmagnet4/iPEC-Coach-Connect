@@ -10,7 +10,7 @@
  * - Error handling and recovery
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { authService } from '../../services/auth.service';
 import iPECPaymentService from '../../services/payment.service';
 import { stripeService } from '../../services/stripe.service';
@@ -22,14 +22,14 @@ import { Badge } from '../ui/Badge';
 import PaymentForm from './PaymentForm';
 import PaymentMethodManager from './PaymentMethodManager';
 import type {
-  PaymentMethod,
+  CoachWithProfile,
   PaymentCustomer,
+  PaymentMethod,
   PaymentProcessingResult,
-  SessionWithDetails,
-  CoachWithProfile
+  SessionWithDetails
 } from '../../types/database';
 
-export type CheckoutItem = {
+export interface CheckoutItem {
   id: string;
   type: 'session' | 'course' | 'event' | 'package';
   name: string;
@@ -37,7 +37,7 @@ export type CheckoutItem = {
   price: number;
   currency?: string;
   metadata?: Record<string, any>;
-};
+}
 
 interface CheckoutFlowProps {
   items: CheckoutItem[];

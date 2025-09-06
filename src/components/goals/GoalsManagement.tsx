@@ -16,43 +16,43 @@
  * - Deadline management and reminders
  */
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Target,
-  Plus,
-  Edit,
-  Trash2,
-  CheckCircle,
-  Circle,
-  Star,
-  TrendingUp,
-  Calendar,
-  Clock,
-  Flag,
+  Activity,
+  AlertCircle,
   Award,
   BarChart3,
-  MessageSquare,
+  Brain,
+  Briefcase,
+  Calendar,
+  CheckCircle,
+  ChevronDown,
+  ChevronRight,
+  Circle,
+  Clock,
+  Edit,
   Eye,
   Filter,
-  Search,
-  RefreshCw,
-  AlertCircle,
-  ChevronRight,
-  ChevronDown,
-  Zap,
+  Flag,
   Heart,
-  Brain,
-  Users,
-  Briefcase,
   Home,
-  Activity
+  MessageSquare,
+  Plus,
+  RefreshCw,
+  Search,
+  Star,
+  Target,
+  Trash2,
+  TrendingUp,
+  Users,
+  Zap
 } from 'lucide-react';
 import { 
   useAuth, 
-  useUserRoles, 
-  useClientProfile,
-  useDashboardMetrics 
+  useClientProfile, 
+  useDashboardMetrics,
+  useUserRoles 
 } from '../../stores/unified-user-store';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';

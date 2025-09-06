@@ -4,13 +4,13 @@ import { Container } from '../ui/Container';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { 
-  Users, 
-  MessageSquare, 
-  TrendingUp, 
+  ArrowRight, 
+  Award, 
+  Globe, 
   Heart,
-  ArrowRight,
-  Globe,
-  Award
+  MessageSquare,
+  TrendingUp,
+  Users
 } from 'lucide-react';
 
 const discussions = [

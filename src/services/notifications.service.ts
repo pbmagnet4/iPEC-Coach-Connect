@@ -130,7 +130,7 @@ export interface SendNotificationOptions {
 class NotificationsService {
   private readonly CACHE_TTL = 300000; // 5 minutes
   private readonly MAX_RETRIES = 3;
-  private subscribers: Map<string, Set<(notification: Notification) => void>> = new Map();
+  private subscribers = new Map<string, Set<(notification: Notification) => void>>();
   private realtimeSubscription: any = null;
   private messageQueue: Notification[] = [];
   private isProcessingQueue = false;

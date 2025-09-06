@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Search, 
+  ChevronDown, 
+  Clock, 
   Filter, 
   Grid, 
-  List, 
-  Star, 
-  Heart,
+  Heart, 
+  List,
   MapPin,
-  Clock,
-  ChevronDown,
-  X,
-  Sliders
+  Search,
+  Sliders,
+  Star,
+  X
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';

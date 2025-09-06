@@ -141,7 +141,7 @@ class MemoryCache {
   private isDestroyed = false;
   private cacheName: string;
 
-  constructor(config: Partial<CacheConfig> = {}, name: string = 'default') {
+  constructor(config: Partial<CacheConfig> = {}, name = 'default') {
     this.config = {
       maxSize: config.maxSize || 1000,
       defaultTTL: config.defaultTTL || 15 * 60 * 1000, // 15 minutes
@@ -318,7 +318,7 @@ class MemoryCache {
     
     if (this.config.enableMetrics) {
       logPerformance('L1 Cache hit', 0, {
-        key: key.substring(0, 20) + '...',
+        key: `${key.substring(0, 20)  }...`,
         age: now - entry.timestamp,
         accessCount: entry.accessCount,
         priority: entry.priority
@@ -336,7 +336,7 @@ class MemoryCache {
     
     if (this.config.enableMetrics) {
       logPerformance('L1 Cache set', 0, {
-        key: key.substring(0, 20) + '...',
+        key: `${key.substring(0, 20)  }...`,
         ttl: entry.expiresAt - entry.timestamp,
         priority: entry.priority,
         compressed: entry.compressed,
@@ -379,7 +379,7 @@ class MemoryCache {
       
       if (this.config.enableMetrics) {
         logPerformance('L2 Cache set', 0, {
-          key: key.substring(0, 20) + '...',
+          key: `${key.substring(0, 20)  }...`,
           size: this.estimateSize(entry)
         });
       }
@@ -441,7 +441,7 @@ class MemoryCache {
 
       if (this.config.enableMetrics) {
         logPerformance('L3 Cache set', 0, {
-          key: key.substring(0, 20) + '...',
+          key: `${key.substring(0, 20)  }...`,
           size: this.estimateSize(entry)
         });
       }
@@ -1101,12 +1101,12 @@ class MemoryCache {
     return { ...this.performanceMetrics };
   }
 
-  getDebugInfo(): { [key: string]: any } {
-    const entries: { [key: string]: any } = {};
+  getDebugInfo(): Record<string, any> {
+    const entries: Record<string, any> = {};
     const now = Date.now();
 
     for (const [key, entry] of this.cache) {
-      entries[key.substring(0, 20) + '...'] = {
+      entries[`${key.substring(0, 20)  }...`] = {
         age: now - entry.timestamp,
         expiresIn: entry.expiresAt - now,
         accessCount: entry.accessCount,
@@ -1146,7 +1146,7 @@ class MemoryCache {
   /**
    * Batch operations
    */
-  async setMany<T>(entries: Array<{ key: string; data: T; ttl?: number; priority?: CachePriority }>): Promise<void> {
+  async setMany<T>(entries: { key: string; data: T; ttl?: number; priority?: CachePriority }[]): Promise<void> {
     const setPromises = entries.map(entry => 
       this.set(entry.key, entry.data, entry.ttl, entry.priority)
     );
@@ -1154,7 +1154,7 @@ class MemoryCache {
     await Promise.all(setPromises);
   }
 
-  async getMany<T>(keys: string[]): Promise<Array<{ key: string; data: T | null }>> {
+  async getMany<T>(keys: string[]): Promise<{ key: string; data: T | null }[]> {
     const getPromises = keys.map(async key => ({
       key,
       data: await this.get<T>(key)
@@ -1480,7 +1480,7 @@ export const cacheUtils = {
   /**
    * Get cache statistics for all instances
    */
-  getAllStats: (): { [key: string]: CacheMetrics } => ({
+  getAllStats: (): Record<string, CacheMetrics> => ({
     userProfile: userProfileCache.getStats(),
     coachData: coachDataCache.getStats(),
     searchResults: searchResultsCache.getStats(),
@@ -1492,7 +1492,7 @@ export const cacheUtils = {
   /**
    * Get performance metrics for all instances
    */
-  getAllPerformanceMetrics: (): { [key: string]: PerformanceMetrics } => ({
+  getAllPerformanceMetrics: (): Record<string, PerformanceMetrics> => ({
     userProfile: userProfileCache.getPerformanceMetrics(),
     coachData: coachDataCache.getPerformanceMetrics(),
     searchResults: searchResultsCache.getPerformanceMetrics(),
@@ -1556,7 +1556,7 @@ export const cacheUtils = {
   /**
    * Check if any cache is destroyed
    */
-  getCacheStatus: (): { [key: string]: boolean } => ({
+  getCacheStatus: (): Record<string, boolean> => ({
     userProfile: !userProfileCache.getIsDestroyed(),
     coachData: !coachDataCache.getIsDestroyed(),
     searchResults: !searchResultsCache.getIsDestroyed(),
@@ -1568,7 +1568,7 @@ export const cacheUtils = {
   /**
    * Get comprehensive debug information
    */
-  getDebugInfo: (): { [key: string]: any } => ({
+  getDebugInfo: (): Record<string, any> => ({
     userProfile: userProfileCache.getDebugInfo(),
     coachData: coachDataCache.getDebugInfo(),
     searchResults: searchResultsCache.getDebugInfo(),

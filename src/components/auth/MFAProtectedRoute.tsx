@@ -12,7 +12,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Loader } from 'lucide-react';
+import { Loader, Shield } from 'lucide-react';
 import { useAuth } from '../../services/auth.service';
 import { MFAVerification } from './MFAVerification';
 import { useMFA } from '../../hooks/useMFA';

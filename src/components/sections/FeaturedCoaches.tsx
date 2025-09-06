@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Container } from '../ui/Container';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { FeaturedCoachSkeleton } from '../ui/skeleton';
-import { ProgressiveImage, AccessibleLoading } from '../ui/loading';
+import { AccessibleLoading, ProgressiveImage } from '../ui/loading';
 import { generateBlurDataURL } from '../../hooks/useImageLoading';
 import { coachManagementService, type CoachProfile } from '../../services/coach.service';
 import { toast } from '../ui/Toast';

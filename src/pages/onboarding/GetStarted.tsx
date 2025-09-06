@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, ToggleLeft as Google, ChevronRight, User, AlertCircle, CheckCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, ChevronRight, ToggleLeft as Google, Lock, Mail, User } from 'lucide-react';
 import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';

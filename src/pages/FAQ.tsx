@@ -1,17 +1,17 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Search,
+  BookOpen,
+  Calendar,
   ChevronDown,
   ChevronUp,
-  MessageSquare,
-  Calendar,
   CreditCard,
-  Shield,
-  Settings,
   HelpCircle,
-  Users,
-  BookOpen
+  MessageSquare,
+  Search,
+  Settings,
+  Shield,
+  Users
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';

@@ -69,12 +69,12 @@ export interface Coach {
   // Trust signal data
   trustMetrics?: {
     verificationLevel: 'bronze' | 'silver' | 'gold' | 'platinum';
-    badges: Array<{
+    badges: {
       type: 'ipec' | 'certified' | 'verified' | 'background' | 'elite' | 'featured' | 'experienced' | 'top_rated';
       level?: 'bronze' | 'silver' | 'gold' | 'platinum';
       verified: boolean;
       date?: string;
-    }>;
+    }[];
     stats: {
       totalSessions: number;
       successRate: number;

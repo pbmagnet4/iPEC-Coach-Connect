@@ -4,7 +4,7 @@
  * Focused tests for community page without complex authentication setup
  */
 
-import { test, expect, Page } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 
 const testUrls = {
   community: '/community',

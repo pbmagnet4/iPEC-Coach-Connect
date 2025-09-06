@@ -4,11 +4,11 @@
  */
 
 import { 
-  shallowEqual, 
   compareAuthUsers, 
-  compareProfiles, 
   compareCoaches, 
-  comparisonPerformance 
+  compareProfiles, 
+  comparisonPerformance, 
+  shallowEqual 
 } from '../utils';
 
 describe('State Comparison Utilities', () => {

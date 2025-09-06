@@ -1,4 +1,5 @@
-import { test, expect, Page, BrowserContext } from '@playwright/test';
+import type { BrowserContext, Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { devices } from '@playwright/test';
 
 test.describe('Learning Center Cleanup - E2E Tests', () => {

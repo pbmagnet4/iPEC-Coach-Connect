@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  MessageSquare,
-  Mail,
-  Phone,
-  Clock,
-  Upload,
-  Send,
   AlertCircle,
   CheckCircle,
-  HelpCircle,
-  FileText,
-  X,
   ChevronRight,
+  Clock,
+  FileText,
+  HelpCircle,
   Loader2,
-  Trash2
+  Mail,
+  MessageSquare,
+  Phone,
+  Send,
+  Trash2,
+  Upload,
+  X
 } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { Card } from '../components/ui/Card';

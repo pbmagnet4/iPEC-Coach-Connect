@@ -14,30 +14,30 @@
  * - Real-time updates and notifications
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Shield,
-  Users,
-  UserPlus,
-  UserMinus,
-  Crown,
   AlertTriangle,
   CheckCircle,
   Clock,
-  Search,
-  Filter,
-  MoreHorizontal,
-  Eye,
-  Edit,
-  Trash2,
-  RefreshCw,
+  Crown,
   Download,
-  History
+  Edit,
+  Eye,
+  Filter,
+  History,
+  MoreHorizontal,
+  RefreshCw,
+  Search,
+  Shield,
+  Trash2,
+  UserMinus,
+  UserPlus,
+  Users
 } from 'lucide-react';
 import { useAuth, useUserRoles } from '../../stores/unified-user-store';
-import { ExtendedUserRole, UserRoleAssignment } from '../../services/enhanced-auth.service';
-import { ROLE_DEFINITIONS, getRoleHierarchy } from '../../lib/enhanced-roles';
+import type { ExtendedUserRole, UserRoleAssignment } from '../../services/enhanced-auth.service';
+import { getRoleHierarchy, ROLE_DEFINITIONS } from '../../lib/enhanced-roles';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';

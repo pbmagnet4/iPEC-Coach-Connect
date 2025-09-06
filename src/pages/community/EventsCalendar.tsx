@@ -7,8 +7,8 @@ import {
   Calendar,
   Clock,
   MapPin,
-  Users,
-  Plus
+  Plus,
+  Users
 } from 'lucide-react';
 
 export function EventsCalendar() {

@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { useExperiment } from '../../hooks/useExperiment';
-import { AlertTriangle, RefreshCw, MessageCircle, ArrowRight, HelpCircle, Mail } from 'lucide-react';
+import { AlertTriangle, ArrowRight, HelpCircle, Mail, MessageCircle, RefreshCw } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 interface ErrorRecoveryTestProps {

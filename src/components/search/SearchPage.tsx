@@ -3,16 +3,16 @@
  * Main search interface combining advanced search and results
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { 
-  Search,
   Bookmark,
-  Share2,
+  Clock,
   Download,
   RefreshCw,
+  Search,
+  Share2,
   TrendingUp,
-  Clock,
   Users
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -21,7 +21,8 @@ import { SearchResults } from './SearchResults';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
-import { searchService, SearchFilters, SearchResult } from '../../services/search.service';
+import type { SearchFilters, SearchResult } from '../../services/search.service';
+import { searchService } from '../../services/search.service';
 import { useAuth } from '../../hooks/useAuth';
 import { useDebounce } from '../../hooks/useDebounce';
 

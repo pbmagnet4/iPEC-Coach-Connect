@@ -3,28 +3,28 @@
  * Comprehensive search interface with filters and suggestions
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { 
-  Search,
-  Filter,
-  X,
+  BookOpen,
+  Calendar,
   ChevronDown,
   ChevronUp,
-  MapPin,
-  Star,
   Clock,
   DollarSign,
-  User,
-  BookOpen,
   FileText,
-  Calendar,
+  Filter,
   Loader,
-  SlidersHorizontal
+  MapPin,
+  Search,
+  SlidersHorizontal,
+  Star,
+  User,
+  X
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
-import { SearchFilters } from '../../services/search.service';
+import type { SearchFilters } from '../../services/search.service';
 import { useDebounce } from '../../hooks/useDebounce';
 
 interface AdvancedSearchProps {

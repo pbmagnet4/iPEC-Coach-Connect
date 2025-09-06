@@ -67,7 +67,9 @@
       "Bash(git push:*)",
       "Bash(gh:*)",
       "Bash(git remote remove:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm ci:*)"
     ],
     "deny": []
   }

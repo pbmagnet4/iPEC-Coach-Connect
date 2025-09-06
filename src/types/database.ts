@@ -2582,9 +2582,7 @@ export interface ApplicationDocumentWithDetails extends Tables<'application_docu
   verified_by_profile?: Tables<'profiles'>
 }
 
-export interface ApplicationReferenceWithDetails extends Tables<'application_references'> {
-  // Additional computed properties can be added here
-}
+export type ApplicationReferenceWithDetails = Tables<'application_references'>
 
 export interface ApplicationReviewWithDetails extends Tables<'application_reviews'> {
   reviewer: Tables<'profiles'>
@@ -2734,10 +2732,10 @@ export interface CoachApplicationMetrics {
   rejected_applications: number
   average_review_time_days: number
   approval_rate: number
-  applications_by_month: Array<{ month: string; count: number }>
-  applications_by_status: Array<{ status: string; count: number }>
+  applications_by_month: { month: string; count: number }[]
+  applications_by_status: { status: string; count: number }[]
   average_rating: number
-  top_specializations: Array<{ specialization: string; count: number }>
+  top_specializations: { specialization: string; count: number }[]
 }
 
 export interface ReviewerPerformanceMetrics {
@@ -2747,7 +2745,7 @@ export interface ReviewerPerformanceMetrics {
   average_review_time_hours: number
   reviews_this_month: number
   average_rating_given: number
-  review_distribution: Array<{ decision: string; count: number }>
+  review_distribution: { decision: string; count: number }[]
 }
 
 export interface ApplicationProgressData {
@@ -2797,10 +2795,10 @@ export interface ReferenceQuestion {
 export interface ReferenceResponse {
   reference_id: string
   verification_token: string
-  responses: Array<{
+  responses: {
     question_id: string
     answer: any
-  }>
+  }[]
   overall_rating: number
   comments: string
   would_recommend: boolean
@@ -2990,13 +2988,13 @@ export interface MessageReactionWithUser extends Tables<'message_reactions'> {
 }
 
 export interface ConversationWithDetails extends Tables<'conversations'> {
-  participant_profiles: Array<{
+  participant_profiles: {
     id: string
     full_name: string | null
     avatar_url: string | null
     is_online: boolean
     last_seen: string | null
-  }>
+  }[]
   last_message?: MessageWithDetails
   unread_count: number
   other_participant?: Tables<'profiles'>
@@ -3083,24 +3081,24 @@ export interface MessageStatus {
 export interface EmojiReaction {
   emoji: string
   count: number
-  users: Array<{
+  users: {
     id: string
     name: string
     avatar_url?: string
-  }>
+  }[]
   hasReacted: boolean
 }
 
 export interface MessageContextMenu {
   messageId: string
   position: { x: number; y: number }
-  actions: Array<{
+  actions: {
     id: string
     label: string
     icon?: string
     action: () => void
     destructive?: boolean
-  }>
+  }[]
 }
 
 // Notification and alert types
@@ -3246,11 +3244,11 @@ export interface ConversationMetrics {
   most_active_day: number
   average_response_time_minutes: number
   message_types_distribution: Record<string, number>
-  participants_activity: Array<{
+  participants_activity: {
     user_id: string
     message_count: number
     last_active: string
-  }>
+  }[]
 }
 
 export interface UserMessagingMetrics {
@@ -3260,16 +3258,16 @@ export interface UserMessagingMetrics {
   total_messages_sent: number
   total_messages_received: number
   average_response_time_minutes: number
-  most_contacted_users: Array<{
+  most_contacted_users: {
     user_id: string
     user_name: string
     message_count: number
-  }>
-  daily_activity: Array<{
+  }[]
+  daily_activity: {
     date: string
     messages_sent: number
     messages_received: number
-  }>
+  }[]
 }
 
 // Coach-client messaging types

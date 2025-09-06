@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Lock, Eye, CheckCircle, Globe, Database } from 'lucide-react';
+import { CheckCircle, Database, Eye, Globe, Lock, Shield } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 interface SecurityBadgeProps {

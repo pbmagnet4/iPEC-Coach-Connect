@@ -6,26 +6,26 @@
  */
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  ArrowRight, 
+  AlertCircle, 
   ArrowLeft,
-  CheckCircle, 
-  AlertCircle,
-  RefreshCw,
-  Mail,
-  Lock,
-  Shield,
-  CreditCard,
-  Wifi,
-  Phone,
-  MessageCircle,
-  ExternalLink,
-  Loader2,
+  ArrowRight, 
+  CheckCircle,
   ChevronRight,
+  CreditCard,
+  ExternalLink,
   FileText,
+  HelpCircle,
+  Loader2,
+  Lock,
+  Mail,
+  MessageCircle,
+  Phone,
+  RefreshCw,
+  Shield,
   User,
-  HelpCircle
+  Wifi
 } from 'lucide-react';
 import { Button } from './Button';
 
@@ -65,7 +65,7 @@ interface ErrorRecoveryFlowProps {
 }
 
 // Pre-defined recovery flows for common errors
-export const commonRecoveryFlows: { [key: string]: RecoveryFlow } = {
+export const commonRecoveryFlows: Record<string, RecoveryFlow> = {
   forgotPassword: {
     id: 'forgot-password',
     title: 'Reset Your Password',

@@ -10,7 +10,7 @@
  * - Billing history and invoices
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { authService } from '../../services/auth.service';
 import iPECPaymentService from '../../services/payment.service';
 import { stripeService } from '../../services/stripe.service';
@@ -23,12 +23,12 @@ import { Modal } from '../ui/Modal';
 import { ProgressBar } from '../ui/ProgressBar';
 import PaymentForm from './PaymentForm';
 import type {
-  Subscription,
-  SubscriptionPlan,
-  SubscriptionPlanWithPrice,
   Invoice,
   PaymentCustomer,
-  SubscriptionCreationResult
+  Subscription,
+  SubscriptionCreationResult,
+  SubscriptionPlan,
+  SubscriptionPlanWithPrice
 } from '../../types/database';
 
 interface SubscriptionManagerProps {

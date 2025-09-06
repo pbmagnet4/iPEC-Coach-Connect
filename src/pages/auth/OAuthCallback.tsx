@@ -9,17 +9,17 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '../../lib/supabase';
-import { validateOAuthState, clearCSRFTokens } from '../../lib/csrf-protection';
+import { clearCSRFTokens, validateOAuthState } from '../../lib/csrf-protection';
 import { logAuth, logSecurity } from '../../lib/secure-logger';
 import { recordAuthAttempt } from '../../lib/rate-limiter';
 import { Container } from '../../components/ui/Container';
 import { Card } from '../../components/ui/Card';
 import { 
+  AlertTriangle, 
   CheckCircle, 
-  XCircle, 
   Loader2, 
-  AlertTriangle,
-  Shield
+  Shield,
+  XCircle
 } from 'lucide-react';
 
 interface CallbackState {
@@ -82,7 +82,7 @@ export function OAuthCallback() {
       if (!stateValidation.valid) {
         logSecurity('OAuth state validation failed', 'high', {
           reason: stateValidation.reason,
-          stateParam: stateParam.substring(0, 20) + '...'
+          stateParam: `${stateParam.substring(0, 20)  }...`
         });
 
         setState({

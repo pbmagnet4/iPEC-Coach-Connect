@@ -5,7 +5,7 @@
  * in production environments.
  */
 
-import { RateLimitStore, AttemptRecord, AccountLockoutRecord } from './rate-limiter-enhanced';
+import type { AccountLockoutRecord, AttemptRecord, RateLimitStore } from './rate-limiter-enhanced';
 import { logSecurity } from './secure-logger';
 
 // Redis client interface (compatible with ioredis, redis, etc.)
@@ -23,7 +23,7 @@ export class RedisRateLimitStore implements RateLimitStore {
   private redis: RedisClient;
   private keyPrefix: string;
   
-  constructor(redisClient: RedisClient, keyPrefix: string = 'rate_limit:') {
+  constructor(redisClient: RedisClient, keyPrefix = 'rate_limit:') {
     this.redis = redisClient;
     this.keyPrefix = keyPrefix;
   }

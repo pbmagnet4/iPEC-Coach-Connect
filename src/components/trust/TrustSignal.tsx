@@ -8,19 +8,19 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Shield, 
-  CheckCircle, 
-  Star, 
-  Users, 
   Award, 
-  Lock, 
+  CheckCircle, 
+  Clock, 
   Eye, 
-  Clock,
-  TrendingUp,
-  Heart,
+  Heart, 
+  Lock, 
+  type LucideIcon, 
   MessageCircle,
+  Shield,
+  Star,
   Target,
-  type LucideIcon
+  TrendingUp,
+  Users
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 

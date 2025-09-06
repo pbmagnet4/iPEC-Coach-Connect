@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MessageBubble } from '../MessageBubble';
 import { MessageComposer } from '../MessageComposer';
@@ -7,10 +7,10 @@ import { ConversationList } from '../ConversationList';
 import { TypingIndicator } from '../TypingIndicator';
 import { PresenceStatus } from '../PresenceStatus';
 import type { 
-  MessageWithDetails, 
+  ConversationFilters, 
   ConversationWithDetails,
-  TypingIndicatorWithUser,
-  ConversationFilters 
+  MessageWithDetails,
+  TypingIndicatorWithUser 
 } from '../../../types/database';
 
 // Mock data

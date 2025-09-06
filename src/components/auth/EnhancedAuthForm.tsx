@@ -9,24 +9,24 @@
  * - Real-time validation feedback
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { 
-  Mail, 
-  Lock, 
-  User, 
-  Phone, 
-  MapPin, 
-  Shield, 
-  CheckCircle, 
   AlertCircle, 
+  AlertTriangle, 
+  ArrowLeft, 
+  ArrowRight, 
+  CheckCircle, 
   Eye, 
   EyeOff, 
-  ArrowRight, 
-  ArrowLeft,
-  Loader2,
-  AlertTriangle,
-  Info
+  Info, 
+  Loader2, 
+  Lock, 
+  Mail, 
+  MapPin,
+  Phone,
+  Shield,
+  User
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
@@ -55,9 +55,7 @@ interface FormData {
   agreeToTerms: boolean;
 }
 
-interface FormErrors {
-  [key: string]: string;
-}
+type FormErrors = Record<string, string>;
 
 interface PasswordRequirement {
   label: string;
@@ -246,7 +244,7 @@ export function EnhancedAuthForm({ mode, onModeChange, onSuccess, redirectTo }: 
   };
 
   const getErrorMessage = (error: string): string => {
-    const errorMap: { [key: string]: string } = {
+    const errorMap: Record<string, string> = {
       'Invalid login credentials': 'The email or password you entered is incorrect. Please check your credentials and try again.',
       'User already registered': 'An account with this email already exists. Try signing in instead, or use the password reset option if you\'ve forgotten your password.',
       'Signup requires a valid password': 'Please ensure your password meets all security requirements.',

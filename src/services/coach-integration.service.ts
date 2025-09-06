@@ -6,16 +6,16 @@
  * and profile activation.
  */
 
-import { supabase, supabaseUtils, handleSupabaseError, SupabaseError } from '../lib/supabase';
+import { handleSupabaseError, supabase, SupabaseError, supabaseUtils } from '../lib/supabase';
 import { authService } from './auth.service';
 import { coachNotificationService } from './coach-notification.service';
 import { coachApplicationService } from './coach-application.service';
 import type {
-  Tables,
-  CoachApplicationWithDetails,
   Coach,
+  CoachApplicationWithDetails,
   CoachInsert,
-  ProfileUpdate
+  ProfileUpdate,
+  Tables
 } from '../types/database';
 
 interface CoachActivationResult {
@@ -302,7 +302,7 @@ class CoachIntegrationService {
     const coachData: CoachInsert = {
       id: application.user_id,
       ipec_certification_number: application.ipec_certification_number,
-      certification_level: application.certification_level as 'Associate' | 'Professional' | 'Master',
+      certification_level: application.certification_level,
       certification_date: application.certification_date,
       specializations: coachProfile?.specializations || application.specializations || [],
       hourly_rate: coachProfile?.hourlyRate || application.hourly_rate || 150,
@@ -569,14 +569,14 @@ class CoachIntegrationService {
    * Bulk approve multiple coach applications
    */
   async bulkApproveCoachApplications(
-    applications: Array<{ applicationId: string; adminNotes?: string }>,
+    applications: { applicationId: string; adminNotes?: string }[],
     adminId: string
   ): Promise<{
     successful: string[];
-    failed: Array<{ applicationId: string; error: string }>;
+    failed: { applicationId: string; error: string }[];
   }> {
     const successful: string[] = [];
-    const failed: Array<{ applicationId: string; error: string }> = [];
+    const failed: { applicationId: string; error: string }[] = [];
 
     for (const app of applications) {
       try {

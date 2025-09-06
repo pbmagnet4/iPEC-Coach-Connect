@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseSkeleton, ImageSkeleton, TextSkeleton, ButtonSkeleton, AvatarSkeleton } from './BaseSkeleton';
+import { AvatarSkeleton, BaseSkeleton, ButtonSkeleton, ImageSkeleton, TextSkeleton } from './BaseSkeleton';
 
 // Message/Post Skeleton
 export interface MessageSkeletonProps {

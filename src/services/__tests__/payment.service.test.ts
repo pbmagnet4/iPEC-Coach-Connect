@@ -9,7 +9,7 @@
  * - Error handling and edge cases
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import iPECPaymentService from '../payment.service';
 import { stripeService } from '../stripe.service';
 import { authService } from '../auth.service';

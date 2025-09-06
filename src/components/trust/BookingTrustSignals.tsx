@@ -8,18 +8,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Shield, 
-  RefreshCw, 
+  Award, 
   Calendar, 
+  CheckCircle, 
+  Clock, 
   CreditCard, 
-  MessageCircle, 
-  Clock,
-  CheckCircle,
-  Award,
-  Users,
-  Heart,
   DollarSign,
-  Lock
+  Heart,
+  Lock,
+  MessageCircle,
+  RefreshCw,
+  Shield,
+  Users
 } from 'lucide-react';
 import { TrustSignal } from './TrustSignal';
 import { SecurityBadge } from './SecurityBadge';

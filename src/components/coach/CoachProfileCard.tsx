@@ -8,24 +8,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Star, 
-  MapPin, 
-  Clock, 
-  Users, 
+  Award, 
   Calendar, 
-  MessageCircle, 
-  Award,
-  TrendingUp,
-  Shield,
-  CheckCircle,
+  CheckCircle, 
+  Clock, 
+  Heart, 
+  MapPin, 
+  MessageCircle,
   Phone,
-  Video,
-  Heart
+  Shield,
+  Star,
+  TrendingUp,
+  Users,
+  Video
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Avatar } from '../ui/Avatar';
 import { Badge } from '../ui/Badge';
-import { VerificationBadge, CoachVerificationPanel } from '../trust/VerificationBadge';
+import { CoachVerificationPanel, VerificationBadge } from '../trust/VerificationBadge';
 import { TrustSignal } from '../trust/TrustSignal';
 import { CoachSelectionTrust } from '../trust/TrustMicrocopy';
 import { cn } from '../../lib/utils';
@@ -92,7 +92,7 @@ export function CoachProfileCard({
   const renderTrustStats = () => {
     if (!coach.trustMetrics?.stats) return null;
 
-    const stats = coach.trustMetrics.stats;
+    const {stats} = coach.trustMetrics;
     
     return (
       <div className="grid grid-cols-2 gap-4 text-sm">
@@ -134,7 +134,7 @@ export function CoachProfileCard({
   };
 
   const renderLocationInfo = () => {
-    const location = coach.location;
+    const {location} = coach;
     
     return (
       <div className="flex items-center gap-2 text-sm text-gray-600">

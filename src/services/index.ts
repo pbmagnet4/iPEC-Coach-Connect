@@ -190,8 +190,8 @@ export const serviceUtils = {
    */
   async retryOperation<T>(
     operation: () => Promise<T>,
-    maxRetries: number = 3,
-    baseDelay: number = 1000
+    maxRetries = 3,
+    baseDelay = 1000
   ): Promise<T> {
     let lastError: any;
     
@@ -233,7 +233,7 @@ export const serviceUtils = {
         return item.data;
       },
       
-      set<T>(key: string, data: T, ttlMs: number = 300000): void {
+      set<T>(key: string, data: T, ttlMs = 300000): void {
         cache.set(key, {
           data,
           expires: Date.now() + ttlMs,
