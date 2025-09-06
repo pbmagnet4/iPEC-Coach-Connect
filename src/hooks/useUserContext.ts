@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useState, useMemo } from 'react';
-import { useAuthStore } from '../lib/store';
+import { useStore } from '../lib/store';
 import type { UserContext } from '../types/ab-testing';
 
 // Generate session ID that persists for the browser session
@@ -95,7 +95,8 @@ const calculateEngagementScore = (sessionCount: number, totalBookings: number, l
  * Hook to get user context for A/B testing and feature flags
  */
 export function useUserContext(): UserContext | null {
-  const { user, isAuthenticated } = useAuthStore();
+  const user = useStore((state) => state.user);
+  const isAuthenticated = !!user;
   const [location, setLocation] = useState<{ country: string; region: string; city: string } | undefined>();
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -143,19 +144,19 @@ export function useUserContext(): UserContext | null {
 
     // For authenticated users, use actual user data
     const userProperties = {
-      registration_date: user.created_at || new Date().toISOString(),
-      user_type: (user.user_metadata?.user_type as 'client' | 'coach' | 'admin') || 'client',
-      subscription_tier: (user.user_metadata?.subscription_tier as 'free' | 'premium' | 'enterprise') || 'free',
+      registration_date: user.createdAt || new Date().toISOString(),
+      user_type: 'client' as 'client' | 'coach' | 'admin', // Default to client for now
+      subscription_tier: 'free' as 'free' | 'premium' | 'enterprise', // Default to free for now
       location,
       device_info: deviceInfo,
       behavioral_attributes: {
-        session_count: user.user_metadata?.session_count || 1,
-        last_login: user.last_sign_in_at || new Date().toISOString(),
-        total_bookings: user.user_metadata?.total_bookings || 0,
+        session_count: 1, // Default values for now
+        last_login: new Date().toISOString(),
+        total_bookings: 0,
         engagement_score: calculateEngagementScore(
-          user.user_metadata?.session_count || 1,
-          user.user_metadata?.total_bookings || 0,
-          user.last_sign_in_at || new Date().toISOString()
+          1,
+          0,
+          new Date().toISOString()
         )
       }
     };
