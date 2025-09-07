@@ -255,7 +255,7 @@ describe('useForm Hook', () => {
       });
 
       return (
-        <form onSubmit={form.handleSubmit()}>
+        <form onSubmit={(e) => { void form.handleSubmit()(e); }}>
           <input {...form.getFieldProps('name')} data-testid="name-input" />
           <input {...form.getFieldProps('email')} data-testid="email-input" type="email" />
           <input {...form.getFieldProps('subject')} data-testid="subject-input" />
@@ -308,7 +308,7 @@ describe('useForm Hook', () => {
       });
 
       return (
-        <form onSubmit={form.handleSubmit()}>
+        <form onSubmit={(e) => { void form.handleSubmit()(e); }}>
           <input {...form.getFieldProps('name')} data-testid="name-input" />
           <input {...form.getFieldProps('email')} data-testid="email-input" type="email" />
           <button type="submit" data-testid="submit-button">Submit</button>

@@ -6,11 +6,12 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { Activity, Bug, Database, Eye, EyeOff, Settings, Wifi, Zap } from 'lucide-react';
+import { Activity, Bug, Database, EyeOff, Settings, Wifi, Zap } from 'lucide-react';
 import { MemoryMonitor } from './MemoryMonitor';
 import { memoryManager } from '../lib/memory-manager';
 import { authService } from '../services/auth.service';
 import { cacheUtils } from '../lib/cache';
+import type { MemoryInfo, NavigationTiming, PerformanceEntry, SafeRecord } from '../types/common';
 
 interface DevToolsProps {
   position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
@@ -22,6 +23,36 @@ interface DevToolsProps {
   className?: string;
 }
 
+interface PerformanceStats {
+  navigation: NavigationTiming | Record<string, unknown>;
+  memory: MemoryInfo | Record<string, unknown>;
+  timing: Record<string, unknown>;
+  now: number;
+}
+
+interface CacheStatEntry {
+  hitRate: number;
+  size: number;
+  hits: number;
+  misses: number;
+}
+
+interface AuthStatEntry {
+  listenersCount: number;
+  hasSupabaseSubscription: boolean;
+  hasCleanupInterval: boolean;
+  hasValidationInterval: boolean;
+  isDestroyed: boolean;
+}
+
+interface NetworkStats {
+  totalRequests: number;
+  totalSize: number;
+  avgResponseTime: number;
+  slowRequests: number;
+  failedRequests: number;
+}
+
 export function DevTools({
   position = 'top-right',
   showMemoryMonitor = true,
@@ -31,17 +62,30 @@ export function DevTools({
   showNetworkStats = true,
   className = ''
 }: DevToolsProps) {
-  // Only render in development
-  if (process.env.NODE_ENV !== 'development') {
-    return null;
-  }
-
+  // All hooks must be called at the top level
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<'memory' | 'performance' | 'cache' | 'auth' | 'network' | null>(null);
-  const [performanceStats, setPerformanceStats] = useState<any>({});
-  const [cacheStats, setCacheStats] = useState<any>({});
-  const [authStats, setAuthStats] = useState<any>({});
-  const [networkStats, setNetworkStats] = useState<any>({});
+  const [performanceStats, setPerformanceStats] = useState<PerformanceStats>({
+    navigation: {},
+    memory: {},
+    timing: {},
+    now: 0
+  });
+  const [cacheStats, setCacheStats] = useState<SafeRecord<CacheStatEntry>>({});
+  const [authStats, setAuthStats] = useState<AuthStatEntry>({
+    listenersCount: 0,
+    hasSupabaseSubscription: false,
+    hasCleanupInterval: false,
+    hasValidationInterval: false,
+    isDestroyed: false
+  });
+  const [networkStats, setNetworkStats] = useState<NetworkStats>({
+    totalRequests: 0,
+    totalSize: 0,
+    avgResponseTime: 0,
+    slowRequests: 0,
+    failedRequests: 0
+  });
 
   const positionClasses = {
     'top-left': 'top-4 left-4',
@@ -54,32 +98,38 @@ export function DevTools({
   useEffect(() => {
     const updateStats = () => {
       if (showPerformanceStats) {
+        const perfMemory = (performance as unknown as { memory?: MemoryInfo }).memory;
         setPerformanceStats({
           navigation: performance.getEntriesByType('navigation')[0] || {},
-          memory: (performance as any).memory || {},
-          timing: performance.timing || {},
+          memory: perfMemory || {},
+          timing: (performance as unknown as { timing?: Record<string, unknown> }).timing || {},
           now: performance.now()
         });
       }
 
       if (showCacheStats) {
-        setCacheStats(cacheUtils.getAllStats());
+        setCacheStats(cacheUtils.getAllStats() as SafeRecord<CacheStatEntry>);
       }
 
       if (showAuthStats) {
-        setAuthStats(authService.getMemoryStats());
+        setAuthStats(authService.getMemoryStats() as AuthStatEntry);
       }
 
       if (showNetworkStats) {
-        const resources = performance.getEntriesByType('resource');
+        const resources = performance.getEntriesByType('resource') as PerformanceEntry[];
+        const safeResources = resources.map(r => r as PerformanceEntry & {
+          transferSize?: number;
+          responseStatus?: number;
+        });
+        
         setNetworkStats({
           totalRequests: resources.length,
-          totalSize: resources.reduce((sum, resource: any) => sum + (resource.transferSize || 0), 0),
+          totalSize: safeResources.reduce((sum, resource) => sum + (resource.transferSize ?? 0), 0),
           avgResponseTime: resources.length > 0 
-            ? resources.reduce((sum, resource: any) => sum + resource.duration, 0) / resources.length 
+            ? safeResources.reduce((sum, resource) => sum + resource.duration, 0) / resources.length 
             : 0,
-          slowRequests: resources.filter((resource: any) => resource.duration > 1000).length,
-          failedRequests: resources.filter((resource: any) => resource.responseStatus >= 400).length
+          slowRequests: safeResources.filter((resource) => resource.duration > 1000).length,
+          failedRequests: safeResources.filter((resource) => (resource.responseStatus ?? 0) >= 400).length
         });
       }
     };
@@ -115,18 +165,23 @@ export function DevTools({
 
   const handleMemoryCleanup = async () => {
     await memoryManager.cleanupAll();
-    alert('Memory cleanup completed');
+    console.warn('DevTools: Memory cleanup completed');
   };
 
   const handleCacheClear = async () => {
     await cacheUtils.clearAllCaches();
-    alert('Cache cleared');
+    console.warn('DevTools: Cache cleared');
   };
 
   const handleAuthReset = () => {
     authService.destroy();
-    alert('Auth service reset');
+    console.warn('DevTools: Auth service reset');
   };
+
+  // Only render in development
+  if (process.env.NODE_ENV !== 'development') {
+    return null;
+  }
 
   if (!isOpen) {
     return (

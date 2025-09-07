@@ -203,7 +203,7 @@ export interface UnifiedUserState {
 const defaultPreferences: UserPreferences = {
   theme: 'system',
   language: 'en',
-  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
+  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'UTC',
   dateFormat: 'MM/dd/yyyy',
   notifications: {
     email: true,
@@ -274,7 +274,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               
               metrics: defaultMetrics,
               
-              isOnline: navigator.onLine || true,
+              isOnline: navigator.onLine ?? true,
               lastSyncAt: null,
               syncQueue: [],
               realtimeSubscription: null,
@@ -431,9 +431,9 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
                         'pending_coach': 40,
                         'suspended': 10
                       };
-                      return (hierarchyMap[b.role as keyof typeof hierarchyMap] || 0) - 
-                             (hierarchyMap[a.role as keyof typeof hierarchyMap] || 0);
-                    })[0]?.role || null;
+                      return (hierarchyMap[b.role as keyof typeof hierarchyMap] ?? 0) - 
+                             (hierarchyMap[a.role as keyof typeof hierarchyMap] ?? 0);
+                    })[0]?.role ?? null;
                     
                   state.primaryRole = primaryRole;
                 });
@@ -540,7 +540,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
                 }
                 
                 set((state) => {
-                  state.coachApplication = result.data || null;
+                  state.coachApplication = result.data ?? null;
                 });
               },
 
@@ -670,10 +670,10 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
                   
                   state.metrics = {
                     profileCompletion: state.profileCompletion,
-                    totalSessions: clientProfile?.total_sessions_completed || 0,
+                    totalSessions: clientProfile?.total_sessions_completed ?? 0,
                     upcomingSessions: 0, // Would be calculated from sessions data
-                    completedGoals: clientProfile?.coaching_goals?.length || 0,
-                    activeStreak: clientProfile?.current_coaching_streak || 0,
+                    completedGoals: clientProfile?.coaching_goals?.length ?? 0,
+                    activeStreak: clientProfile?.current_coaching_streak ?? 0,
                     joinedDaysAgo: Math.floor((now.getTime() - joinedDate.getTime()) / (1000 * 60 * 60 * 24)),
                     lastLoginDaysAgo: 0, // Would be calculated from last login
                   };
@@ -772,7 +772,7 @@ const initializeStore = () => {
       // Update authentication state
       state.isAuthenticated = authState.isAuthenticated;
       state.isLoading = authState.isLoading;
-      state.userId = authState.user?.id || null;
+      state.userId = authState.user?.id ?? null;
       state.requiresMFA = authState.requiresMFA;
       state.mfaVerified = authState.mfaVerified;
       state.sessionExpiresAt = authState.sessionExpiresAt;
@@ -781,18 +781,18 @@ const initializeStore = () => {
       if (authState.profile) {
         state.profile = {
           id: authState.profile.id,
-          email: authState.profile.email || authState.user?.email || '',
-          full_name: authState.profile.full_name || '',
+          email: authState.profile.email ?? authState.user?.email ?? '',
+          full_name: authState.profile.full_name ?? '',
           display_name: authState.profile.display_name,
           avatar_url: authState.profile.avatar_url,
           bio: authState.profile.bio,
           phone: authState.profile.phone,
           location: authState.profile.location,
-          timezone: authState.profile.timezone || 'UTC',
-          preferred_language: authState.profile.preferred_language || 'en',
-          notification_preferences: authState.profile.notification_preferences || {},
-          created_at: authState.profile.created_at || new Date().toISOString(),
-          updated_at: authState.profile.updated_at || new Date().toISOString(),
+          timezone: authState.profile.timezone ?? 'UTC',
+          preferred_language: authState.profile.preferred_language ?? 'en',
+          notification_preferences: authState.profile.notification_preferences ?? {},
+          created_at: authState.profile.created_at ?? new Date().toISOString(),
+          updated_at: authState.profile.updated_at ?? new Date().toISOString(),
         };
       }
       
@@ -1045,7 +1045,7 @@ export function transformToLegacyUser(
 ): LegacyUser | null {
   if (!profile) return null;
 
-  const fullName = profile.full_name || '';
+  const fullName = profile.full_name ?? '';
   const [firstName = '', ...lastNameParts] = fullName.split(' ');
   const lastName = lastNameParts.join(' ');
 
@@ -1055,7 +1055,7 @@ export function transformToLegacyUser(
     firstName,
     lastName,
     role: mapExtendedRoleToLegacy(primaryRole),
-    profileImage: profile.avatar_url || undefined,
+    profileImage: profile.avatar_url ?? undefined,
   };
 }
 
@@ -1167,7 +1167,7 @@ export async function legacySignUpWithEmail(
     email,
     password,
     fullName,
-    role: role || 'client', // Convert null to 'client' for enhanced system
+    role: role ?? 'client', // Convert null to 'client' for enhanced system
   });
   
   if (result.error) {

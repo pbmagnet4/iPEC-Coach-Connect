@@ -84,7 +84,8 @@
       "Bash(vercel logs:*)",
       "Bash(vercel:*)",
       "Bash(./test-monitoring.sh:*)",
-      "Bash(nslookup:*)"
+      "Bash(nslookup:*)",
+      "Bash(/dev/null)"
     ],
     "deny": []
   }

@@ -9,12 +9,33 @@
  * Retry Logic: Failed events are retried with exponential backoff
  */
 
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { webhookService } from '../../services/webhook.service';
 import { errorHandler } from '../../lib/error-handling';
 import { secureLogger } from '../../lib/secure-logger';
+
+// Type definitions for webhook processing
+interface WebhookErrorContext {
+  requestId: string;
+  error: string | Error;
+  timestamp: string;
+  userAgent: string | null;
+  ip: string | null;
+  contentType: string | null;
+  contentLength: string | null;
+}
+
+interface CriticalWebhookError {
+  requestId: string;
+  eventId: string;
+  eventType: string;
+  error: string | Error;
+  timestamp: string;
+  severity: 'critical';
+  requiresManualIntervention: true;
+}
 
 // Initialize Stripe with the secret key
 const _stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST ?? process.env.STRIPE_SECRET_KEY_LIVE ?? '', {
@@ -181,12 +202,12 @@ async function logWebhookError(
   error: Error | unknown,
   request: NextRequest
 ): Promise<void> {
-  const errorLog = {
+  const errorLog: WebhookErrorContext = {
     requestId,
     error: errorHandler.handleError(error),
     timestamp: new Date().toISOString(),
     userAgent: request.headers.get('user-agent'),
-    ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip'),
+    ip: request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip'),
     contentType: request.headers.get('content-type'),
     contentLength: request.headers.get('content-length')
   };
@@ -205,7 +226,7 @@ async function logCriticalWebhookError(
   event: Stripe.Event,
   error: Error | unknown
 ): Promise<void> {
-  const criticalError = {
+  const criticalError: CriticalWebhookError = {
     requestId,
     eventId: event.id,
     eventType: event.type,

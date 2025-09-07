@@ -10,7 +10,7 @@
  * - Real-time cache metrics
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   useCacheDebug,
   useCachePerformance,
@@ -22,6 +22,15 @@ import { cacheIntegrationService } from '../lib/cache-integration.service';
 import { Button } from './ui/Button';
 import { Card } from './ui/Card';
 import { Badge } from './ui/Badge';
+import type {
+  PerformanceMetrics,
+  DebugInfo,
+  SafeEventHandler,
+  CacheState,
+  CacheActions,
+  safeNumber,
+  safeString
+} from '../types/common';
 
 interface CacheDemoProps {
   userId?: string;
@@ -35,6 +44,27 @@ interface SearchResult {
   location: string;
 }
 
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  bio: string;
+  lastLogin: string;
+}
+
+interface CoachData {
+  id: string;
+  name: string;
+  title: string;
+  rating: number;
+  reviewCount: number;
+  specializations: string[];
+  hourlyRate: number;
+  bio: string;
+  availability: string;
+}
+
 export const CacheDemo: React.FC<CacheDemoProps> = ({ 
   userId = 'demo-user-123', 
   coachId = 'demo-coach-456' 
@@ -45,7 +75,7 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
   // Cache hooks demonstrations
   const [userProfileState, userProfileActions] = useUserProfileCache(
     userId,
-    async () => {
+    async (): Promise<UserProfile> => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       return {
@@ -60,15 +90,15 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
     {
       enableRefresh: true,
       refreshInterval: 30000, // 30 seconds
-      onCacheHit: (data) => addNotification('Cache hit for user profile!', 'success'),
+      onCacheHit: (_data: UserProfile) => addNotification('Cache hit for user profile!', 'success'),
       onCacheMiss: () => addNotification('Cache miss - fetching user profile from API', 'info'),
       onError: (error) => addNotification(`Error: ${error.message}`, 'error')
     }
-  );
+  ) as [CacheState<UserProfile>, CacheActions];
 
   const [coachDataState, coachDataActions] = useCoachDataCache(
     coachId,
-    async () => {
+    async (): Promise<CoachData> => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       return {
@@ -84,16 +114,16 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
       };
     },
     {
-      onCacheHit: (data) => addNotification('Cache hit for coach data!', 'success'),
+      onCacheHit: (_data: CoachData) => addNotification('Cache hit for coach data!', 'success'),
       onCacheMiss: () => addNotification('Cache miss - fetching coach data from API', 'info'),
       onError: (error) => addNotification(`Error: ${error.message}`, 'error')
     }
-  );
+  ) as [CacheState<CoachData>, CacheActions];
 
   const [searchResultsState, searchResultsActions] = useSearchResultsCache(
     'life coaching',
     { location: 'New York', rating: 4.5 },
-    async () => {
+    async (): Promise<SearchResult[]> => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 800));
       return [
@@ -103,17 +133,25 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
       ];
     },
     {
-      onCacheHit: (data) => addNotification('Cache hit for search results!', 'success'),
+      onCacheHit: (_data: SearchResult[]) => addNotification('Cache hit for search results!', 'success'),
       onCacheMiss: () => addNotification('Cache miss - fetching search results from API', 'info'),
       onError: (error) => addNotification(`Error: ${error.message}`, 'error')
     }
-  );
+  ) as [CacheState<SearchResult[]>, CacheActions];
 
   // Performance monitoring
-  const { performance, loading: perfLoading, refresh: refreshPerformance } = useCachePerformance();
+  const { performance, loading: perfLoading, refresh: refreshPerformance } = useCachePerformance() as {
+    performance: PerformanceMetrics | null;
+    loading: boolean;
+    refresh: () => Promise<void>;
+  };
 
   // Debug information
-  const { debugInfo, loading: debugLoading, refresh: refreshDebug } = useCacheDebug();
+  const { debugInfo, loading: debugLoading, refresh: refreshDebug } = useCacheDebug() as {
+    debugInfo: DebugInfo | null;
+    loading: boolean;
+    refresh: () => Promise<void>;
+  };
 
   // Helper functions
   const addNotification = (message: string, type: 'success' | 'error' | 'info') => {
@@ -207,16 +245,16 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
 
       {/* Cache Controls */}
       <div className="flex flex-wrap gap-4 p-4 bg-gray-50 rounded-lg">
-        <Button onClick={handleWarmCaches} variant="primary" size="sm">
+        <Button onClick={() => { void handleWarmCaches(); }} variant="primary" size="sm">
           🔥 Warm Caches
         </Button>
-        <Button onClick={handleClearAllCaches} variant="secondary" size="sm">
+        <Button onClick={() => { void handleClearAllCaches(); }} variant="secondary" size="sm">
           🧹 Clear All Caches
         </Button>
-        <Button onClick={refreshPerformance} variant="secondary" size="sm">
+        <Button onClick={() => { void refreshPerformance(); }} variant="secondary" size="sm">
           📊 Refresh Performance
         </Button>
-        <Button onClick={refreshDebug} variant="secondary" size="sm">
+        <Button onClick={() => { void refreshDebug(); }} variant="secondary" size="sm">
           🔍 Refresh Debug Info
         </Button>
       </div>
@@ -261,10 +299,10 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
               )}
               
               <div className="mt-4 flex gap-2">
-                <Button onClick={userProfileActions.refresh} size="sm" variant="secondary">
+                <Button onClick={() => { void userProfileActions.refresh(); }} size="sm" variant="secondary">
                   🔄 Refresh
                 </Button>
-                <Button onClick={userProfileActions.invalidate} size="sm" variant="secondary">
+                <Button onClick={() => userProfileActions.invalidate(); }} size="sm" variant="secondary">
                   ❌ Invalidate
                 </Button>
               </div>
@@ -318,10 +356,10 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
               )}
               
               <div className="mt-4 flex gap-2">
-                <Button onClick={coachDataActions.refresh} size="sm" variant="secondary">
+                <Button onClick={() => { void coachDataActions.refresh(); }} size="sm" variant="secondary">
                   🔄 Refresh
                 </Button>
-                <Button onClick={coachDataActions.invalidate} size="sm" variant="secondary">
+                <Button onClick={() => coachDataActions.invalidate(); }} size="sm" variant="secondary">
                   ❌ Invalidate
                 </Button>
               </div>
@@ -374,10 +412,10 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
               )}
               
               <div className="mt-4 flex gap-2">
-                <Button onClick={searchResultsActions.refresh} size="sm" variant="secondary">
+                <Button onClick={() => { void searchResultsActions.refresh(); }} size="sm" variant="secondary">
                   🔄 Refresh
                 </Button>
-                <Button onClick={searchResultsActions.invalidate} size="sm" variant="secondary">
+                <Button onClick={() => searchResultsActions.invalidate(); }} size="sm" variant="secondary">
                   ❌ Invalidate
                 </Button>
               </div>
@@ -406,41 +444,41 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Hit Rate:</span>
-                      <span className="font-medium">{formatPercentage(performance.overall?.hitRate || 0)}</span>
+                      <span className="font-medium">{formatPercentage(performance.overall?.hitRate ?? 0)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Memory Usage:</span>
-                      <span className="font-medium">{formatBytes(performance.overall?.memoryUsage || 0)}</span>
+                      <span className="font-medium">{formatBytes(performance.overall?.memoryUsage ?? 0)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Avg Response Time:</span>
-                      <span className="font-medium">{(performance.overall?.avgResponseTime || 0).toFixed(2)}ms</span>
+                      <span className="font-medium">{(performance.overall?.avgResponseTime ?? 0).toFixed(2)}ms</span>
                     </div>
                   </div>
                 </div>
               </Card>
 
               {/* Cache-specific Performance */}
-              {performance.enhanced && Object.entries(performance.enhanced).map(([cacheName, stats]: [string, any]) => (
+              {performance.enhanced && Object.entries(performance.enhanced).map(([cacheName, stats]: [string, CacheStats & { compressionRatio: number }]) => (
                 <Card key={cacheName}>
                   <div className="p-6">
                     <h3 className="text-lg font-semibold mb-4 capitalize">{cacheName} Cache</h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
                         <span className="text-sm text-gray-600">Hit Rate:</span>
-                        <span className="font-medium">{formatPercentage(stats.hitRate || 0)}</span>
+                        <span className="font-medium">{formatPercentage(stats.hitRate ?? 0)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm text-gray-600">Size:</span>
-                        <span className="font-medium">{stats.size || 0} entries</span>
+                        <span className="font-medium">{stats.size ?? 0} entries</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm text-gray-600">Memory:</span>
-                        <span className="font-medium">{formatBytes(stats.memoryUsage || 0)}</span>
+                        <span className="font-medium">{formatBytes(stats.memoryUsage ?? 0)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm text-gray-600">Compression:</span>
-                        <span className="font-medium">{formatPercentage(stats.compressionRatio || 0)}</span>
+                        <span className="font-medium">{formatPercentage(stats.compressionRatio ?? 0)}</span>
                       </div>
                     </div>
                   </div>
