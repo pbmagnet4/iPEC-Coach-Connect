@@ -18,8 +18,9 @@ on:
         - security
 
 env:
-  PRODUCTION_URL: 'https://ipec-coach-connect-f05oo27i8-whtnxt.vercel.app'
+  PRODUCTION_URL: 'https://ipec-coach-connect.vercel.app'
   STAGING_URL: 'https://staging.ipec-coach-connect.vercel.app'
+  STAGING_ENABLED: 'false'  # Set to 'true' when staging environment is properly configured
 
 # Global permissions for monitoring operations
 permissions:
@@ -39,13 +40,15 @@ jobs:
     
     strategy:
       matrix:
-        environment: [production, staging]
+        environment: [production]
         include:
-          # Note: URLs are hardcoded here because env context is not available in matrix definitions
           - environment: production
             url: 'https://ipec-coach-connect.vercel.app'
-          - environment: staging
-            url: 'https://staging.ipec-coach-connect.vercel.app'
+            required: true
+          # Staging temporarily disabled - enable when properly configured
+          # - environment: staging
+          #   url: 'https://staging.ipec-coach-connect.vercel.app'
+          #   required: false
     
     steps:
       - name: Install dependencies
@@ -57,17 +60,29 @@ jobs:
         run: |
           echo "Checking uptime for ${{ matrix.environment }}: ${{ matrix.url }}"
           
-          response_code=$(curl -s -o /dev/null -w "%{http_code}" "${{ matrix.url }}" || echo "000")
-          response_time=$(curl -s -o /dev/null -w "%{time_total}" "${{ matrix.url }}" || echo "0")
+          # Enhanced curl with better error handling and timeout
+          response_code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 --retry 2 --retry-delay 5 "${{ matrix.url }}" 2>/dev/null || echo "000")
+          response_time=$(curl -s -o /dev/null -w "%{time_total}" --max-time 30 "${{ matrix.url }}" 2>/dev/null || echo "0")
           
           echo "Response Code: $response_code"
           echo "Response Time: ${response_time}s"
           
-          # For SPA applications, accept 200-299 responses and 401 for auth-protected deployments
-          if [[ "$response_code" -ge 200 && "$response_code" -lt 300 ]]; then
+          # Environment-specific failure handling
+          if [[ "${{ matrix.environment }}" == "staging" && "${{ env.STAGING_ENABLED }}" != "true" ]]; then
+            echo "⚠️ Staging environment is disabled in configuration - skipping health check"
+            echo "To enable staging monitoring, set STAGING_ENABLED to 'true' and ensure staging deployment is configured"
+            exit 0
+          fi
+          
+          # Enhanced response code validation
+          if [[ "$response_code" =~ ^[2][0-9][0-9]$ ]]; then
             echo "✅ ${{ matrix.environment }} is UP (${response_code})"
           elif [[ "$response_code" == "401" ]]; then
             echo "✅ ${{ matrix.environment }} is UP (${response_code} - Authentication required, deployment is working)"
+          elif [[ "$response_code" == "000" ]]; then
+            echo "❌ ${{ matrix.environment }} is DOWN - Connection failed (SSL/DNS/Network issue)"
+            echo "::warning::Check if ${{ matrix.environment }} environment is properly deployed and SSL configured"
+            exit 1
           else
             echo "❌ ${{ matrix.environment }} is DOWN (${response_code})"
             exit 1
@@ -112,6 +127,15 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            // Check if this is a known staging configuration issue
+            const isStaging = '${{ matrix.environment }}' === 'staging';
+            const stagingEnabled = '${{ env.STAGING_ENABLED }}' === 'true';
+            
+            if (isStaging && !stagingEnabled) {
+              console.log('Staging failure expected - staging environment not configured');
+              return;
+            }
+            
             const issue = await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -125,20 +149,122 @@ jobs:
               **Workflow:** ${context.workflow}
               **Run:** ${context.runNumber}
               
-              ## Immediate Actions Required
-              - [ ] Check infrastructure status
-              - [ ] Review error logs
+              ## Troubleshooting Guide
+              
+              ### If this is STAGING environment:
+              - [ ] Verify staging deployment is configured in Vercel
+              - [ ] Check if SSL certificate exists for staging subdomain
+              - [ ] Confirm staging environment secrets are properly set
+              - [ ] Verify develop branch has been deployed to staging
+              
+              ### If this is PRODUCTION environment:
+              - [ ] **CRITICAL** - Check infrastructure status immediately
+              - [ ] Review error logs in Vercel dashboard
               - [ ] Verify DNS resolution
               - [ ] Check CDN status
               - [ ] Investigate database connectivity
+              - [ ] Contact on-call engineer
               
               ## Monitoring Dashboard
               - [Vercel Dashboard](https://vercel.com/dashboard)
               - [Supabase Dashboard](https://supabase.com/dashboard)
               
+              ## Response Code Analysis
+              - **000**: Connection failed (DNS/SSL/Network issue)
+              - **4xx**: Application is running but returning client errors
+              - **5xx**: Server errors - check application logs
+              
               This issue was automatically created by the monitoring system.
               `,
-              labels: ['urgent', 'outage', 'monitoring']
+              labels: isStaging ? ['staging', 'monitoring', 'configuration'] : ['urgent', 'outage', 'monitoring', 'production']
+            });
+
+  # ============================================================================
+  # STAGING UPTIME MONITORING (Optional)
+  # ============================================================================
+  
+  staging-uptime-check:
+    name: Staging Uptime Check
+    runs-on: ubuntu-latest
+    if: env.STAGING_ENABLED == 'true' && (github.event.inputs.check_type == 'uptime' || github.event.inputs.check_type == 'all' || github.event.schedule)
+    
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y bc curl
+          
+      - name: Check staging uptime with enhanced error handling
+        run: |
+          echo "Checking staging uptime: ${{ env.STAGING_URL }}"
+          
+          # Test DNS resolution first
+          if ! nslookup staging.ipec-coach-connect.vercel.app > /dev/null 2>&1; then
+            echo "❌ DNS resolution failed for staging domain"
+            exit 1
+          fi
+          
+          # Test HTTP redirect (should redirect to HTTPS)
+          http_code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 http://staging.ipec-coach-connect.vercel.app || echo "000")
+          echo "HTTP response code: $http_code"
+          
+          # Test HTTPS connection
+          https_code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 --retry 2 "${{ env.STAGING_URL }}" || echo "000")
+          response_time=$(curl -s -o /dev/null -w "%{time_total}" --max-time 30 "${{ env.STAGING_URL }}" 2>/dev/null || echo "0")
+          
+          echo "HTTPS response code: $https_code"
+          echo "Response time: ${response_time}s"
+          
+          if [[ "$https_code" =~ ^[2][0-9][0-9]$ ]]; then
+            echo "✅ Staging is UP ($https_code)"
+          elif [[ "$https_code" == "000" ]]; then
+            echo "❌ Staging SSL/TLS connection failed"
+            echo "This likely means the staging environment is not properly configured in Vercel"
+            echo "To fix: Configure staging deployment in Vercel with proper SSL certificate"
+            exit 1
+          else
+            echo "❌ Staging returned unexpected response: $https_code"
+            exit 1
+          fi
+          
+      - name: Report staging issues
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🔧 Staging Configuration Issue - ${new Date().toISOString().split('T')[0]}`,
+              body: `
+              ## 🔧 Staging Environment Configuration Issue
+              
+              **URL:** ${{ env.STAGING_URL }}
+              **Time:** ${new Date().toISOString()}
+              **Workflow:** ${context.workflow}
+              **Run:** ${context.runNumber}
+              
+              ## Root Cause Analysis
+              The staging subdomain exists in DNS and routes to Vercel, but there's no deployment configured.
+              
+              ## Action Items
+              - [ ] Configure staging environment in Vercel dashboard
+              - [ ] Set up SSL certificate for staging.ipec-coach-connect.vercel.app
+              - [ ] Verify staging deployment from develop branch is working
+              - [ ] Update environment variables for staging
+              - [ ] Test staging deployment manually
+              
+              ## Alternative Solutions
+              - [ ] Remove staging monitoring and rely on preview deployments
+              - [ ] Use Vercel preview URLs for staging testing
+              - [ ] Set up separate staging project in Vercel
+              
+              ## Quick Fix
+              To disable staging monitoring until fixed, set \`STAGING_ENABLED: 'false'\` in monitoring.yml
+              
+              This issue was automatically created by the monitoring system.
+              `,
+              labels: ['staging', 'configuration', 'devops', 'monitoring']
             });
 
   # ============================================================================
@@ -377,7 +503,7 @@ jobs:
   monitoring-summary:
     name: Monitoring Summary
     runs-on: ubuntu-latest
-    needs: [uptime-check, performance-check, health-monitoring, security-monitoring]
+    needs: [uptime-check, staging-uptime-check, performance-check, health-monitoring, security-monitoring]
     if: always()
     
     steps:
@@ -393,17 +519,31 @@ jobs:
           echo "" >> monitoring-report.md
           echo "| Check | Status |" >> monitoring-report.md
           echo "|-------|--------|" >> monitoring-report.md
-          echo "| Uptime Check | ${{ needs.uptime-check.result }} |" >> monitoring-report.md
+          echo "| Uptime Check (Production) | ${{ needs.uptime-check.result }} |" >> monitoring-report.md
+          
+          # Only include staging if it was enabled
+          if [[ "${{ env.STAGING_ENABLED }}" == "true" ]]; then
+            echo "| Staging Uptime Check | ${{ needs.staging-uptime-check.result }} |" >> monitoring-report.md
+          else
+            echo "| Staging Uptime Check | skipped (disabled) |" >> monitoring-report.md
+          fi
+          
           echo "| Performance Check | ${{ needs.performance-check.result }} |" >> monitoring-report.md
           echo "| Health Monitoring | ${{ needs.health-monitoring.result }} |" >> monitoring-report.md
           echo "| Security Monitoring | ${{ needs.security-monitoring.result }} |" >> monitoring-report.md
           echo "" >> monitoring-report.md
           
           # Determine overall status
+          staging_failed=""
+          if [[ "${{ env.STAGING_ENABLED }}" == "true" && "${{ needs.staging-uptime-check.result }}" == "failure" ]]; then
+            staging_failed="true"
+          fi
+          
           if [[ "${{ needs.uptime-check.result }}" == "failure" ]] || \
              [[ "${{ needs.performance-check.result }}" == "failure" ]] || \
              [[ "${{ needs.health-monitoring.result }}" == "failure" ]] || \
-             [[ "${{ needs.security-monitoring.result }}" == "failure" ]]; then
+             [[ "${{ needs.security-monitoring.result }}" == "failure" ]] || \
+             [[ "$staging_failed" == "true" ]]; then
             echo "🚨 **ISSUES DETECTED** - Immediate attention required!" >> monitoring-report.md
             echo "overall_status=failure" >> $GITHUB_ENV
           else

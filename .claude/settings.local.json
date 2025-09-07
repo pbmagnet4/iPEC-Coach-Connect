@@ -74,7 +74,17 @@
       "Bash(npm why:*)",
       "Bash(timeout 15 npm run dev)",
       "Bash(npm update:*)",
-      "Bash(npm remove:*)"
+      "Bash(npm remove:*)",
+      "Bash(yamllint:*)",
+      "Bash(__NEW_LINE__ echo \"Verifying that remaining env references are in job steps (which is valid):\")",
+      "Bash(npm run security:validate:*)",
+      "Bash(vercel ls:*)",
+      "Bash(vercel status:*)",
+      "Bash(vercel domains:*)",
+      "Bash(vercel logs:*)",
+      "Bash(vercel:*)",
+      "Bash(./test-monitoring.sh:*)",
+      "Bash(nslookup:*)"
     ],
     "deny": []
   }
