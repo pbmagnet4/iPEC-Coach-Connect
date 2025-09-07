@@ -84,7 +84,7 @@ jobs:
         continue-on-error: false
         
       - name: Run dependency security check
-        uses: ossf/scorecard-action@v2.3.1
+        uses: ossf/scorecard-action@v2.4.2
         with:
           results_file: results.sarif
           results_format: sarif
