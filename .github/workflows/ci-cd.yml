@@ -11,6 +11,13 @@ env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
+# Global permissions for CI/CD operations
+permissions:
+  contents: read           # Required for checkout
+  pull-requests: write     # Required for PR comments and preview deployments
+  statuses: write          # Required for commit status updates
+  actions: read            # Required for workflow context
+
 jobs:
   # ============================================================================
   # CONTINUOUS INTEGRATION

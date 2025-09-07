@@ -21,6 +21,12 @@ env:
   PRODUCTION_URL: 'https://ipec-coach-connect.vercel.app'
   STAGING_URL: 'https://staging.ipec-coach-connect.vercel.app'
 
+# Global permissions for monitoring operations
+permissions:
+  contents: read      # Required for checkout
+  issues: write       # Required for creating monitoring issues
+  actions: read       # Required for workflow context
+
 jobs:
   # ============================================================================
   # UPTIME MONITORING
