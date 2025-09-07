@@ -24,11 +24,5 @@ paths:
 # Disable problematic queries that cause false positives
 disable-default-queries: false
 
-# Custom query packs for React/TypeScript
-packs:
-  - "codeql/javascript-queries:security"
-  - "codeql/javascript-queries:correctness"
-  - "codeql/javascript-queries:maintainability"
-
 # Performance configuration
 trap-caching: true
