@@ -69,7 +69,11 @@
       "Bash(git remote remove:*)",
       "Bash(git commit:*)",
       "Bash(npm run lint:*)",
-      "Bash(npm ci:*)"
+      "Bash(npm ci:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm why:*)",
+      "Bash(timeout 15 npm run dev)",
+      "Bash(npm update:*)"
     ],
     "deny": []
   }
