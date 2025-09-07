@@ -35,12 +35,18 @@ jobs:
       matrix:
         environment: [production, staging]
         include:
+          # Note: URLs are hardcoded here because env context is not available in matrix definitions
           - environment: production
-            url: ${{ env.PRODUCTION_URL }}
+            url: 'https://ipec-coach-connect.vercel.app'
           - environment: staging
-            url: ${{ env.STAGING_URL }}
+            url: 'https://staging.ipec-coach-connect.vercel.app'
     
     steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y bc curl
+          
       - name: Check ${{ matrix.environment }} uptime
         run: |
           echo "Checking uptime for ${{ matrix.environment }}: ${{ matrix.url }}"
@@ -58,9 +64,11 @@ jobs:
             exit 1
           fi
           
-          # Check response time threshold (5 seconds)
+          # Check response time threshold (5 seconds) - use bc for floating point comparison
           if (( $(echo "$response_time > 5.0" | bc -l) )); then
-            echo "⚠️ Slow response time: ${response_time}s"
+            echo "⚠️ Slow response time: ${response_time}s (threshold: 5s)"
+          else
+            echo "✅ Response time acceptable: ${response_time}s"
           fi
           
       - name: Check critical endpoints
@@ -214,6 +222,11 @@ jobs:
     if: github.event.inputs.check_type == 'all' || github.event.schedule
     
     steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y bc curl
+          
       - name: Check database connectivity
         run: |
           echo "Checking Supabase connectivity..."
