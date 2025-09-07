@@ -5,11 +5,11 @@
  * features implemented across the iPEC Coach Connect application.
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { allValidationSchemas, contactValidationSchemas, FormValidator, profileValidationSchemas } from '../lib/form-validation';
-import { useForm } from '../hooks/useForm';
+import { contactValidationSchemas, FormValidator, profileValidationSchemas } from '../lib/form-validation';
+import { type FormMethods, useForm } from '../hooks/useForm';
 import { Contact } from '../pages/Contact';
 import { Support } from '../pages/Support';
 
@@ -150,9 +150,18 @@ describe('Form Validation Framework', () => {
   });
 });
 
+interface ContactFormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  category: string;
+  priority: string;
+}
+
 describe('useForm Hook', () => {
   let TestComponent: React.FC;
-  let formMethods: any;
+  let formMethods: FormMethods<ContactFormData>;
 
   beforeEach(() => {
     TestComponent = () => {
@@ -171,7 +180,7 @@ describe('useForm Hook', () => {
       });
 
       return (
-        <form onSubmit={formMethods.handleSubmit()}>
+        <form onSubmit={(e) => { void formMethods.handleSubmit()(e); }}>
           <input
             {...formMethods.getFieldProps('name')}
             data-testid="name-input"

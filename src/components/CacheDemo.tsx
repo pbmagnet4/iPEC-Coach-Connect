@@ -28,6 +28,13 @@ interface CacheDemoProps {
   coachId?: string;
 }
 
+interface SearchResult {
+  id: number;
+  name: string;
+  rating: number;
+  location: string;
+}
+
 export const CacheDemo: React.FC<CacheDemoProps> = ({ 
   userId = 'demo-user-123', 
   coachId = 'demo-coach-456' 
@@ -352,7 +359,7 @@ export const CacheDemo: React.FC<CacheDemoProps> = ({
                 <div className="space-y-3">
                   <p className="text-sm font-medium">Results for "life coaching"</p>
                   <div className="space-y-2">
-                    {searchResultsState.data.map((result: any) => (
+                    {searchResultsState.data.map((result: SearchResult) => (
                       <div key={result.id} className="flex justify-between items-center text-sm">
                         <span>{result.name}</span>
                         <span className="text-yellow-500">⭐ {result.rating}</span>

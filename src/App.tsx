@@ -12,7 +12,6 @@ import { useSafeAutofocus, useSafeIntersectionObserver, useScrollRestoration } f
 import { 
   AuthenticatedRoute, 
   CoachRoute, 
-  ProtectedRoute, 
   PublicRoute 
 } from './components/auth/ProtectedRoute';
 
@@ -67,11 +66,11 @@ const SubscriptionSettings = React.lazy(() => import('./pages/settings/Subscript
 // Preload critical routes
 const preloadCriticalRoutes = () => {
   // Preload core pages that users are likely to visit
-  import('./pages/Home');
-  import('./pages/CoachList');
-  import('./pages/auth/Login');
-  import('./pages/auth/OptimizedRegistration');
-  import('./pages/onboarding/GetStarted');
+  void import('./pages/Home');
+  void import('./pages/CoachList');
+  void import('./pages/auth/Login');
+  void import('./pages/auth/OptimizedRegistration');
+  void import('./pages/onboarding/GetStarted');
 };
 
 // Start preloading after initial render
