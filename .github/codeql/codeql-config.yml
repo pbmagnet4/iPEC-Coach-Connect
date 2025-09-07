@@ -1,0 +1,34 @@
+name: "iPEC Coach Connect CodeQL Configuration"
+
+query-filters:
+  # Include additional security queries
+  - include:
+      tags: "security"
+  - include:
+      tags: "external/cwe"
+
+# Custom queries for React/TypeScript projects
+queries:
+  - uses: security-extended
+  - uses: security-and-quality
+
+# Path-based analysis configuration
+paths:
+  - "src/**"
+  - "!src/**/*.test.*"
+  - "!src/**/*.spec.*"
+  - "!**/node_modules/**"
+  - "!**/dist/**"
+  - "!**/build/**"
+
+# Disable problematic queries that cause false positives
+disable-default-queries: false
+
+# Custom query packs for React/TypeScript
+packs:
+  - "codeql/javascript-queries:security"
+  - "codeql/javascript-queries:correctness"
+  - "codeql/javascript-queries:maintainability"
+
+# Performance configuration
+trap-caching: true

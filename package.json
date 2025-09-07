@@ -44,7 +44,9 @@
     "deploy:production": "npm run build:production && vercel --prod",
     "postbuild": "echo 'Build completed successfully. Checking output...' && ls -la dist/ && du -sh dist/",
     "verify:production": "node scripts/verify-production-readiness.js",
-    "predeploy:production": "npm run verify:production"
+    "predeploy:production": "npm run verify:production",
+    "security:validate": "node scripts/validate-security-config.cjs",
+    "security:check": "npm audit --audit-level=moderate && npm run security:validate"
   },
   "dependencies": {
     "@fontsource/inter": "^5.0.16",

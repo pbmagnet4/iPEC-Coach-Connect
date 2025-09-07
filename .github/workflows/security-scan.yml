@@ -8,9 +8,19 @@ on:
   schedule:
     # Run security scan daily at 2 AM UTC
     - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual triggering
 
 env:
   NODE_VERSION: '18'
+
+# Global permissions for security scanning operations
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+  pull-requests: write
+  checks: write
+  statuses: write
 
 jobs:
   # ============================================================================
@@ -60,6 +70,11 @@ jobs:
     name: Code Security Analysis
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -67,17 +82,29 @@ jobs:
           # Full history needed for some security tools
           fetch-depth: 0
           
-      - name: Run CodeQL Analysis
+      - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: javascript
+          languages: javascript,typescript
+          config-file: ./.github/codeql/codeql-config.yml
           
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      - name: Setup Node.js for CodeQL
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+        
+      - name: Build for CodeQL analysis
+        run: npm run build
         
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
-        
+        with:
+          category: "/language:javascript"
+          
       - name: Run Semgrep Security Scan
         uses: returntocorp/semgrep-action@v1
         with:
@@ -88,12 +115,24 @@ jobs:
             p/typescript
             p/react
           generateSarif: "1"
+          publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
+        continue-on-error: true
+        id: semgrep
           
-      - name: Upload Semgrep results to GitHub
+      - name: Upload Semgrep SARIF results
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: semgrep.sarif
-        if: always()
+          category: semgrep
+        if: always() && steps.semgrep.outcome == 'success' && hashFiles('semgrep.sarif') != ''
+        
+      - name: Upload Semgrep results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-results
+          path: semgrep.sarif
+          retention-days: 30
+        if: always() && hashFiles('semgrep.sarif') != ''
 
   # ============================================================================
   # SECRET SCANNING
@@ -103,19 +142,51 @@ jobs:
     name: Secret Detection
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: read
+      security-events: write
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           
-      - name: Run TruffleHog
+      - name: Determine TruffleHog scan parameters
+        id: scan-params
+        run: |
+          # Configure scan parameters based on trigger context
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "base=${{ github.event.pull_request.base.sha }}" >> $GITHUB_OUTPUT
+            echo "head=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+            echo "scan-mode=commit-range" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
+            echo "base=${{ github.event.before }}" >> $GITHUB_OUTPUT
+            echo "head=${{ github.event.after }}" >> $GITHUB_OUTPUT
+            echo "scan-mode=commit-range" >> $GITHUB_OUTPUT
+          else
+            echo "base=" >> $GITHUB_OUTPUT
+            echo "head=" >> $GITHUB_OUTPUT
+            echo "scan-mode=full-scan" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Run TruffleHog (commit range)
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: main
-          head: HEAD
-          extra_args: --debug --only-verified
+          base: ${{ steps.scan-params.outputs.base }}
+          head: ${{ steps.scan-params.outputs.head }}
+          extra_args: --debug --only-verified --json
+        if: steps.scan-params.outputs.scan-mode == 'commit-range'
+        continue-on-error: false
+        
+      - name: Run TruffleHog (full repository scan)
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          extra_args: --debug --only-verified --json
+        if: steps.scan-params.outputs.scan-mode == 'full-scan'
+        continue-on-error: false
           
       - name: Check for hardcoded secrets
         run: |
@@ -177,6 +248,7 @@ jobs:
       - name: Check security policy files
         run: |
           echo "Validating security policy files..."
+          exit_code=0
           
           # Check for required security files
           required_files=(
@@ -188,36 +260,80 @@ jobs:
           for file in "${required_files[@]}"; do
             if [[ -f "$file" ]]; then
               echo "✅ $file exists"
+              # Validate file is not empty
+              if [[ ! -s "$file" ]]; then
+                echo "⚠️  $file is empty"
+                exit_code=1
+              fi
             else
               echo "❌ $file missing"
-              exit 1
+              exit_code=1
             fi
           done
+          
+          # Check SECURITY.md has required sections
+          if [[ -f "SECURITY.md" ]]; then
+            required_sections=("Reporting" "Security" "Vulnerability")
+            for section in "${required_sections[@]}"; do
+              if grep -q "$section" SECURITY.md; then
+                echo "✅ SECURITY.md contains $section section"
+              else
+                echo "⚠️  SECURITY.md missing $section section"
+              fi
+            done
+          fi
+          
+          exit $exit_code
           
       - name: Validate environment variable usage
         run: |
           echo "Checking environment variable usage..."
+          exit_code=0
           
           # Check that sensitive vars are not hardcoded
-          if grep -r "VITE_SUPABASE_ANON_KEY.*=" src/ --exclude-dir=node_modules; then
+          if grep -r "VITE_SUPABASE_ANON_KEY.*=" src/ --exclude-dir=node_modules 2>/dev/null; then
             echo "❌ Supabase key appears to be hardcoded!"
-            exit 1
+            exit_code=1
           fi
           
-          if grep -r "STRIPE.*KEY.*=" src/ --exclude-dir=node_modules; then
+          if grep -r "STRIPE.*KEY.*=" src/ --exclude-dir=node_modules 2>/dev/null; then
             echo "❌ Stripe key appears to be hardcoded!"
-            exit 1
+            exit_code=1
           fi
           
-          echo "✅ No hardcoded sensitive variables found"
+          # Check for other common secret patterns
+          secret_patterns=(
+            "password.*=.*['\"][^'\"]{8,}['\"]" 
+            "secret.*=.*['\"][^'\"]{8,}['\"]" 
+            "api[_-]?key.*=.*['\"][^'\"]{8,}['\"]" 
+            "access[_-]?token.*=.*['\"][^'\"]{8,}['\"]" 
+          )
+          
+          for pattern in "${secret_patterns[@]}"; do
+            if grep -r -E "$pattern" src/ --exclude-dir=node_modules 2>/dev/null; then
+              echo "⚠️  Potential secret pattern found: $pattern"
+              exit_code=1
+            fi
+          done
+          
+          if [[ $exit_code -eq 0 ]]; then
+            echo "✅ No hardcoded sensitive variables found"
+          fi
+          
+          exit $exit_code
           
       - name: Check CORS configuration
         run: |
           echo "Validating CORS configuration..."
           
           # Check for wildcard CORS (should be avoided in production)
-          if grep -r "Access-Control-Allow-Origin.*\*" . --exclude-dir=node_modules; then
+          if grep -r "Access-Control-Allow-Origin.*\*" . --exclude-dir=node_modules --exclude-dir=.git 2>/dev/null; then
             echo "⚠️ Wildcard CORS configuration found - verify this is intentional"
+          fi
+          
+          # Check for localhost CORS in production files
+          if grep -r "localhost" src/ --include="*.ts" --include="*.js" --exclude-dir=node_modules 2>/dev/null; then
+            echo "⚠️ Localhost references found - verify these are not in production code"
           fi
           
           echo "✅ CORS configuration check completed"

@@ -1,0 +1,52 @@
+# GitHub Dependabot configuration for automated security updates
+version: 2
+updates:
+  # Enable dependency updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    target-branch: "main"
+    reviewers:
+      - "@echalupa"
+    commit-message:
+      prefix: "security(deps)"
+      prefix-development: "chore(deps-dev)"
+      include: "scope"
+    # Group updates for better management
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    # Security updates always get separate PRs
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    # Enable vulnerability alerts
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+      
+  # Enable updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    target-branch: "main"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    reviewers:
+      - "@echalupa"
