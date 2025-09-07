@@ -203,20 +203,20 @@ export const useEnhancedRole = create<EnhancedRoleState>()(
         });
         
         // Sync with legacy role store for backward compatibility
-        useLegacyRole.getState().setRole(legacyRole);
+  void useLegacyRole.getState().setRole(legacyRole);
       },
 
       setPrimaryRole: (role: ExtendedUserRole | null) => {
         const legacyRole = mapToLegacyRole(role);
         set({ primaryRole: role, legacyRole });
-        useLegacyRole.getState().setRole(legacyRole);
+  void useLegacyRole.getState().setRole(legacyRole);
       },
 
       setPermissions: (permissions: string[]) => set({ permissions }),
 
       setLegacyRole: (role: LegacyUserRole) => {
         set({ legacyRole: role });
-        useLegacyRole.getState().setRole(role);
+  void useLegacyRole.getState().setRole(role);
       },
 
       // Role checking functions
@@ -344,7 +344,7 @@ function calculatePermissions(roles: UserRoleAssignment[]): string[] {
     if (!roleDef) continue;
 
     for (const permission of roleDef.permissions) {
-      permissions.add(`${permission.resource}:${permission.action}`);
+  void permissions.add(`${permission.resource}:${permission.action}`);
     }
   }
 
@@ -378,12 +378,12 @@ const initializeEnhancedRoles = () => {
     
     // Update roles from auth state
     if (authState.userRoles !== enhancedRoleState.userRoles) {
-      enhancedRoleState.setUserRoles(authState.userRoles);
+  void enhancedRoleState.setUserRoles(authState.userRoles);
     }
     
     // Update permissions from auth state
     if (authState.permissions !== enhancedRoleState.permissions) {
-      enhancedRoleState.setPermissions(authState.permissions);
+  void enhancedRoleState.setPermissions(authState.permissions);
     }
   });
 };

@@ -114,12 +114,12 @@ export function useExitIntent(
       isMouseTracking.current = true;
     };
 
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
+  void document.addEventListener('mouseleave', handleMouseLeave);
+  void document.addEventListener('mouseenter', handleMouseEnter);
 
     return () => {
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
+  void document.removeEventListener('mouseleave', handleMouseLeave);
+  void document.removeEventListener('mouseenter', handleMouseEnter);
     };
   }, [finalConfig, triggerExitIntent]);
 
@@ -147,7 +147,7 @@ export function useExitIntent(
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+  void window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [finalConfig, triggerExitIntent, isTriggered]);
 
@@ -178,14 +178,14 @@ export function useExitIntent(
       touchStartY.current = null;
     };
 
-    document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchmove', handleTouchMove);
-    document.addEventListener('touchend', handleTouchEnd);
+  void document.addEventListener('touchstart', handleTouchStart);
+  void document.addEventListener('touchmove', handleTouchMove);
+  void document.addEventListener('touchend', handleTouchEnd);
 
     return () => {
-      document.removeEventListener('touchstart', handleTouchStart);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleTouchEnd);
+  void document.removeEventListener('touchstart', handleTouchStart);
+  void document.removeEventListener('touchmove', handleTouchMove);
+  void document.removeEventListener('touchend', handleTouchEnd);
     };
   }, [finalConfig, triggerExitIntent]);
 
@@ -199,7 +199,7 @@ export function useExitIntent(
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+  void document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [finalConfig, triggerExitIntent]);
 
@@ -216,7 +216,7 @@ export function useExitIntent(
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  void window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [finalConfig, triggerExitIntent, shouldTrigger]);
 

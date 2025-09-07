@@ -67,7 +67,7 @@ const PaymentFormContent: React.FC<Omit<PaymentFormProps, 'clientSecret'>> = ({
   }, [stripe, elements]);
 
   const handleSubmit = useCallback(async (event: React.FormEvent) => {
-    event.preventDefault();
+  void event.preventDefault();
 
     if (!stripe || !elements) {
       setErrorMessage('Payment system not ready. Please try again.');

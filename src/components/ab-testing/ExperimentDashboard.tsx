@@ -63,7 +63,7 @@ export function ExperimentDashboard({ className = '' }: ExperimentDashboardProps
       const flagsData = await featureFlagsService.listFlags(true);
       setFlags(flagsData);
     } catch (error) {
-      console.error('Failed to load dashboard data:', error);
+  void console.error('Failed to load dashboard data:', error);
       setError('Failed to load dashboard data. Please try again.');
     } finally {
       setLoading(false);
@@ -75,7 +75,7 @@ export function ExperimentDashboard({ className = '' }: ExperimentDashboardProps
       await abTestingService.startExperiment(experimentId);
       await loadDashboardData();
     } catch (error) {
-      console.error('Failed to start experiment:', error);
+  void console.error('Failed to start experiment:', error);
       setError('Failed to start experiment. Please try again.');
     }
   };
@@ -85,7 +85,7 @@ export function ExperimentDashboard({ className = '' }: ExperimentDashboardProps
       await abTestingService.stopExperiment(experimentId, 'Manual stop from dashboard');
       await loadDashboardData();
     } catch (error) {
-      console.error('Failed to stop experiment:', error);
+  void console.error('Failed to stop experiment:', error);
       setError('Failed to stop experiment. Please try again.');
     }
   };

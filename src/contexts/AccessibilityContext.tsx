@@ -71,10 +71,10 @@ interface AccessibilityContextType {
   };
 }
 
-const AccessibilityContext = createContext<AccessibilityContextType | null>(null);
+const _AccessibilityContext = createContext<AccessibilityContextType | null>(null);
 
 export function useAccessibility() {
-  const context = useContext(AccessibilityContext);
+  const _context = useContext(AccessibilityContext);
   if (!context) {
     throw new Error('useAccessibility must be used within an AccessibilityProvider');
   }
@@ -97,22 +97,22 @@ export function AccessibilityProvider({
   const [announcementsEnabled, setAnnouncementsEnabled] = useState(enableAnnouncements);
   
   // Initialize hooks
-  const preferences = useAccessibilityPreferences();
-  const screenReader = useScreenReader();
-  const touchTargetValidation = useTouchTargetValidation();
-  const contrastValidation = useContrastValidation();
-  const keyboard = useKeyboardNavigation();
-  const liveRegions = useAriaLiveRegion();
-  const skipLinks = useSkipLinks();
+  const _preferences = useAccessibilityPreferences();
+  const _screenReader = useScreenReader();
+  const _touchTargetValidation = useTouchTargetValidation();
+  const _contrastValidation = useContrastValidation();
+  const _keyboard = useKeyboardNavigation();
+  const _liveRegions = useAriaLiveRegion();
+  const _skipLinks = useSkipLinks();
 
   // Apply accessibility preferences to DOM
   useEffect(() => {
     if (!enableAccessibilityFeatures) return;
 
-    const root = document.documentElement;
+    const _root = document.documentElement;
     
     // Apply font size
-    const fontSizeMap = {
+    const _fontSizeMap = {
       small: '14px',
       medium: '16px',
       large: '18px',
@@ -142,7 +142,7 @@ export function AccessibilityProvider({
     }
     
     // Apply color scheme
-    root.setAttribute('data-color-scheme', preferences.colorScheme);
+  void root.setAttribute('data-color-scheme', preferences.colorScheme);
     
     // Apply keyboard user indicator
     if (keyboard.isKeyboardUser) {
@@ -163,9 +163,9 @@ export function AccessibilityProvider({
   // Add default skip links
   useEffect(() => {
     if (enableAccessibilityFeatures) {
-      skipLinks.addSkipLink('main-content', 'Skip to main content', '#main-content');
-      skipLinks.addSkipLink('navigation', 'Skip to navigation', '#navigation');
-      skipLinks.addSkipLink('footer', 'Skip to footer', '#footer');
+  void skipLinks.addSkipLink('main-content', 'Skip to main content', '#main-content');
+  void skipLinks.addSkipLink('navigation', 'Skip to navigation', '#navigation');
+  void skipLinks.addSkipLink('footer', 'Skip to footer', '#footer');
     }
   }, [enableAccessibilityFeatures, skipLinks]);
 

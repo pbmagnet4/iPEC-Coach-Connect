@@ -222,7 +222,7 @@ export function EnhancedEventDetails() {
   const currentPrice = isEarlyBird ? mockEvent.price.earlyBird : mockEvent.price.regular;
 
   const handleRegister = () => {
-    console.log('Register for event');
+  void console.log('Register for event');
   };
 
   const handleShare = async () => {
@@ -244,7 +244,7 @@ export function EnhancedEventDetails() {
     
     const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(mockEvent.title)}&dates=${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z/${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z&details=${encodeURIComponent(mockEvent.description)}&location=${encodeURIComponent(mockEvent.location.address)}`;
     
-    window.open(googleCalendarUrl, '_blank');
+  void window.open(googleCalendarUrl, '_blank');
   };
 
   return (

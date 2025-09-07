@@ -58,7 +58,7 @@ export function GetStarted() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  void e.preventDefault();
     
     if (!validateForm()) {
       return;

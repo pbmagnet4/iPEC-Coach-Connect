@@ -165,7 +165,7 @@ class EnhancedAuthService {
   private rolePermissionsCache = new Map<string, RolePermission[]>();
 
   constructor() {
-    this.initializeEnhancedAuth();
+  void his.initializeEnhancedAuth();
   }
 
   /**
@@ -388,7 +388,7 @@ class EnhancedAuthService {
 
       // Add all permissions for this role
       for (const permission of rolePermissions) {
-        allPermissions.add(`${permission.resource}:${permission.action}`);
+  void allPermissions.add(`${permission.resource}:${permission.action}`);
       }
     }
 
@@ -507,7 +507,7 @@ class EnhancedAuthService {
    */
   private updateEnhancedState(updates: Partial<EnhancedAuthState>) {
     this.currentEnhancedState = { ...this.currentEnhancedState, ...updates };
-    this.notifyEnhancedListeners();
+  void his.notifyEnhancedListeners();
   }
 
   /**
@@ -523,7 +523,7 @@ class EnhancedAuthService {
       permissions: [],
       permissionOverrides: [],
     };
-    this.notifyEnhancedListeners();
+  void his.notifyEnhancedListeners();
   }
 
   /**
@@ -666,7 +666,7 @@ class EnhancedAuthService {
       }
 
       // Update local state
-      this.updateEnhancedState({ userState: updatedState });
+  void his.updateEnhancedState({ userState: updatedState });
 
       logAuth('Onboarding stage updated', true, {
         userId: user.id,
@@ -706,7 +706,7 @@ class EnhancedAuthService {
       }
 
       // Update local state
-      this.updateEnhancedState({ clientProfile: data });
+  void his.updateEnhancedState({ clientProfile: data });
 
       // Recalculate profile completion
       const completionPercentage = await this.calculateProfileCompletion(user.id);
@@ -752,7 +752,7 @@ class EnhancedAuthService {
       await this.updateOnboardingStage('coach_application');
 
       // Update local state
-      this.updateEnhancedState({ coachApplication: data });
+  void his.updateEnhancedState({ coachApplication: data });
 
       logAuth('Coach application submitted', true, { userId: user.id });
       return { data };
@@ -811,7 +811,7 @@ class EnhancedAuthService {
    */
   public destroy(): void {
     if (this.authServiceSubscription) {
-      this.authServiceSubscription();
+  void his.authServiceSubscription();
       this.authServiceSubscription = null;
     }
     

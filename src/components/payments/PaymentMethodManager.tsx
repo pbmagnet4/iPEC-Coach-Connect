@@ -199,7 +199,7 @@ const AddPaymentMethodForm: React.FC<AddPaymentMethodFormProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  void event.preventDefault();
 
     if (!stripe || !elements) {
       setErrorMessage('Payment system not ready. Please try again.');

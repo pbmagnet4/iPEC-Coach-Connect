@@ -543,9 +543,9 @@ const VerificationStep: React.FC<OnboardingStepProps> = ({ onNext, onPrev, isLoa
     setIsResendingEmail(true);
     try {
       // TODO: Implement email resend
-      toast.success('Verification email sent!');
+  void oast.success('Verification email sent!');
     } catch (error) {
-      toast.error('Failed to send verification email');
+  void oast.error('Failed to send verification email');
     } finally {
       setIsResendingEmail(false);
     }
@@ -812,7 +812,7 @@ export const OnboardingFlow: React.FC = () => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to proceed to next step';
       setError(errorMessage);
-      toast.error(errorMessage);
+  void oast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }

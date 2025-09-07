@@ -121,7 +121,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     // Clear all mocks and reset state
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
     
     // Setup default mock implementations
     mockSupabaseAuth.onAuthStateChange.mockImplementation((callback) => {
@@ -137,7 +137,7 @@ describe('AuthService', () => {
 
   afterEach(() => {
     // Clean up and restore all mocks
-    vi.restoreAllMocks();
+  void vi.restoreAllMocks();
   });
 
   describe('Initialization and State Management', () => {
@@ -240,8 +240,8 @@ describe('AuthService', () => {
       const listener1 = vi.fn();
       const listener2 = vi.fn();
       
-      authService.onStateChange(listener1);
-      authService.onStateChange(listener2);
+  void authService.onStateChange(listener1);
+  void authService.onStateChange(listener2);
 
       expect(listener1).toHaveBeenCalledTimes(1);
       expect(listener2).toHaveBeenCalledTimes(1);
@@ -252,7 +252,7 @@ describe('AuthService', () => {
       const listener2 = vi.fn();
       
       const unsubscribe1 = authService.onStateChange(listener1);
-      authService.onStateChange(listener2);
+  void authService.onStateChange(listener2);
 
       // Remove first listener
       unsubscribe1();
@@ -367,7 +367,7 @@ describe('AuthService', () => {
 
       const loadingStates: boolean[] = [];
       authService.onStateChange((state) => {
-        loadingStates.push(state.isLoading);
+  void loadingStates.push(state.isLoading);
       });
 
       // Start with a slow response
@@ -457,7 +457,7 @@ describe('AuthService', () => {
 
       const loadingStates: boolean[] = [];
       authService.onStateChange((state) => {
-        loadingStates.push(state.isLoading);
+  void loadingStates.push(state.isLoading);
       });
 
       mockSupabaseAuth.signInWithPassword.mockImplementation(() => 
@@ -506,7 +506,7 @@ describe('AuthService', () => {
     it('should update loading state during OAuth', async () => {
       const loadingStates: boolean[] = [];
       authService.onStateChange((state) => {
-        loadingStates.push(state.isLoading);
+  void loadingStates.push(state.isLoading);
       });
 
       mockSupabaseAuth.signInWithOAuth.mockImplementation(() => 
@@ -548,7 +548,7 @@ describe('AuthService', () => {
     it('should update loading state during signout', async () => {
       const loadingStates: boolean[] = [];
       authService.onStateChange((state) => {
-        loadingStates.push(state.isLoading);
+  void loadingStates.push(state.isLoading);
       });
 
       mockSupabaseAuth.signOut.mockImplementation(() => 
@@ -1137,11 +1137,11 @@ describe('AuthService', () => {
       // Create many listeners
       for (let i = 0; i < 1000; i++) {
         const unsubscribe = authService.onStateChange(() => {});
-        listeners.push(unsubscribe);
+  void listeners.push(unsubscribe);
       }
 
       // Unsubscribe all
-      listeners.forEach(unsubscribe => unsubscribe());
+  void listeners.forEach(unsubscribe => unsubscribe());
 
       // State changes should not affect removed listeners
       const listenerCount = authService['listeners'].length;
@@ -1150,7 +1150,7 @@ describe('AuthService', () => {
 
     it('should handle rapid state changes', async () => {
       const stateChanges: any[] = [];
-      authService.onStateChange((state) => stateChanges.push({ ...state }));
+  void authService.onStateChange((state) => stateChanges.push({ ...state }));
 
       // Rapidly trigger multiple state changes
       for (let i = 0; i < 100; i++) {
@@ -1501,11 +1501,11 @@ describe('AuthService', () => {
       const unsubscribers = [];
       for (let i = 0; i < 100; i++) {
         const unsubscribe = authService.onStateChange(() => {});
-        unsubscribers.push(unsubscribe);
+  void unsubscribers.push(unsubscribe);
       }
 
       // Unsubscribe all
-      unsubscribers.forEach(unsubscribe => unsubscribe());
+  void unsubscribers.forEach(unsubscribe => unsubscribe());
 
       expect(authService['listeners'].length).toBe(initialListeners);
     });

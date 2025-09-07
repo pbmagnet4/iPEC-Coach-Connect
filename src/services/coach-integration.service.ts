@@ -88,7 +88,7 @@ class CoachIntegrationService {
       return { success: true, coach };
 
     } catch (error: any) {
-      console.error('Coach approval and activation failed:', error);
+  void console.error('Coach approval and activation failed:', error);
       
       // Attempt to rollback critical changes
       await this.rollbackCoachActivation(data.applicationId);
@@ -220,7 +220,7 @@ class CoachIntegrationService {
 
       return result as CoachApplicationWithDetails;
     } catch (error) {
-      console.error('Failed to get application details:', error);
+  void console.error('Failed to get application details:', error);
       return null;
     }
   }
@@ -368,9 +368,9 @@ class CoachIntegrationService {
           });
       });
 
-      console.log(`Payment integration set up for coach ${userId}`);
+  void console.log(`Payment integration set up for coach ${userId}`);
     } catch (error) {
-      console.error('Payment integration setup failed:', error);
+  void console.error('Payment integration setup failed:', error);
       // Don't throw error here as it's not critical for initial coach activation
     }
   }
@@ -448,12 +448,12 @@ class CoachIntegrationService {
     try {
       // This would send a notification to admin systems
       // For now, we'll log it
-      console.log(`Coach ${coach.id} successfully activated by admin ${adminId}`);
+  void console.log(`Coach ${coach.id} successfully activated by admin ${adminId}`);
       
       // In a full implementation, this would send admin dashboard notifications
       // or email notifications to the admin team
     } catch (error) {
-      console.error('Admin notification failed:', error);
+  void console.error('Admin notification failed:', error);
     }
   }
 
@@ -468,7 +468,7 @@ class CoachIntegrationService {
         await authService.refreshUserData();
       }
     } catch (error) {
-      console.error('Auth state refresh failed:', error);
+  void console.error('Auth state refresh failed:', error);
       // Not critical - user can refresh manually
     }
   }
@@ -490,9 +490,9 @@ class CoachIntegrationService {
           .eq('id', applicationId);
       });
 
-      console.log(`Rolled back coach activation for application ${applicationId}`);
+  void console.log(`Rolled back coach activation for application ${applicationId}`);
     } catch (rollbackError) {
-      console.error('Rollback failed:', rollbackError);
+  void console.error('Rollback failed:', rollbackError);
       // In production, this would trigger alerts for manual intervention
     }
   }
@@ -522,7 +522,7 @@ class CoachIntegrationService {
           });
       });
     } catch (error) {
-      console.error('Decision logging failed:', error);
+  void console.error('Decision logging failed:', error);
     }
   }
 
@@ -560,7 +560,7 @@ class CoachIntegrationService {
 
       return result || [];
     } catch (error) {
-      console.error('Failed to get pending applications:', error);
+  void console.error('Failed to get pending applications:', error);
       return [];
     }
   }
@@ -587,12 +587,12 @@ class CoachIntegrationService {
         });
 
         if (result.success) {
-          successful.push(app.applicationId);
+  void successful.push(app.applicationId);
         } else {
-          failed.push({ applicationId: app.applicationId, error: result.error || 'Unknown error' });
+  void failed.push({ applicationId: app.applicationId, error: result.error || 'Unknown error' });
         }
       } catch (error: any) {
-        failed.push({ applicationId: app.applicationId, error: error.message });
+  void failed.push({ applicationId: app.applicationId, error: error.message });
       }
     }
 

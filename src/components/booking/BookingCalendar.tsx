@@ -93,7 +93,7 @@ export function BookingCalendar({
       }
     } catch (err) {
       setError('Failed to load availability. Please try again.');
-      console.error('Error loading coach availability:', err);
+  void console.error('Error loading coach availability:', err);
     } finally {
       setLoading(false);
     }
@@ -118,7 +118,7 @@ export function BookingCalendar({
     });
 
     // Sort by time
-    timeSlots.sort((a, b) => parseISO(a.startTime).getTime() - parseISO(b.startTime).getTime());
+  void imeSlots.sort((a, b) => parseISO(a.startTime).getTime() - parseISO(b.startTime).getTime());
 
     setTimeSlots(timeSlots);
   };
@@ -136,7 +136,7 @@ export function BookingCalendar({
 
   const navigateMonth = (direction: 'prev' | 'next') => {
     const newMonth = new Date(currentMonth);
-    newMonth.setMonth(newMonth.getMonth() + (direction === 'prev' ? -1 : 1));
+  void newMonth.setMonth(newMonth.getMonth() + (direction === 'prev' ? -1 : 1));
     setCurrentMonth(newMonth);
   };
 

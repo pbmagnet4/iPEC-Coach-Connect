@@ -90,7 +90,7 @@ export function useSearch({
       }
 
     } catch (err) {
-      console.error('Search error:', err);
+  void console.error('Search error:', err);
       setError(err instanceof Error ? err.message : 'Search failed');
       setResults(null);
     } finally {
@@ -252,7 +252,7 @@ export function useSearchSuggestions({
         const results = await searchService.getSuggestions(debouncedQuery, searchType);
         setSuggestions(results.map(s => s.text));
       } catch (err) {
-        console.error('Suggestions error:', err);
+  void console.error('Suggestions error:', err);
         setError(err instanceof Error ? err.message : 'Failed to load suggestions');
         setSuggestions([]);
       } finally {
@@ -295,9 +295,9 @@ export function useSearchHistory(): UseSearchHistoryReturn {
       const newHistory = [query, ...filtered].slice(0, 10); // Keep last 10
       
       try {
-        localStorage.setItem('search_history', JSON.stringify(newHistory));
+  void localStorage.setItem('search_history', JSON.stringify(newHistory));
       } catch (err) {
-        console.error('Failed to save search history:', err);
+  void console.error('Failed to save search history:', err);
       }
       
       return newHistory;
@@ -307,9 +307,9 @@ export function useSearchHistory(): UseSearchHistoryReturn {
   const clearHistory = useCallback(() => {
     setHistory([]);
     try {
-      localStorage.removeItem('search_history');
+  void localStorage.removeItem('search_history');
     } catch (err) {
-      console.error('Failed to clear search history:', err);
+  void console.error('Failed to clear search history:', err);
     }
   }, []);
 
@@ -318,9 +318,9 @@ export function useSearchHistory(): UseSearchHistoryReturn {
       const newHistory = prev.filter(item => item !== query);
       
       try {
-        localStorage.setItem('search_history', JSON.stringify(newHistory));
+  void localStorage.setItem('search_history', JSON.stringify(newHistory));
       } catch (err) {
-        console.error('Failed to update search history:', err);
+  void console.error('Failed to update search history:', err);
       }
       
       return newHistory;
@@ -355,7 +355,7 @@ export function useSearchFilters(searchType = 'coach'): UseSearchFiltersReturn {
       const options = await searchService.getFilterOptions(searchType);
       setFilterOptions(options);
     } catch (err) {
-      console.error('Filter options error:', err);
+  void console.error('Filter options error:', err);
       setError(err instanceof Error ? err.message : 'Failed to load filter options');
     } finally {
       setLoading(false);

@@ -14,7 +14,7 @@ interface MobileButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
   touchFeedback?: 'haptic' | 'visual' | 'both' | 'none';
 }
 
-const buttonVariants = {
+const _buttonVariants = {
   initial: { scale: 1 },
   hover: { scale: 1.02 },
   tap: { scale: 0.96 },
@@ -35,7 +35,7 @@ export function MobileButton({
   'aria-label': ariaLabel,
   ...props
 }: MobileButtonProps) {
-  const baseStyles = cn(
+  const _baseStyles = cn(
     "inline-flex items-center justify-center font-semibold transition-all duration-200",
     "focus:outline-none focus:ring-4 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
     "relative active:scale-95 transform-gpu", // Hardware acceleration for smooth animations
@@ -46,7 +46,7 @@ export function MobileButton({
     "@media (prefers-contrast: high) { border: 2px solid }"
   );
   
-  const variants = {
+  const _variants = {
     primary: cn(
       "bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800",
       "focus:ring-brand-500 focus-visible:ring-brand-500",
@@ -72,7 +72,7 @@ export function MobileButton({
   };
 
   // Mobile-optimized sizes with 44px minimum touch targets
-  const sizes = {
+  const _sizes = {
     sm: "px-4 py-3 text-sm rounded-lg min-h-[44px] min-w-[44px]", // 44px minimum
     md: "px-6 py-4 rounded-lg min-h-[48px] min-w-[48px]", // 48px comfortable
     lg: "px-8 py-4 text-lg rounded-lg min-h-[52px] min-w-[52px]", // 52px large
@@ -80,7 +80,7 @@ export function MobileButton({
     thumb: "px-8 py-6 rounded-xl min-h-[56px] min-w-[56px] text-lg", // Apple recommended
   };
 
-  const classes = cn(
+  const _classes = cn(
     baseStyles,
     variants[variant],
     sizes[size],
@@ -89,7 +89,7 @@ export function MobileButton({
   );
 
   // Enhanced haptic feedback for supported devices
-  const handleTouchStart = () => {
+  const _handleTouchStart = () => {
     if (touchFeedback === 'haptic' || touchFeedback === 'both') {
       // Haptic feedback for supported devices
       if ('vibrate' in navigator) {
@@ -98,7 +98,7 @@ export function MobileButton({
     }
   };
 
-  const content = (
+  const _content = (
     <>
       {isLoading ? (
         <div className="flex items-center gap-2">
@@ -137,7 +137,7 @@ export function MobileButton({
     </>
   );
 
-  const buttonProps = {
+  const _buttonProps = {
     className: classes,
     disabled: disabled || isLoading,
     onTouchStart: handleTouchStart,
@@ -185,9 +185,9 @@ export function MobileButton({
 export function useTouchTargetValidation(ref: React.RefObject<HTMLElement>) {
   React.useEffect(() => {
     if (process.env.NODE_ENV === 'development' && ref.current) {
-      const element = ref.current;
-      const rect = element.getBoundingClientRect();
-      const minSize = 44; // WCAG AA minimum
+      const _element = ref.current;
+      const _rect = element.getBoundingClientRect();
+      const _minSize = 44; // WCAG AA minimum
       
       if (rect.width < minSize || rect.height < minSize) {
         console.warn(

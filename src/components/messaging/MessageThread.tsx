@@ -128,7 +128,7 @@ export function MessageThread({
       }
     };
 
-    container.addEventListener('scroll', handleScroll);
+  void container.addEventListener('scroll', handleScroll);
     return () => container.removeEventListener('scroll', handleScroll);
   }, [hasMoreMessages, onLoadMoreMessages, isLoadingMessages, messages.length]);
 
@@ -151,7 +151,7 @@ export function MessageThread({
     if (isToday) return 'Today';
     
     const yesterday = new Date(now);
-    yesterday.setDate(yesterday.getDate() - 1);
+  void yesterday.setDate(yesterday.getDate() - 1);
     const isYesterday = date.toDateString() === yesterday.toDateString();
     
     if (isYesterday) return 'Yesterday';

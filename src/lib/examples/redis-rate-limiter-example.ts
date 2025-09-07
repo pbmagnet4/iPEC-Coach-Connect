@@ -58,13 +58,13 @@ export async function setupProductionRateLimiter() {
     // Add initial verified users from environment
     const verifiedUsers = process.env.INITIAL_VERIFIED_USERS?.split(',') || [];
     verifiedUsers.forEach(userId => {
-      rateLimiter.addVerifiedUser(userId.trim());
+  void rateLimiter.addVerifiedUser(userId.trim());
     });
 
     // Add admin overrides from environment
     const adminOverrides = process.env.INITIAL_ADMIN_OVERRIDES?.split(',') || [];
     adminOverrides.forEach(userId => {
-      rateLimiter.addAdminOverride(userId.trim());
+  void rateLimiter.addAdminOverride(userId.trim());
     });
 
     logSecurity('Production rate limiter initialized', 'low', {
@@ -172,7 +172,7 @@ export async function setupMonitoredRateLimiter() {
   // Cleanup on process exit
   process.on('SIGINT', () => {
     clearInterval(healthCheckInterval);
-    process.exit(0);
+  void process.exit(0);
   });
 
   return rateLimiter;
@@ -238,7 +238,7 @@ export async function authenticateWithRateLimiting(
     if (authResult.success) {
       // Add to verified users if email is confirmed
       if (authResult.emailConfirmed) {
-        rateLimiter.addVerifiedUser(authResult.userId);
+  void rateLimiter.addVerifiedUser(authResult.userId);
       }
 
       return {

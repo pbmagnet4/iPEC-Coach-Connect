@@ -164,12 +164,12 @@ export function EnhancedDiscussionDetails() {
 
   const handleLike = async (replyId?: number) => {
     if (!isAuthenticated) return;
-    console.log(`Like ${replyId ? `reply ${replyId}` : 'discussion'}`);
+  void console.log(`Like ${replyId ? `reply ${replyId}` : 'discussion'}`);
   };
 
   const handleSave = async () => {
     if (!isAuthenticated) return;
-    console.log('Save discussion');
+  void console.log('Save discussion');
   };
 
   const handleShare = async () => {

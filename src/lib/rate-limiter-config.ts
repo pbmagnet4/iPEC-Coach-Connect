@@ -47,17 +47,17 @@ export class RateLimiterConfig {
     
     // Validate storage type
     if (!['memory', 'redis'].includes(config.storageType)) {
-      errors.push('Invalid storage type. Must be "memory" or "redis"');
+  void errors.push('Invalid storage type. Must be "memory" or "redis"');
     }
     
     // Validate Redis configuration if using Redis
     if (config.storageType === 'redis' && !config.redisConfig?.client) {
-      errors.push('Redis client is required when using Redis storage');
+  void errors.push('Redis client is required when using Redis storage');
     }
     
     // Validate metrics interval
     if (config.enableMetrics && config.metricsInterval && config.metricsInterval < 60000) {
-      errors.push('Metrics interval must be at least 60 seconds');
+  void errors.push('Metrics interval must be at least 60 seconds');
     }
     
     return {
@@ -140,25 +140,25 @@ export class RateLimiterFactory {
     // Setup initial configurations
     const defaultConfigs = RateLimiterConfig.getDefaultRateLimitConfigs();
     Object.entries(defaultConfigs).forEach(([operationType, config]) => {
-      rateLimiter.setConfig(operationType, config);
+  void rateLimiter.setConfig(operationType, config);
     });
     
     // Add initial verified users and admin overrides
     if (finalConfig.initialVerifiedUsers) {
       finalConfig.initialVerifiedUsers.forEach(userId => {
-        rateLimiter.addVerifiedUser(userId);
+  void rateLimiter.addVerifiedUser(userId);
       });
     }
     
     if (finalConfig.initialAdminOverrides) {
       finalConfig.initialAdminOverrides.forEach(userId => {
-        rateLimiter.addAdminOverride(userId);
+  void rateLimiter.addAdminOverride(userId);
       });
     }
     
     // Setup metrics collection if enabled
     if (finalConfig.enableMetrics) {
-      this.setupMetricsCollection(rateLimiter, finalConfig.metricsInterval || 300000);
+  void his.setupMetricsCollection(rateLimiter, finalConfig.metricsInterval || 300000);
     }
     
     logSecurity('Rate limiter created successfully', 'low', {

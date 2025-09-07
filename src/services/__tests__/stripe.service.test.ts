@@ -55,16 +55,16 @@ vi.mock('../../lib/supabase', () => ({
 }));
 
 // Mock environment variables
-vi.stubEnv('VITE_STRIPE_PUBLISHABLE_KEY', 'pk_test_123');
-vi.stubEnv('VITE_STRIPE_SECRET_KEY', 'sk_test_123');
+  void vi.stubEnv('VITE_STRIPE_PUBLISHABLE_KEY', 'pk_test_123');
+  void vi.stubEnv('VITE_STRIPE_SECRET_KEY', 'sk_test_123');
 
 describe('StripeService', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
   });
 
   afterEach(() => {
-    vi.unstubAllEnvs();
+  void vi.unstubAllEnvs();
   });
 
   describe('Customer Service', () => {

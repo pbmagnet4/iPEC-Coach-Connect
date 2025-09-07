@@ -76,10 +76,10 @@ const mockSession = {
 };
 
 // Mock services
-vi.mock('../../../services/booking.service');
-vi.mock('../../../services/real-time-booking.service');
-vi.mock('../../../services/coach.service');
-vi.mock('../../../services/auth.service');
+  void vi.mock('../../../services/booking.service');
+  void vi.mock('../../../services/real-time-booking.service');
+  void vi.mock('../../../services/coach.service');
+  void vi.mock('../../../services/auth.service');
 
 const mockBookingService = vi.mocked(bookingService);
 const mockRealTimeBookingService = vi.mocked(realTimeBookingService);
@@ -96,7 +96,7 @@ const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 describe('Booking System Integration Tests', () => {
   beforeEach(() => {
     // Reset all mocks
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
     
     // Setup default auth state
     mockAuthService.getState.mockReturnValue({
@@ -107,7 +107,7 @@ describe('Booking System Integration Tests', () => {
   });
 
   afterEach(() => {
-    vi.clearAllTimers();
+  void vi.clearAllTimers();
   });
 
   describe('BookingCalendar Component', () => {
@@ -186,7 +186,7 @@ describe('Booking System Integration Tests', () => {
 
       // Find and click a time slot
       const timeSlot = screen.getByText('10:00 AM');
-      fireEvent.click(timeSlot);
+  void fireEvent.click(timeSlot);
 
       expect(onTimeSelect).toHaveBeenCalledWith('10:00', mockAvailableSlots[0]);
     });
@@ -292,10 +292,10 @@ describe('Booking System Integration Tests', () => {
 
       // Step 1: Select session type
       const singleSessionButton = screen.getByText('Single Coaching Session');
-      fireEvent.click(singleSessionButton);
+  void fireEvent.click(singleSessionButton);
 
       const continueButton = screen.getByText('Continue');
-      fireEvent.click(continueButton);
+  void fireEvent.click(continueButton);
 
       // Should be on step 2 now
       expect(screen.getByText('Select Date & Time')).toBeInTheDocument();
@@ -398,7 +398,7 @@ describe('Booking System Integration Tests', () => {
 
       // Find and click cancel button
       const cancelButton = screen.getByText('Cancel');
-      fireEvent.click(cancelButton);
+  void fireEvent.click(cancelButton);
 
       await waitFor(() => {
         expect(mockBookingService.cancelSession).toHaveBeenCalledWith({
@@ -598,7 +598,7 @@ describe('Booking System Integration Tests', () => {
 
       // Test keyboard navigation on time slots
       const timeSlot = screen.getByText('10:00 AM');
-      fireEvent.keyDown(timeSlot, { key: 'Enter', code: 'Enter' });
+  void fireEvent.keyDown(timeSlot, { key: 'Enter', code: 'Enter' });
       
       expect(onTimeSelect).toHaveBeenCalledWith('10:00', mockAvailableSlots[0]);
     });
@@ -665,7 +665,7 @@ describe('Booking System Integration Tests', () => {
 
 describe('Booking Service Integration', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
   });
 
   it('should integrate with payment service', async () => {

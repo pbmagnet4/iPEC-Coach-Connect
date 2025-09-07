@@ -221,7 +221,7 @@ export function useImageGallery(
          i <= Math.min(images.length - 1, currentIndex + preloadCount); 
          i++) {
       if (!preloadedImages.has(i)) {
-        indicesToPreload.push(i);
+  void indicesToPreload.push(i);
       }
     }
 
@@ -240,11 +240,11 @@ export function useImageGallery(
 
         setPreloadedImages(prev => new Set(prev).add(index));
       } catch (error) {
-        console.warn(`Failed to preload image at index ${index}:`, error);
+  void console.warn(`Failed to preload image at index ${index}:`, error);
       } finally {
         setLoadingStates(prev => {
           const newMap = new Map(prev);
-          newMap.set(index, false);
+  void newMap.set(index, false);
           return newMap;
         });
       }
@@ -280,7 +280,7 @@ export function generateBlurDataURL(
   if (!ctx) return '';
   
   ctx.fillStyle = color;
-  ctx.fillRect(0, 0, width, height);
+  void ctx.fillRect(0, 0, width, height);
   
   return canvas.toDataURL();
 }

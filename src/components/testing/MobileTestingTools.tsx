@@ -74,8 +74,8 @@ export function MobileTestingSuite() {
     const a = document.createElement('a');
     a.href = url;
     a.download = `mobile-accessibility-report-${Date.now()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+  void a.click();
+  void URL.revokeObjectURL(url);
   };
 
   return (
@@ -628,7 +628,7 @@ class GestureTest {
     // Check for gesture hints
     const gestureElements = document.querySelectorAll('.swipe-hint, [data-gesture-hint]');
     if (gestureElements.length === 0) {
-      recommendations.push('Consider adding gesture hints for better UX');
+  void recommendations.push('Consider adding gesture hints for better UX');
     }
 
     const score = Math.max(0, 100 - (issues.length * 15));

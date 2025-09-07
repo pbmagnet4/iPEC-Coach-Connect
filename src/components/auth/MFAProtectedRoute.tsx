@@ -44,7 +44,7 @@ export function MFAProtectedRoute({
           const trusted = await isDeviceTrusted();
           setDeviceTrusted(trusted);
         } catch (error) {
-          console.warn('Device trust check failed:', error);
+  void console.warn('Device trust check failed:', error);
           setDeviceTrusted(false);
         }
       }

@@ -55,7 +55,7 @@ class SupabaseSubscriptionManager {
   private isDestroyed = false;
 
   private constructor() {
-    this.initializeCleanup();
+  void his.initializeCleanup();
   }
 
   static getInstance(): SupabaseSubscriptionManager {
@@ -104,7 +104,7 @@ class SupabaseSubscriptionManager {
         (payload) => {
           if (this.subscriptions.has(subscriptionId)) {
             try {
-              config.callback(payload);
+  void config.callback(payload);
             } catch (error) {
               logSecurity('Supabase subscription callback error', 'low', {
                 subscriptionId,
@@ -118,7 +118,7 @@ class SupabaseSubscriptionManager {
 
       // Subscribe to channel if not already subscribed
       if (channel.state === 'closed') {
-        channel.subscribe();
+  void channel.subscribe();
       }
 
       // Store subscription
@@ -181,7 +181,7 @@ class SupabaseSubscriptionManager {
       const channelName = this.getChannelName(subscription.table, subscription.filter);
       const channelRefs = this.channelReferences.get(channelName);
       if (channelRefs) {
-        channelRefs.delete(subscriptionId);
+  void channelRefs.delete(subscriptionId);
         
         // If no more references, unsubscribe from channel
         if (channelRefs.size === 0) {
@@ -194,7 +194,7 @@ class SupabaseSubscriptionManager {
       if (subscription.component) {
         const componentSubs = this.componentSubscriptions.get(subscription.component);
         if (componentSubs) {
-          componentSubs.delete(subscriptionId);
+  void componentSubs.delete(subscriptionId);
           if (componentSubs.size === 0) {
             this.componentSubscriptions.delete(subscription.component);
           }
@@ -203,7 +203,7 @@ class SupabaseSubscriptionManager {
 
       // Clean up memory manager registration
       if (subscription.cleanupId) {
-        memoryManager.cleanup(subscription.cleanupId);
+  void memoryManager.cleanup(subscription.cleanupId);
       }
 
       logPerformance('Supabase subscription removed', 0, {
@@ -357,7 +357,7 @@ class SupabaseSubscriptionManager {
     this.isDestroyed = true;
 
     // Unsubscribe from all subscriptions
-    this.unsubscribeAll();
+  void his.unsubscribeAll();
 
     // Clear cleanup interval
     if (this.cleanupInterval) {
@@ -418,13 +418,13 @@ class SupabaseSubscriptionManager {
       // Find old subscriptions
       for (const [id, subscription] of this.subscriptions) {
         if (now - subscription.createdAt > maxAge) {
-          oldSubscriptions.push(id);
+  void oldSubscriptions.push(id);
         }
       }
 
       // Remove old subscriptions
       for (const id of oldSubscriptions) {
-        this.unsubscribe(id);
+  void his.unsubscribe(id);
       }
 
       if (oldSubscriptions.length > 0) {
@@ -436,7 +436,7 @@ class SupabaseSubscriptionManager {
     }, 5 * 60 * 1000); // 5 minutes
 
     // Register cleanup interval with memory manager
-    memoryManager.registerInterval('supabase_cleanup', this.cleanupInterval, this);
+  void memoryManager.registerInterval('supabase_cleanup', this.cleanupInterval, this);
   }
 
   /**
@@ -540,7 +540,7 @@ export function useSupabaseSubscription<T = any>(
 
   const unsubscribe = React.useCallback(() => {
     if (subscriptionId) {
-      supabaseSubscriptionManager.unsubscribe(subscriptionId);
+  void supabaseSubscriptionManager.unsubscribe(subscriptionId);
       setSubscriptionId(null);
       setIsSubscribed(false);
     }
@@ -592,8 +592,8 @@ export function useSupabaseSubscriptions<T = any>(
 
     subscriptions.forEach((options, index) => {
       if (!options.enabled) {
-        ids.push('');
-        errs.push(null);
+  void ids.push('');
+  void errs.push(null);
         return;
       }
 
@@ -604,12 +604,12 @@ export function useSupabaseSubscriptions<T = any>(
           component: componentRef.current
         });
 
-        ids.push(id);
-        errs.push(null);
+  void ids.push(id);
+  void errs.push(null);
       } catch (err) {
         const error = err instanceof Error ? err : new Error('Subscription error');
-        ids.push('');
-        errs.push(error);
+  void ids.push('');
+  void errs.push(error);
         options.onError?.(error);
       }
     });
@@ -621,7 +621,7 @@ export function useSupabaseSubscriptions<T = any>(
   const unsubscribe = React.useCallback(() => {
     subscriptionIds.forEach(id => {
       if (id) {
-        supabaseSubscriptionManager.unsubscribe(id);
+  void supabaseSubscriptionManager.unsubscribe(id);
       }
     });
     setSubscriptionIds([]);
@@ -654,15 +654,15 @@ export function useSupabaseSubscriptions<T = any>(
 // Auto-cleanup on page unload
 if (typeof window !== 'undefined') {
   const handleUnload = () => {
-    supabaseSubscriptionManager.destroy();
+  void supabaseSubscriptionManager.destroy();
   };
 
-  window.addEventListener('beforeunload', handleUnload);
-  window.addEventListener('unload', handleUnload);
+  void window.addEventListener('beforeunload', handleUnload);
+  void window.addEventListener('unload', handleUnload);
   
   // Register with memory manager
-  memoryManager.registerEventListener('supabase_manager_unload', window, 'beforeunload', handleUnload);
-  memoryManager.registerEventListener('supabase_manager_unload', window, 'unload', handleUnload);
+  void memoryManager.registerEventListener('supabase_manager_unload', window, 'beforeunload', handleUnload);
+  void memoryManager.registerEventListener('supabase_manager_unload', window, 'unload', handleUnload);
 }
 
 // Export types

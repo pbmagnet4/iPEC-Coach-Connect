@@ -125,7 +125,7 @@ export function useExperiment(
           });
 
           if (debug) {
-            console.log('User not assigned to experiment:', experimentId);
+  void console.log('User not assigned to experiment:', experimentId);
           }
         }
       } catch (error) {
@@ -143,7 +143,7 @@ export function useExperiment(
         });
 
         if (debug) {
-          console.error('A/B Test Error:', abError);
+  void console.error('A/B Test Error:', abError);
         }
       }
     }
@@ -160,7 +160,7 @@ export function useExperiment(
     async (metricName: string, value?: number, properties?: Record<string, any>) => {
       if (!userContext?.user_id || !state.isActive) {
         if (debug) {
-          console.warn('Cannot track conversion: user not assigned to experiment');
+  void console.warn('Cannot track conversion: user not assigned to experiment');
         }
         return;
       }
@@ -183,7 +183,7 @@ export function useExperiment(
           });
         }
       } catch (error) {
-        console.error('Failed to track conversion:', error);
+  void console.error('Failed to track conversion:', error);
       }
     },
     [experimentId, userContext, state.isActive, debug]
@@ -292,7 +292,7 @@ export function useOptimizedExperiment(
         }
       } catch (error) {
         // Fail silently - regular A/B test behavior
-        console.error('Failed to check experiment winner:', error);
+  void console.error('Failed to check experiment winner:', error);
       }
     }
 

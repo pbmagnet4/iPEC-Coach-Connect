@@ -131,7 +131,7 @@ export function useFeatureFlag<T = boolean>(
       });
 
       if (debug) {
-        console.error('Feature Flag Error:', flagError);
+  void console.error('Feature Flag Error:', flagError);
       }
     }
   }, [flagKey, userContext?.user_id, userContext?.session_id, defaultValue, debug]);
@@ -328,7 +328,7 @@ export function useMultipleFlags<T extends Record<string, { key: string; default
         
         setFlags(newFlags);
       } catch (error) {
-        console.error('Failed to evaluate multiple flags:', error);
+  void console.error('Failed to evaluate multiple flags:', error);
       }
     }
 

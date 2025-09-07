@@ -157,7 +157,7 @@ export function EnhancedBookingFlow() {
         setCoach(result.data);
       }
     } catch (err) {
-      console.error('Error loading coach info:', err);
+  void console.error('Error loading coach info:', err);
     }
   };
 
@@ -173,7 +173,7 @@ export function EnhancedBookingFlow() {
       );
       setConflicts(conflictResult);
     } catch (err) {
-      console.error('Error checking conflicts:', err);
+  void console.error('Error checking conflicts:', err);
     } finally {
       setLoading(false);
     }
@@ -222,7 +222,7 @@ export function EnhancedBookingFlow() {
         setCurrentStep(2); // Go back to scheduling
       }
     } catch (err) {
-      console.error('Error reserving time slot:', err);
+  void console.error('Error reserving time slot:', err);
       setError('Unable to reserve time slot. Please try again.');
     } finally {
       setLoading(false);
@@ -267,7 +267,7 @@ export function EnhancedBookingFlow() {
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Booking failed. Please try again.');
-      console.error('Booking error:', err);
+  void console.error('Booking error:', err);
     } finally {
       setLoading(false);
     }

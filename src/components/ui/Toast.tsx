@@ -138,16 +138,16 @@ export const useToast = () => {
 export const toast = {
   success: (message: string, title?: string) => {
     // This is a fallback implementation - in a real app you'd need the provider
-    console.log(`✅ ${title ? `${title  }: ` : ''}${message}`);
+  void console.log(`✅ ${title ? `${title  }: ` : ''}${message}`);
   },
   error: (message: string, title?: string) => {
-    console.error(`❌ ${title ? `${title  }: ` : ''}${message}`);
+  void console.error(`❌ ${title ? `${title  }: ` : ''}${message}`);
   },
   warning: (message: string, title?: string) => {
-    console.warn(`⚠️ ${title ? `${title  }: ` : ''}${message}`);
+  void console.warn(`⚠️ ${title ? `${title  }: ` : ''}${message}`);
   },
   info: (message: string, title?: string) => {
-    console.info(`ℹ️ ${title ? `${title  }: ` : ''}${message}`);
+  void console.info(`ℹ️ ${title ? `${title  }: ` : ''}${message}`);
   }
 };
 

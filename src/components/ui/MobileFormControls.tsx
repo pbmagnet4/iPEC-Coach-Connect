@@ -410,7 +410,7 @@ export function MobileSelect({
           onChange?.(filteredOptions[focusedIndex].value);
           setIsOpen(false);
         }
-        e.preventDefault();
+  void e.preventDefault();
         break;
       case 'ArrowDown':
         if (!isOpen) {
@@ -421,7 +421,7 @@ export function MobileSelect({
             prev < filteredOptions.length - 1 ? prev + 1 : 0
           );
         }
-        e.preventDefault();
+  void e.preventDefault();
         break;
       case 'ArrowUp':
         if (isOpen) {
@@ -429,7 +429,7 @@ export function MobileSelect({
             prev > 0 ? prev - 1 : filteredOptions.length - 1
           );
         }
-        e.preventDefault();
+  void e.preventDefault();
         break;
       case 'Escape':
         setIsOpen(false);
@@ -461,7 +461,7 @@ export function MobileSelect({
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+  void document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 

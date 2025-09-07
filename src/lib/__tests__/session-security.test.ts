@@ -123,12 +123,12 @@ describe('Session Security System', () => {
   let testSession: SecureSessionData;
 
   beforeEach(() => {
-    vi.clearAllMocks();
-    localStorage.clear();
+  void vi.clearAllMocks();
+  void localStorage.clear();
   });
 
   afterEach(() => {
-    localStorage.clear();
+  void localStorage.clear();
   });
 
   describe('Session Creation', () => {

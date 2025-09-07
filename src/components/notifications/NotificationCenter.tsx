@@ -92,7 +92,7 @@ export function NotificationCenter({ className = '' }: NotificationCenterProps) 
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+  void document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
@@ -349,7 +349,7 @@ function NotificationItem({ notification, onRead, onDelete, onAction }: Notifica
               
               <button
                 onClick={(e) => {
-                  e.stopPropagation();
+  void e.stopPropagation();
                   setShowActions(!showActions);
                 }}
                 className="p-1 text-gray-400 hover:text-gray-600 rounded"
@@ -372,7 +372,7 @@ function NotificationItem({ notification, onRead, onDelete, onAction }: Notifica
                   {isUnread && (
                     <button
                       onClick={(e) => {
-                        e.stopPropagation();
+  void e.stopPropagation();
                         onRead(notification.id);
                         setShowActions(false);
                       }}
@@ -384,7 +384,7 @@ function NotificationItem({ notification, onRead, onDelete, onAction }: Notifica
                   )}
                   <button
                     onClick={(e) => {
-                      e.stopPropagation();
+  void e.stopPropagation();
                       onDelete(notification.id);
                       setShowActions(false);
                     }}

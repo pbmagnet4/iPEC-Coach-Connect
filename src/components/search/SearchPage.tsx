@@ -148,25 +148,25 @@ export function SearchPage({
     if (newFilters.sort_order) params.set('order', newFilters.sort_order);
     
     if (newFilters.specialization?.length) {
-      params.set('specialization', newFilters.specialization.join(','));
+  void params.set('specialization', newFilters.specialization.join(','));
     }
     if (newFilters.certification_level?.length) {
-      params.set('certification', newFilters.certification_level.join(','));
+  void params.set('certification', newFilters.certification_level.join(','));
     }
     if (newFilters.hourly_rate?.min) {
-      params.set('min_rate', newFilters.hourly_rate.min.toString());
+  void params.set('min_rate', newFilters.hourly_rate.min.toString());
     }
     if (newFilters.hourly_rate?.max) {
-      params.set('max_rate', newFilters.hourly_rate.max.toString());
+  void params.set('max_rate', newFilters.hourly_rate.max.toString());
     }
     if (newFilters.experience_years?.min) {
-      params.set('min_exp', newFilters.experience_years.min.toString());
+  void params.set('min_exp', newFilters.experience_years.min.toString());
     }
     if (newFilters.experience_years?.max) {
-      params.set('max_exp', newFilters.experience_years.max.toString());
+  void params.set('max_exp', newFilters.experience_years.max.toString());
     }
     if (newFilters.location?.type) {
-      params.set('location_type', newFilters.location.type);
+  void params.set('location_type', newFilters.location.type);
     }
 
     setSearchParams(params);
@@ -207,7 +207,7 @@ export function SearchPage({
       }
 
     } catch (err) {
-      console.error('Search error:', err);
+  void console.error('Search error:', err);
       setError(err instanceof Error ? err.message : 'Search failed');
     } finally {
       setLoading(false);
@@ -257,7 +257,7 @@ export function SearchPage({
         navigate(`/resources/${item.id}`);
         break;
       default:
-        console.log('Unknown item type:', type);
+  void console.log('Unknown item type:', type);
     }
   }, [navigate]);
 
@@ -284,7 +284,7 @@ export function SearchPage({
       setShowSaveSearch(false);
       setSaveSearchName('');
     } catch (err) {
-      console.error('Save search error:', err);
+  void console.error('Save search error:', err);
     }
   }, [user, saveSearchName, filters]);
 

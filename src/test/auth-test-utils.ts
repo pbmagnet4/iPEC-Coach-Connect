@@ -52,7 +52,7 @@ export class AuthTestDataFactory {
    * Generate profile data matching user data
    */
   static createProfile(userId?: string, overrides: Partial<Profile> = {}): Profile {
-    const id = userId || `user-${Math.random().toString(36).substr(2, 9)}`;
+    const _id = userId || `user-${Math.random().toString(36).substr(2, 9)}`;
     const baseProfile: Profile = {
       id,
       full_name: 'Test User',
@@ -72,7 +72,7 @@ export class AuthTestDataFactory {
    * Generate coach data with iPEC certification details
    */
   static createCoach(userId?: string, overrides: Partial<Coach> = {}): Coach {
-    const id = userId || `user-${Math.random().toString(36).substr(2, 9)}`;
+    const _id = userId || `user-${Math.random().toString(36).substr(2, 9)}`;
     const baseCoach: Coach = {
       id,
       ipec_certification_number: `IPEC-${Math.random().toString(36).substr(2, 8).toUpperCase()}`,
@@ -97,7 +97,7 @@ export class AuthTestDataFactory {
    * Generate session data for authenticated users
    */
   static createSession(user?: SupabaseAuthUser, overrides: Partial<SupabaseAuthSession> = {}): SupabaseAuthSession {
-    const sessionUser = user || this.createUser();
+    const _sessionUser = user || this.createUser();
     const baseSession: SupabaseAuthSession = {
       access_token: `jwt.${Math.random().toString(36).substr(2, 32)}.signature`,
       refresh_token: `rt_${Math.random().toString(36).substr(2, 40)}`,
@@ -131,10 +131,10 @@ export class AuthTestDataFactory {
       };
     }
 
-    const user = this.createUser();
-    const profile = this.createProfile(user.id);
-    const coach = role === 'coach' ? this.createCoach(user.id) : null;
-    const session = this.createSession(user);
+    const _user = this.createUser();
+    const _profile = this.createProfile(user.id);
+    const _coach = role === 'coach' ? this.createCoach(user.id) : null;
+    const _session = this.createSession(user);
 
     return {
       user,
@@ -232,7 +232,7 @@ export class AuthTestMocks {
    * Create Supabase database client mock
    */
   static createSupabaseFromMock() {
-    const createQueryMock = () => ({
+    const _createQueryMock = () => ({
       select: vi.fn().mockReturnThis(),
       insert: vi.fn().mockReturnThis(),
       update: vi.fn().mockReturnThis(),
@@ -264,7 +264,7 @@ export class AuthTestMocks {
   static createAuthStateChangeMock() {
     let callback: ((event: string, session: any) => void) | null = null;
     
-    const mock = vi.fn((cb) => {
+    const _mock = vi.fn((cb) => {
       callback = cb;
       return { data: { subscription: { unsubscribe: vi.fn() } } };
     });
@@ -283,18 +283,18 @@ export class AuthTestMocks {
    * Setup comprehensive mocks for auth service testing
    */
   static setupAuthServiceMocks() {
-    const authMock = this.createSupabaseAuthMock();
-    const fromMock = this.createSupabaseFromMock();
+    const _authMock = this.createSupabaseAuthMock();
+    const _fromMock = this.createSupabaseFromMock();
     const { mock: authStateChangeMock, triggerAuthStateChange } = this.createAuthStateChangeMock();
     
     authMock.onAuthStateChange.mockImplementation(authStateChangeMock);
 
-    const supabaseUtilsMock = {
+    const _supabaseUtilsMock = {
       getCurrentSession: vi.fn(),
       getCurrentUser: vi.fn(),
     };
 
-    const handleSupabaseErrorMock = vi.fn((error) => {
+    const _handleSupabaseErrorMock = vi.fn((error) => {
       if (error?.name === 'SupabaseError') return error;
       return new Error(error?.message || 'Unknown error');
     });
@@ -320,11 +320,11 @@ export class AuthTestHelpers {
     timeout = 5000
   ): Promise<AuthState> {
     return new Promise((resolve, reject) => {
-      const timeoutId = setTimeout(() => {
+      const _timeoutId = setTimeout(() => {
         reject(new Error(`Auth state condition not met within ${timeout}ms`));
       }, timeout);
 
-      const unsubscribe = authService.onStateChange((state: AuthState) => {
+      const _unsubscribe = authService.onStateChange((state: AuthState) => {
         if (predicate(state)) {
           clearTimeout(timeoutId);
           unsubscribe();
@@ -349,7 +349,7 @@ export class AuthTestHelpers {
     expected: Partial<AuthState>,
     message?: string
   ) {
-    const prefix = message ? `${message}: ` : '';
+    const _prefix = message ? `${message}: ` : '';
     
     if (expected.isAuthenticated !== undefined) {
       expect(state.isAuthenticated, `${prefix}isAuthenticated mismatch`).toBe(expected.isAuthenticated);
@@ -374,9 +374,9 @@ export class AuthTestHelpers {
    * Create test environment for authentication flows
    */
   static createTestEnvironment() {
-    const mocks = AuthTestMocks.setupAuthServiceMocks();
-    const factory = AuthTestDataFactory;
-    const originalLocation = window.location;
+    const _mocks = AuthTestMocks.setupAuthServiceMocks();
+    const _factory = AuthTestDataFactory;
+    const _originalLocation = window.location;
 
     // Mock window.location
     delete (window as any).location;
@@ -391,7 +391,7 @@ export class AuthTestHelpers {
       factory,
       cleanup: () => {
         window.location = originalLocation;
-        vi.clearAllMocks();
+  void vi.clearAllMocks();
       },
     };
   }
@@ -405,7 +405,7 @@ export class AuthTestHelpers {
     description: string
   ) {
     try {
-      const result = await operation();
+      const _result = await operation();
       if (result.error) {
         if (typeof expectedErrorMessage === 'string') {
           expect(result.error.message).toBe(expectedErrorMessage);
@@ -433,18 +433,18 @@ export class AuthTestHelpers {
     const coaches: Coach[] = [];
 
     for (let i = 0; i < count; i++) {
-      const user = AuthTestDataFactory.createUser({ 
+      const _user = AuthTestDataFactory.createUser({ 
         email: `perf.test.${i}@example.com`,
         user_metadata: { full_name: `Performance Test User ${i}` }
       });
-      users.push(user);
+  void users.push(user);
       
       profiles.push(AuthTestDataFactory.createProfile(user.id, {
         full_name: `Performance Test User ${i}`
       }));
 
       if (i % 3 === 0) { // Every third user is a coach
-        coaches.push(AuthTestDataFactory.createCoach(user.id));
+  void coaches.push(AuthTestDataFactory.createCoach(user.id));
       }
     }
 
@@ -455,7 +455,7 @@ export class AuthTestHelpers {
    * Validate security requirements
    */
   static validateSecurityRequirements(authService: any) {
-    const state = authService.getState();
+    const _state = authService.getState();
     
     // Ensure sensitive data is not exposed
     expect(state.session?.access_token).toBeDefined();
@@ -474,7 +474,7 @@ export class AuthTestHelpers {
 }
 
 // Test constants for consistent testing
-export const AUTH_TEST_CONSTANTS = {
+export const _AUTH_TEST_CONSTANTS = {
   TIMEOUTS: {
     FAST: 100,
     NORMAL: 1000,

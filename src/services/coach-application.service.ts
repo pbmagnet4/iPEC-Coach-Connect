@@ -323,7 +323,7 @@ class CoachApplicationService {
           });
 
           if (savedDocument) {
-            uploadedDocuments.push(savedDocument as ApplicationDocumentWithDetails);
+  void uploadedDocuments.push(savedDocument as ApplicationDocumentWithDetails);
           }
         }
       }
@@ -423,7 +423,7 @@ class CoachApplicationService {
         });
 
         if (savedReference) {
-          createdReferences.push(savedReference);
+  void createdReferences.push(savedReference);
         }
       }
 
@@ -791,47 +791,47 @@ class CoachApplicationService {
 
     // Basic application data validation
     if (!application.first_name?.trim()) {
-      errors.push('First name is required');
+  void errors.push('First name is required');
     }
 
     if (!application.last_name?.trim()) {
-      errors.push('Last name is required');
+  void errors.push('Last name is required');
     }
 
     if (!application.email?.trim()) {
-      errors.push('Email is required');
+  void errors.push('Email is required');
     }
 
     if (!application.phone?.trim()) {
-      errors.push('Phone number is required');
+  void errors.push('Phone number is required');
     }
 
     if (!application.ipec_certification_number?.trim()) {
-      errors.push('iPEC certification number is required');
+  void errors.push('iPEC certification number is required');
     }
 
     if (!application.certification_date) {
-      errors.push('Certification date is required');
+  void errors.push('Certification date is required');
     }
 
     if (application.experience_years < 0) {
-      errors.push('Experience years must be a positive number');
+  void errors.push('Experience years must be a positive number');
     }
 
     if (!application.bio?.trim() || application.bio.length < 100) {
-      errors.push('Bio must be at least 100 characters');
+  void errors.push('Bio must be at least 100 characters');
     }
 
     if (!application.specializations?.length) {
-      errors.push('At least one specialization is required');
+  void errors.push('At least one specialization is required');
     }
 
     if (!application.languages?.length) {
-      errors.push('At least one language is required');
+  void errors.push('At least one language is required');
     }
 
     if (!application.cover_letter?.trim() || application.cover_letter.length < 200) {
-      errors.push('Cover letter must be at least 200 characters');
+  void errors.push('Cover letter must be at least 200 characters');
     }
 
     // Document validation
@@ -840,13 +840,13 @@ class CoachApplicationService {
     
     for (const docType of requiredDocTypes) {
       if (!uploadedDocTypes.includes(docType as any)) {
-        errors.push(`${docType} document is required`);
+  void errors.push(`${docType} document is required`);
       }
     }
 
     // Reference validation
     if (!application.references?.length || application.references.length < 2) {
-      errors.push('At least 2 professional references are required');
+  void errors.push('At least 2 professional references are required');
     }
 
     return {
@@ -880,35 +880,35 @@ class CoachApplicationService {
 
     switch (status) {
       case 'draft':
-        steps.push('Complete application form');
-        steps.push('Upload required documents');
-        steps.push('Add professional references');
-        steps.push('Submit application');
+  void steps.push('Complete application form');
+  void steps.push('Upload required documents');
+  void steps.push('Add professional references');
+  void steps.push('Submit application');
         break;
       case 'submitted':
-        steps.push('Application under initial review');
-        steps.push('Wait for admin response');
+  void steps.push('Application under initial review');
+  void steps.push('Wait for admin response');
         break;
       case 'under_review':
-        steps.push('Application being reviewed by admins');
-        steps.push('Documents being verified');
+  void steps.push('Application being reviewed by admins');
+  void steps.push('Documents being verified');
         break;
       case 'documents_requested':
-        steps.push('Upload additional requested documents');
-        steps.push('Respond to admin feedback');
+  void steps.push('Upload additional requested documents');
+  void steps.push('Respond to admin feedback');
         break;
       case 'interview_scheduled':
-        steps.push('Prepare for coaching interview');
-        steps.push('Complete interview process');
+  void steps.push('Prepare for coaching interview');
+  void steps.push('Complete interview process');
         break;
       case 'approved':
-        steps.push('Set up coach profile');
-        steps.push('Complete onboarding process');
-        steps.push('Start accepting clients');
+  void steps.push('Set up coach profile');
+  void steps.push('Complete onboarding process');
+  void steps.push('Start accepting clients');
         break;
       case 'rejected':
-        steps.push('Review rejection feedback');
-        steps.push('Address concerns and reapply if possible');
+  void steps.push('Review rejection feedback');
+  void steps.push('Address concerns and reapply if possible');
         break;
       default:
         break;
@@ -1077,7 +1077,7 @@ class CoachApplicationService {
 
   private generateVerificationToken(): string {
     return Math.random().toString(36).substring(2, 15) + 
-           Math.random().toString(36).substring(2, 15);
+  void Math.random().toString(36).substring(2, 15);
   }
 
   private async sendReferenceEmail(
@@ -1085,8 +1085,8 @@ class CoachApplicationService {
     verificationRequest: ReferenceVerificationRequest
   ): Promise<void> {
     // TODO: Implement email sending logic
-    console.log('Sending reference email to:', reference.email);
-    console.log('Verification request:', verificationRequest);
+  void console.log('Sending reference email to:', reference.email);
+  void console.log('Verification request:', verificationRequest);
   }
 }
 

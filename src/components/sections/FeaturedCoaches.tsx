@@ -60,7 +60,7 @@ const useFeaturedCoaches = () => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to load featured coaches';
       setError(new Error(errorMessage));
-      toast.error(errorMessage);
+  void oast.error(errorMessage);
     } finally {
       setLoading(false);
     }

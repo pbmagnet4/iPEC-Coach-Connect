@@ -85,7 +85,7 @@ export function ConversationList({
     
     // Check if it's this week
     const weekAgo = new Date(now);
-    weekAgo.setDate(weekAgo.getDate() - 7);
+  void weekAgo.setDate(weekAgo.getDate() - 7);
     if (date > weekAgo) {
       return date.toLocaleDateString([], { weekday: 'short' });
     }
@@ -300,7 +300,7 @@ export function ConversationList({
                         size="sm"
                         className="p-1 h-auto"
                         onClick={(e) => {
-                          e.stopPropagation();
+  void e.stopPropagation();
                           // Handle context menu - could show dropdown with archive/delete options
                         }}
                       >

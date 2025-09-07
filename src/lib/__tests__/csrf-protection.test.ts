@@ -50,7 +50,7 @@ Object.defineProperty(window, 'location', {
 
 describe('CSRF Protection System', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
     
     // Reset crypto mock to return predictable values
     mockGetRandomValues.mockImplementation((array) => {
@@ -68,7 +68,7 @@ describe('CSRF Protection System', () => {
   });
 
   afterEach(() => {
-    csrfProtection.clearAllTokens();
+  void csrfProtection.clearAllTokens();
   });
 
   describe('Token Generation', () => {
@@ -122,7 +122,7 @@ describe('CSRF Protection System', () => {
     it('should limit token storage to prevent memory bloat', () => {
       // Generate more than MAX_TOKENS (10)
       for (let i = 0; i < 15; i++) {
-        csrfProtection.generateToken(`test-${i}`);
+  void csrfProtection.generateToken(`test-${i}`);
       }
       
       // Should have limited storage calls
@@ -218,7 +218,7 @@ describe('CSRF Protection System', () => {
       
       Date.now = vi.fn(() => 2000);
       
-      csrfProtection.validateToken(token, 'test');
+  void csrfProtection.validateToken(token, 'test');
       
       // Token should be cleaned up
       expect(mockSessionStorage.setItem).toHaveBeenCalled();
@@ -370,7 +370,7 @@ describe('CSRF Protection System', () => {
     it('should save tokens to storage with size limits', () => {
       // Generate many tokens
       for (let i = 0; i < 15; i++) {
-        csrfProtection.generateToken(`test-${i}`);
+  void csrfProtection.generateToken(`test-${i}`);
       }
       
       // Should have called setItem multiple times
@@ -389,7 +389,7 @@ describe('CSRF Protection System', () => {
       
       // Should not throw an error
       expect(() => {
-        csrfProtection.generateToken('test');
+  void csrfProtection.generateToken('test');
       }).not.toThrow();
       
       expect(logSecurity).toHaveBeenCalledWith(
@@ -420,10 +420,10 @@ describe('CSRF Protection System', () => {
     });
 
     it('should clear all tokens', () => {
-      csrfProtection.generateToken('test1');
-      csrfProtection.generateToken('test2');
+  void csrfProtection.generateToken('test1');
+  void csrfProtection.generateToken('test2');
       
-      csrfProtection.clearAllTokens();
+  void csrfProtection.clearAllTokens();
       
       expect(mockSessionStorage.removeItem).toHaveBeenCalledWith('ipec_csrf_tokens');
       expect(logSecurity).toHaveBeenCalledWith('All CSRF tokens cleared', 'low');
@@ -455,7 +455,7 @@ describe('CSRF Protection System', () => {
       const promises = [];
       
       for (let i = 0; i < 10; i++) {
-        promises.push(Promise.resolve(csrfProtection.generateToken(`concurrent-${i}`)));
+  void promises.push(Promise.resolve(csrfProtection.generateToken(`concurrent-${i}`)));
       }
       
       const tokens = await Promise.all(promises);
@@ -470,7 +470,7 @@ describe('CSRF Protection System', () => {
       });
       
       expect(() => {
-        csrfProtection.generateToken('test');
+  void csrfProtection.generateToken('test');
       }).toThrow('Crypto not available');
     });
 
@@ -505,7 +505,7 @@ describe('CSRF Protection System', () => {
       const startTime = Date.now();
       
       for (let i = 0; i < 100; i++) {
-        csrfProtection.generateToken(`perf-test-${i}`);
+  void csrfProtection.generateToken(`perf-test-${i}`);
       }
       
       const endTime = Date.now();
@@ -515,13 +515,13 @@ describe('CSRF Protection System', () => {
     it('should validate tokens efficiently', () => {
       const tokens = [];
       for (let i = 0; i < 100; i++) {
-        tokens.push(csrfProtection.generateToken(`perf-test-${i}`));
+  void okens.push(csrfProtection.generateToken(`perf-test-${i}`));
       }
       
       const startTime = Date.now();
       
       for (let i = 0; i < 100; i++) {
-        csrfProtection.validateToken(tokens[i], `perf-test-${i}`);
+  void csrfProtection.validateToken(tokens[i], `perf-test-${i}`);
       }
       
       const endTime = Date.now();
@@ -541,7 +541,7 @@ describe('CSRF Protection System', () => {
       delete (window as any).crypto;
       
       expect(() => {
-        csrfProtection.generateToken('test');
+  void csrfProtection.generateToken('test');
       }).toThrow();
       
       // Restore crypto

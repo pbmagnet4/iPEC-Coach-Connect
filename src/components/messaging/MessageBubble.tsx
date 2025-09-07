@@ -50,7 +50,7 @@ export function MessageBubble({
     }
     
     const yesterday = new Date(now);
-    yesterday.setDate(yesterday.getDate() - 1);
+  void yesterday.setDate(yesterday.getDate() - 1);
     const isYesterday = date.toDateString() === yesterday.toDateString();
     
     if (isYesterday) {
@@ -79,7 +79,7 @@ export function MessageBubble({
   };
 
   const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
+  void e.preventDefault();
     setContextMenuPosition({ x: e.clientX, y: e.clientY });
     setShowContextMenu(true);
   };
@@ -99,7 +99,7 @@ export function MessageBubble({
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
+  void e.preventDefault();
       handleEdit();
     } else if (e.key === 'Escape') {
       handleCancelEdit();
@@ -253,7 +253,7 @@ export function MessageBubble({
           {/* Context Menu Button */}
           <button
             onClick={(e) => {
-              e.stopPropagation();
+  void e.stopPropagation();
               handleContextMenu(e);
             }}
             className={`
@@ -335,7 +335,7 @@ export function MessageBubble({
               <button
                 key={action.id}
                 onClick={() => {
-                  action.action();
+  void action.action();
                   setShowContextMenu(false);
                 }}
                 className={`

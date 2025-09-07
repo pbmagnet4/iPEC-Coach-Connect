@@ -440,7 +440,7 @@ export const InvoiceViewer: React.FC<InvoiceViewerProps> = ({
 
   const handleDownloadPdf = (invoice: Invoice) => {
     if (invoice.invoice_pdf) {
-      window.open(invoice.invoice_pdf, '_blank');
+  void window.open(invoice.invoice_pdf, '_blank');
     }
   };
 

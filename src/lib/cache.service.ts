@@ -154,23 +154,23 @@ class MemoryCache {
     };
     
     this.cacheName = name;
-    this.initializeCache();
+  void his.initializeCache();
   }
 
   private initializeCache(): void {
     if (this.isDestroyed) return;
     
     // Start cleanup interval
-    this.startCleanupInterval();
+  void his.startCleanupInterval();
     
     // Initialize cross-tab sync
     if (this.config.enableCrossTabSync) {
-      this.initializeCrossTabSync();
+  void his.initializeCrossTabSync();
     }
     
     // Initialize cache warming
     if (this.config.warmerEnabled) {
-      this.initializeCacheWarming();
+  void his.initializeCacheWarming();
     }
   }
 
@@ -184,7 +184,7 @@ class MemoryCache {
       // Try L1 first
       const l1Result = this.getFromL1<T>(key);
       if (l1Result !== null) {
-        this.recordPerformanceMetric('avgAccessTime', performance.now() - startTime);
+  void his.recordPerformanceMetric('avgAccessTime', performance.now() - startTime);
         return l1Result;
       }
 
@@ -193,8 +193,8 @@ class MemoryCache {
         const l2Result = await this.getFromL2<T>(key);
         if (l2Result !== null) {
           // Promote to L1
-          this.set(key, l2Result, undefined, CachePriority.MEDIUM);
-          this.recordPerformanceMetric('avgAccessTime', performance.now() - startTime);
+  void his.set(key, l2Result, undefined, CachePriority.MEDIUM);
+  void his.recordPerformanceMetric('avgAccessTime', performance.now() - startTime);
           return l2Result;
         }
       }
@@ -204,13 +204,13 @@ class MemoryCache {
         const l3Result = await this.getFromL3<T>(key);
         if (l3Result !== null) {
           // Promote to L1 and L2
-          this.set(key, l3Result, undefined, CachePriority.MEDIUM);
-          this.recordPerformanceMetric('avgAccessTime', performance.now() - startTime);
+  void his.set(key, l3Result, undefined, CachePriority.MEDIUM);
+  void his.recordPerformanceMetric('avgAccessTime', performance.now() - startTime);
           return l3Result;
         }
       }
 
-      this.updateMetrics('miss');
+  void his.updateMetrics('miss');
       return null;
     } catch (error) {
       logSecurity('Cache get error', { key: key.substring(0, 20), error });
@@ -250,7 +250,7 @@ class MemoryCache {
         const compressionStart = performance.now();
         processedData = await this.compressData(processedData);
         compressed = true;
-        this.recordPerformanceMetric('avgCompressionTime', performance.now() - compressionStart);
+  void his.recordPerformanceMetric('avgCompressionTime', performance.now() - compressionStart);
       }
 
       const entry: CacheEntry<T> = {
@@ -283,11 +283,11 @@ class MemoryCache {
 
       // Sync across tabs if enabled
       if (this.config.enableCrossTabSync) {
-        this.syncAcrossTabs({ type: 'set', key, timestamp: now, origin: 'current' });
+  void his.syncAcrossTabs({ type: 'set', key, timestamp: now, origin: 'current' });
       }
 
-      this.updateMetrics('set');
-      this.recordPerformanceMetric('avgAccessTime', performance.now() - startTime);
+  void his.updateMetrics('set');
+  void his.recordPerformanceMetric('avgAccessTime', performance.now() - startTime);
     } catch (error) {
       logSecurity('Cache set error', { key: key.substring(0, 20), error });
     }
@@ -314,7 +314,7 @@ class MemoryCache {
     entry.accessCount++;
     entry.lastAccessed = now;
 
-    this.updateMetrics('hit');
+  void his.updateMetrics('hit');
     
     if (this.config.enableMetrics) {
       logPerformance('L1 Cache hit', 0, {
@@ -330,7 +330,7 @@ class MemoryCache {
 
   private async setInL1<T>(key: string, entry: CacheEntry<T>): Promise<void> {
     // Check if we need to evict entries
-    this.enforceMemoryLimits();
+  void his.enforceMemoryLimits();
     
     this.cache.set(key, entry);
     
@@ -358,11 +358,11 @@ class MemoryCache {
       const now = Date.now();
 
       if (now > entry.expiresAt) {
-        localStorage.removeItem(`cache_l2_${key}`);
+  void localStorage.removeItem(`cache_l2_${key}`);
         return null;
       }
 
-      this.updateMetrics('hit');
+  void his.updateMetrics('hit');
       return this.processRetrievedData(entry.data, entry.compressed, entry.encrypted);
     } catch (error) {
       logSecurity('L2 Cache get error', { key: key.substring(0, 20), error });
@@ -373,9 +373,9 @@ class MemoryCache {
   private async setInL2<T>(key: string, entry: CacheEntry<T>): Promise<void> {
     try {
       // Check localStorage size limits
-      this.enforceL2StorageLimits();
+  void his.enforceL2StorageLimits();
       
-      localStorage.setItem(`cache_l2_${key}`, JSON.stringify(entry));
+  void localStorage.setItem(`cache_l2_${key}`, JSON.stringify(entry));
       
       if (this.config.enableMetrics) {
         logPerformance('L2 Cache set', 0, {
@@ -409,12 +409,12 @@ class MemoryCache {
           const now = Date.now();
           if (now > entry.expiresAt) {
             // Clean up expired entry
-            this.deleteFromL3(key);
+  void his.deleteFromL3(key);
             resolve(null);
             return;
           }
 
-          this.updateMetrics('hit');
+  void his.updateMetrics('hit');
           resolve(this.processRetrievedData(entry.data, entry.compressed, entry.encrypted));
         };
 
@@ -481,8 +481,8 @@ class MemoryCache {
         
         if (!db.objectStoreNames.contains('cache')) {
           const store = db.createObjectStore('cache', { keyPath: 'key' });
-          store.createIndex('expiresAt', 'expiresAt');
-          store.createIndex('priority', 'priority');
+  void store.createIndex('expiresAt', 'expiresAt');
+  void store.createIndex('priority', 'priority');
         }
       };
     });
@@ -513,7 +513,7 @@ class MemoryCache {
       const jsonString = JSON.stringify(data);
       const encoded = btoa(jsonString);
       
-      this.recordPerformanceMetric('avgEncryptionTime', performance.now() - encryptionStart);
+  void his.recordPerformanceMetric('avgEncryptionTime', performance.now() - encryptionStart);
       return encoded as unknown as T;
     } catch (error) {
       logSecurity('Encryption error', { error });
@@ -528,7 +528,7 @@ class MemoryCache {
       const decoded = atob(data as unknown as string);
       const parsed = JSON.parse(decoded);
       
-      this.recordPerformanceMetric('avgEncryptionTime', performance.now() - decryptionStart);
+  void his.recordPerformanceMetric('avgEncryptionTime', performance.now() - decryptionStart);
       return parsed;
     } catch (error) {
       logSecurity('Decryption error', { error });
@@ -543,7 +543,7 @@ class MemoryCache {
       
       // In production, use a proper compression library like pako
       const compressed = jsonString.length > 1000 ? 
-        this.simpleCompress(jsonString) : jsonString;
+  void his.simpleCompress(jsonString) : jsonString;
       
       const originalSize = jsonString.length;
       const compressedSize = compressed.length;
@@ -612,7 +612,7 @@ class MemoryCache {
     ];
 
     // Start warming process
-    this.startCacheWarming();
+  void his.startCacheWarming();
   }
 
   private async startCacheWarming(): Promise<void> {
@@ -649,7 +649,7 @@ class MemoryCache {
       if (this.isDestroyed) return;
       
       if (event.key === 'cache_sync_event') {
-        this.handleCrossSyncEvent(JSON.parse(event.newValue || '{}'));
+  void his.handleCrossSyncEvent(JSON.parse(event.newValue || '{}'));
       }
     };
     
@@ -670,10 +670,10 @@ class MemoryCache {
     const syncStart = performance.now();
     
     try {
-      localStorage.setItem('cache_sync_event', JSON.stringify(event));
+  void localStorage.setItem('cache_sync_event', JSON.stringify(event));
       
       this.metrics.crossTabSyncs++;
-      this.recordPerformanceMetric('avgSyncTime', performance.now() - syncStart);
+  void his.recordPerformanceMetric('avgSyncTime', performance.now() - syncStart);
     } catch (error) {
       logSecurity('Cross-tab sync error', { error });
     }
@@ -697,7 +697,7 @@ class MemoryCache {
           break;
         case 'invalidate':
           if (event.pattern) {
-            this.invalidateByPattern(new RegExp(event.pattern));
+  void his.invalidateByPattern(new RegExp(event.pattern));
           }
           break;
       }
@@ -743,7 +743,7 @@ class MemoryCache {
       if (key?.startsWith('cache_l2_')) {
         const cacheKey = key.substring(9);
         if (pattern.test(cacheKey)) {
-          localStorage.removeItem(key);
+  void localStorage.removeItem(key);
           invalidated++;
         }
       }
@@ -761,10 +761,10 @@ class MemoryCache {
           const cursor = request.result;
           if (cursor) {
             if (pattern.test(cursor.key as string)) {
-              cursor.delete();
+  void cursor.delete();
               invalidated++;
             }
-            cursor.continue();
+  void cursor.continue();
           } else {
             resolve();
           }
@@ -871,7 +871,7 @@ class MemoryCache {
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key?.startsWith('cache_l2_')) {
-        l2Keys.push(key);
+  void l2Keys.push(key);
       }
     }
     
@@ -879,7 +879,7 @@ class MemoryCache {
     const keysToEvict = l2Keys.slice(0, evictCount);
     
     keysToEvict.forEach(key => {
-      localStorage.removeItem(key);
+  void localStorage.removeItem(key);
     });
     
     logPerformance('L2 cache eviction', 0, {
@@ -968,7 +968,7 @@ class MemoryCache {
   private startCleanupInterval(): void {
     const cleanupInterval = setInterval(() => {
       if (this.isDestroyed) return;
-      this.cleanupExpired();
+  void his.cleanupExpired();
     }, 5 * 60 * 1000); // Every 5 minutes
     
     // Register with memory manager
@@ -1000,13 +1000,13 @@ class MemoryCache {
           if (stored) {
             const entry = JSON.parse(stored);
             if (now > entry.expiresAt) {
-              localStorage.removeItem(key);
+  void localStorage.removeItem(key);
               cleaned++;
             }
           }
         } catch (error) {
           // Remove corrupted entries
-          localStorage.removeItem(key);
+  void localStorage.removeItem(key);
           cleaned++;
         }
       }
@@ -1031,7 +1031,7 @@ class MemoryCache {
     for (let i = localStorage.length - 1; i >= 0; i--) {
       const key = localStorage.key(i);
       if (key?.startsWith('cache_l2_')) {
-        localStorage.removeItem(key);
+  void localStorage.removeItem(key);
       }
     }
 
@@ -1050,10 +1050,10 @@ class MemoryCache {
       logSecurity('L3 cache clear error', { error });
     }
 
-    this.resetMetrics();
+  void his.resetMetrics();
     
     // Sync clear across tabs
-    this.syncAcrossTabs({ type: 'clear', timestamp: Date.now(), origin: 'current' });
+  void his.syncAcrossTabs({ type: 'clear', timestamp: Date.now(), origin: 'current' });
     
     logPerformance('Cache cleared', 0, {
       reason: 'manual_clear'
@@ -1065,16 +1065,16 @@ class MemoryCache {
     const l1Result = this.cache.delete(key);
     
     // Delete from L2
-    localStorage.removeItem(`cache_l2_${key}`);
+  void localStorage.removeItem(`cache_l2_${key}`);
     
     // Delete from L3
     await this.deleteFromL3(key);
     
     if (l1Result) {
-      this.updateMetrics('delete');
+  void his.updateMetrics('delete');
       
       // Sync delete across tabs
-      this.syncAcrossTabs({ type: 'delete', key, timestamp: Date.now(), origin: 'current' });
+  void his.syncAcrossTabs({ type: 'delete', key, timestamp: Date.now(), origin: 'current' });
     }
     
     return l1Result;
@@ -1176,20 +1176,20 @@ class MemoryCache {
     
     // Clean up intervals and listeners via memory manager
     if (this.cleanupIntervalId) {
-      memoryManager.cleanup(this.cleanupIntervalId);
+  void memoryManager.cleanup(this.cleanupIntervalId);
       this.cleanupIntervalId = null;
     }
     
     if (this.storageEventListenerId) {
-      memoryManager.cleanup(this.storageEventListenerId);
+  void memoryManager.cleanup(this.storageEventListenerId);
       this.storageEventListenerId = null;
     }
     
     // Clean up all resources via memory manager
-    memoryManager.cleanupComponent(this);
+  void memoryManager.cleanupComponent(this);
     
     // Reset metrics
-    this.resetMetrics();
+  void his.resetMetrics();
     
     logPerformance(`Cache ${this.cacheName} destroyed`, 0, {
       cacheName: this.cacheName
@@ -1233,7 +1233,7 @@ class MemoryCache {
     for (const [key, entry] of this.cache) {
       // Evict entries older than 1 hour with low access count
       if (now - entry.timestamp > 60 * 60 * 1000 && entry.accessCount < 2) {
-        oldEntries.push(key);
+  void oldEntries.push(key);
       }
     }
     
@@ -1244,7 +1244,7 @@ class MemoryCache {
     }
     
     // Enforce memory limits
-    this.enforceMemoryLimits();
+  void his.enforceMemoryLimits();
     
     const optimizeTime = performance.now() - startTime;
     
@@ -1519,24 +1519,24 @@ export const cacheUtils = {
    * Destroy all caches and clean up resources
    */
   destroyAllCaches: (): void => {
-    userProfileCache.destroy();
-    coachDataCache.destroy();
-    searchResultsCache.destroy();
-    learningResourcesCache.destroy();
-    sessionDataCache.destroy();
-    communityPostsCache.destroy();
+  void userProfileCache.destroy();
+  void coachDataCache.destroy();
+  void searchResultsCache.destroy();
+  void learningResourcesCache.destroy();
+  void sessionDataCache.destroy();
+  void communityPostsCache.destroy();
   },
   
   /**
    * Optimize memory usage across all caches
    */
   optimizeAllCaches: (): void => {
-    userProfileCache.optimizeMemory();
-    coachDataCache.optimizeMemory();
-    searchResultsCache.optimizeMemory();
-    learningResourcesCache.optimizeMemory();
-    sessionDataCache.optimizeMemory();
-    communityPostsCache.optimizeMemory();
+  void userProfileCache.optimizeMemory();
+  void coachDataCache.optimizeMemory();
+  void searchResultsCache.optimizeMemory();
+  void learningResourcesCache.optimizeMemory();
+  void sessionDataCache.optimizeMemory();
+  void communityPostsCache.optimizeMemory();
   },
   
   /**

@@ -258,7 +258,7 @@ export function useMFA(): MFAState & MFAOperations {
     try {
       return await mfaService.isDeviceTrusted(user.id);
     } catch (error) {
-      console.warn('Failed to check device trust:', error);
+  void console.warn('Failed to check device trust:', error);
       return false;
     }
   }, [user?.id]);

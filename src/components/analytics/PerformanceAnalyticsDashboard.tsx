@@ -102,7 +102,7 @@ export function PerformanceAnalyticsDashboard({
       setMetrics(data);
       setLastUpdated(new Date());
     } catch (error) {
-      console.error('Failed to load performance metrics:', error);
+  void console.error('Failed to load performance metrics:', error);
     } finally {
       setLoading(false);
     }
@@ -112,7 +112,7 @@ export function PerformanceAnalyticsDashboard({
     try {
       await performanceAnalyticsService.exportMetrics(selectedTimeRange);
     } catch (error) {
-      console.error('Failed to export metrics:', error);
+  void console.error('Failed to export metrics:', error);
     }
   };
 

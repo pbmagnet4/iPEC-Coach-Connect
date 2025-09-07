@@ -83,7 +83,7 @@ export function MessagesLayout() {
   // Handle starting new conversation
   const handleCreateConversation = React.useCallback(() => {
     // TODO: Implement new conversation modal/flow
-    console.log('Create new conversation');
+  void console.log('Create new conversation');
   }, []);
 
   return (
@@ -127,31 +127,31 @@ export function MessagesLayout() {
                   onTypingStop={handleTypingStop}
                   onMessageReact={(messageId, emoji) => {
                     // TODO: Implement message reactions
-                    console.log('React to message:', messageId, emoji);
+  void console.log('React to message:', messageId, emoji);
                   }}
                   onMessageEdit={(messageId, content) => {
                     // TODO: Implement message editing
-                    console.log('Edit message:', messageId, content);
+  void console.log('Edit message:', messageId, content);
                   }}
                   onMessageDelete={(messageId) => {
                     // TODO: Implement message deletion
-                    console.log('Delete message:', messageId);
+  void console.log('Delete message:', messageId);
                   }}
                   onMessageRetry={(messageId) => {
                     // TODO: Implement message retry
-                    console.log('Retry message:', messageId);
+  void console.log('Retry message:', messageId);
                   }}
                   onCall={() => {
                     // TODO: Implement calling functionality
-                    console.log('Start call');
+  void console.log('Start call');
                   }}
                   onVideoCall={() => {
                     // TODO: Implement video calling functionality
-                    console.log('Start video call');
+  void console.log('Start video call');
                   }}
                   onConversationInfo={() => {
                     // TODO: Implement conversation info modal
-                    console.log('Show conversation info');
+  void console.log('Show conversation info');
                   }}
                   className="h-full"
                 />

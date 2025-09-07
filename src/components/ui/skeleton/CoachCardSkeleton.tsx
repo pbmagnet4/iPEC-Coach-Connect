@@ -23,7 +23,7 @@ export const CoachCardSkeleton: React.FC<CoachCardSkeletonProps> = ({
   className = '',
   'data-testid': testId
 }) => {
-  const renderSingleSkeleton = (index: number) => {
+  const _renderSingleSkeleton = (index: number) => {
     if (variant === 'list') {
       return (
         <div 
@@ -137,7 +137,7 @@ export const CoachCardSkeleton: React.FC<CoachCardSkeletonProps> = ({
     return renderSingleSkeleton(0);
   }
 
-  const containerClasses = variant === 'grid' 
+  const _containerClasses = variant === 'grid' 
     ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
     : 'space-y-4';
 

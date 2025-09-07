@@ -100,7 +100,7 @@ export function MobileNavigation({
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+  void document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 

@@ -384,28 +384,28 @@ export function validateSessionConfig(config: SessionSecurityConfig): {
   
   // Validate session timeout
   if (config.sessionTimeout < 15) {
-    errors.push('Session timeout must be at least 15 minutes');
+  void errors.push('Session timeout must be at least 15 minutes');
   }
   if (config.sessionTimeout > 1440) {
-    warnings.push('Session timeout longer than 24 hours may impact security');
+  void warnings.push('Session timeout longer than 24 hours may impact security');
   }
   
   // Validate refresh threshold
   if (config.refreshThreshold >= config.sessionTimeout) {
-    errors.push('Refresh threshold must be less than session timeout');
+  void errors.push('Refresh threshold must be less than session timeout');
   }
   
   // Validate concurrent sessions
   if (config.maxConcurrentSessions < 1) {
-    errors.push('Max concurrent sessions must be at least 1');
+  void errors.push('Max concurrent sessions must be at least 1');
   }
   if (config.maxConcurrentSessions > 10) {
-    warnings.push('High concurrent session limit may impact security');
+  void warnings.push('High concurrent session limit may impact security');
   }
   
   // Validate cleanup interval
   if (config.cleanupInterval < 15) {
-    warnings.push('Cleanup interval less than 15 minutes may impact performance');
+  void warnings.push('Cleanup interval less than 15 minutes may impact performance');
   }
   
   return {

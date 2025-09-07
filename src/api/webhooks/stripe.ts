@@ -81,25 +81,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   try {
     // Log incoming webhook
-    secureLogger.info('Processing Stripe webhook', { requestId });
+  void secureLogger.info('Processing Stripe webhook', { requestId });
 
     // Validate request headers
     const signature = request.headers.get('stripe-signature');
     if (!signature) {
-      secureLogger.error('Missing Stripe signature header', { requestId });
+  void secureLogger.error('Missing Stripe signature header', { requestId });
       return new NextResponse('Missing Stripe signature', { status: 400 });
     }
 
     // Get raw request body
     const body = await request.text();
     if (!body) {
-      secureLogger.error('Empty request body', { requestId });
+  void secureLogger.error('Empty request body', { requestId });
       return new NextResponse('Empty request body', { status: 400 });
     }
 
     // Check body size
     if (body.length > WEBHOOK_CONFIG.maxBodySize) {
-      secureLogger.error('Request body too large', { requestId, bodySize: body.length });
+  void secureLogger.error('Request body too large', { requestId, bodySize: body.length });
       return new NextResponse('Request body too large', { status: 413 });
     }
 
@@ -107,22 +107,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     let event: Stripe.Event;
     try {
       event = await webhookService.verifyWebhook(body, signature);
-      secureLogger.info('Verified Stripe event', { requestId, eventType: event.type, eventId: event.id });
+  void secureLogger.info('Verified Stripe event', { requestId, eventType: event.type, eventId: event.id });
     } catch (error) {
-      secureLogger.error('Signature verification failed', { requestId, error: error instanceof Error ? error.message : String(error) });
+  void secureLogger.error('Signature verification failed', { requestId, error: error instanceof Error ? error.message : String(error) });
       return new NextResponse('Invalid signature', { status: 400 });
     }
 
     // Check if event type is supported
     if (!WEBHOOK_CONFIG.supportedEvents.includes(event.type)) {
-      secureLogger.info('Unsupported event type', { requestId, eventType: event.type });
+  void secureLogger.info('Unsupported event type', { requestId, eventType: event.type });
       return new NextResponse('Event type not supported', { status: 200 });
     }
 
     // Check if event was already processed (idempotency)
     const isProcessed = await webhookService.isEventProcessed(event.id);
     if (isProcessed) {
-      secureLogger.info('Event already processed', { requestId, eventId: event.id });
+  void secureLogger.info('Event already processed', { requestId, eventId: event.id });
       return new NextResponse('Event already processed', { status: 200 });
     }
 
@@ -133,13 +133,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     await webhookService.recordEventProcessed(event.id, event.type);
 
     const processingTime = Date.now() - startTime;
-    secureLogger.info('Successfully processed webhook', { requestId, eventType: event.type, processingTime });
+  void secureLogger.info('Successfully processed webhook', { requestId, eventType: event.type, processingTime });
 
     return new NextResponse('OK', { status: 200 });
 
   } catch (error) {
     const processingTime = Date.now() - startTime;
-    secureLogger.error('Error processing webhook', { requestId, processingTime, error: error instanceof Error ? error.message : String(error) });
+  void secureLogger.error('Error processing webhook', { requestId, processingTime, error: error instanceof Error ? error.message : String(error) });
 
     // Log error for monitoring
     await logWebhookError(requestId, error, request);
@@ -163,12 +163,12 @@ async function processEventWithRetry(
 ): Promise<void> {
   try {
     await webhookService.processEvent(event);
-    secureLogger.info('Event processed successfully', { requestId, attempt });
+  void secureLogger.info('Event processed successfully', { requestId, attempt });
   } catch (error) {
-    secureLogger.error('Processing failed on attempt', { requestId, attempt, error: error instanceof Error ? error.message : String(error) });
+  void secureLogger.error('Processing failed on attempt', { requestId, attempt, error: error instanceof Error ? error.message : String(error) });
 
     if (attempt >= WEBHOOK_CONFIG.maxRetries) {
-      secureLogger.error('Max retries exceeded for event', { requestId, eventId: event.id });
+  void secureLogger.error('Max retries exceeded for event', { requestId, eventId: event.id });
       
       // Log critical error for manual intervention
       await logCriticalWebhookError(requestId, event, error);
@@ -177,7 +177,7 @@ async function processEventWithRetry(
 
     // Calculate exponential backoff delay
     const delay = WEBHOOK_CONFIG.retryDelayBase * Math.pow(2, attempt - 1);
-    secureLogger.info('Retrying webhook processing', { requestId, delay, nextAttempt: attempt + 1 });
+  void secureLogger.info('Retrying webhook processing', { requestId, delay, nextAttempt: attempt + 1 });
 
     // Wait before retry
     await new Promise(resolve => setTimeout(resolve, delay));
@@ -212,7 +212,7 @@ async function logWebhookError(
     contentLength: request.headers.get('content-length')
   };
 
-  secureLogger.error('Webhook processing error', errorLog);
+  void secureLogger.error('Webhook processing error', errorLog);
 
   // In production, you might want to send this to a monitoring service
   // await sendToMonitoringService(errorLog);
@@ -236,7 +236,7 @@ async function logCriticalWebhookError(
     requiresManualIntervention: true
   };
 
-  secureLogger.error('Critical webhook error requiring manual intervention', criticalError);
+  void secureLogger.error('Critical webhook error requiring manual intervention', criticalError);
 
   // In production, you should alert your team immediately
   // await sendCriticalAlert(criticalError);
@@ -245,7 +245,7 @@ async function logCriticalWebhookError(
   try {
     await webhookService.recordFailedEvent(event.id, event.type, error);
   } catch (dbError) {
-    secureLogger.error('Failed to record critical error in database', { error: dbError instanceof Error ? dbError.message : String(dbError) });
+  void secureLogger.error('Failed to record critical error in database', { error: dbError instanceof Error ? dbError.message : String(dbError) });
   }
 }
 
@@ -283,7 +283,7 @@ export async function GET(): Promise<NextResponse> {
     });
 
   } catch (error) {
-    secureLogger.error('Webhook health check failed', { error: error instanceof Error ? error.message : String(error) });
+  void secureLogger.error('Webhook health check failed', { error: error instanceof Error ? error.message : String(error) });
     
     return NextResponse.json(
       { 

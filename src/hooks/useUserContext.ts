@@ -12,7 +12,7 @@ const generateSessionId = (): string => {
   let sessionId = sessionStorage.getItem('ab_session_id');
   if (!sessionId) {
     sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2)}`;
-    sessionStorage.setItem('ab_session_id', sessionId);
+  void sessionStorage.setItem('ab_session_id', sessionId);
   }
   return sessionId;
 };
@@ -64,7 +64,7 @@ const getUserLocation = async (): Promise<{ country: string; region: string; cit
       };
     }
   } catch (error) {
-    console.log('Could not determine user location:', error);
+  void console.log('Could not determine user location:', error);
   }
   return undefined;
 };
@@ -205,10 +205,10 @@ export function useUserBehaviorTracking() {
     trackPageView();
 
     // Track when user leaves the page
-    window.addEventListener('beforeunload', trackTimeOnPage);
+  void window.addEventListener('beforeunload', trackTimeOnPage);
 
     return () => {
-      window.removeEventListener('beforeunload', trackTimeOnPage);
+  void window.removeEventListener('beforeunload', trackTimeOnPage);
       trackTimeOnPage();
     };
   }, [userContext?.user_id]);

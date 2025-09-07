@@ -50,7 +50,7 @@ export function MobileLayout({
     };
 
     updateViewportHeight();
-    window.addEventListener('resize', updateViewportHeight);
+  void window.addEventListener('resize', updateViewportHeight);
     return () => window.removeEventListener('resize', updateViewportHeight);
   }, []);
 
@@ -67,7 +67,7 @@ export function MobileLayout({
     };
 
     updateSafeAreaInsets();
-    window.addEventListener('resize', updateSafeAreaInsets);
+  void window.addEventListener('resize', updateSafeAreaInsets);
     return () => window.removeEventListener('resize', updateSafeAreaInsets);
   }, []);
 
@@ -79,13 +79,13 @@ export function MobileLayout({
       setShowScrollToTop(window.scrollY > 300);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+  void window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrollToTop]);
 
   const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    liveRegions.announcePolite('Scrolled to top');
+  void window.scrollTo({ top: 0, behavior: 'smooth' });
+  void liveRegions.announcePolite('Scrolled to top');
   };
 
   // Generate layout classes based on thumb zones
@@ -206,7 +206,7 @@ export function ThumbZone({ zone, children, className }: ThumbZoneProps) {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+  void window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -258,7 +258,7 @@ export function OneHandedLayout({
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+  void window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 

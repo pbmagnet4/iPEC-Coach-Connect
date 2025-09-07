@@ -50,7 +50,7 @@ class SecureSessionManager {
       const encrypted = await this.encrypt(JSON.stringify(secureData));
       const storageKey = this.STORAGE_PREFIX + key;
 
-      this.getStorage().setItem(storageKey, encrypted);
+  void his.getStorage().setItem(storageKey, encrypted);
 
       logSecurity('Secure session data stored', 'low', {
         key: `${key.substring(0, 8)  }...`,
@@ -84,7 +84,7 @@ class SecureSessionManager {
       // Check expiry
       const expiryTime = secureData.timestamp + (this.config.expiryHours * 60 * 60 * 1000);
       if (Date.now() > expiryTime) {
-        this.removeSecureData(key);
+  void his.removeSecureData(key);
         
         logSecurity('Secure session data expired', 'low', {
           key: `${key.substring(0, 8)  }...`,
@@ -98,7 +98,7 @@ class SecureSessionManager {
       if (this.config.enableIntegrityCheck && secureData.checksum) {
         const expectedChecksum = await this.generateChecksum(secureData.data);
         if (expectedChecksum !== secureData.checksum) {
-          this.removeSecureData(key);
+  void his.removeSecureData(key);
           
           logSecurity('Secure session data integrity check failed', 'high', {
             key: `${key.substring(0, 8)  }...`,
@@ -123,7 +123,7 @@ class SecureSessionManager {
       });
       
       // Remove corrupted data
-      this.removeSecureData(key);
+  void his.removeSecureData(key);
       return null;
     }
   }
@@ -133,7 +133,7 @@ class SecureSessionManager {
    */
   removeSecureData(key: string): void {
     const storageKey = this.STORAGE_PREFIX + key;
-    this.getStorage().removeItem(storageKey);
+  void his.getStorage().removeItem(storageKey);
     
     logSecurity('Secure session data removed', 'low', {
       key: `${key.substring(0, 8)  }...`
@@ -150,11 +150,11 @@ class SecureSessionManager {
     for (let i = 0; i < storage.length; i++) {
       const key = storage.key(i);
       if (key && key.startsWith(this.STORAGE_PREFIX)) {
-        keysToRemove.push(key);
+  void keysToRemove.push(key);
       }
     }
 
-    keysToRemove.forEach(key => storage.removeItem(key));
+  void keysToRemove.forEach(key => storage.removeItem(key));
 
     logSecurity('All secure session data cleared', 'low', {
       itemsCleared: keysToRemove.length
@@ -303,21 +303,21 @@ class SecureSessionManager {
             decrypted.then(decryptedData => {
               const data: SecureSessionData = JSON.parse(decryptedData);
               if (now - data.timestamp > expiryMs) {
-                keysToRemove.push(key);
+  void keysToRemove.push(key);
               }
             }).catch(() => {
               // Remove corrupted data
-              keysToRemove.push(key);
+  void keysToRemove.push(key);
             });
           }
         } catch {
           // Remove corrupted data
-          keysToRemove.push(key);
+  void keysToRemove.push(key);
         }
       }
     }
 
-    keysToRemove.forEach(key => storage.removeItem(key));
+  void keysToRemove.forEach(key => storage.removeItem(key));
 
     if (keysToRemove.length > 0) {
       logSecurity('Expired secure sessions cleaned up', 'low', {

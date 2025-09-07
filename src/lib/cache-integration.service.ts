@@ -94,7 +94,7 @@ class CacheIntegrationService {
       monitoringInterval: config.monitoringInterval ?? 60000
     };
 
-    this.initialize();
+  void his.initialize();
   }
 
   private async initialize(): Promise<void> {
@@ -106,7 +106,7 @@ class CacheIntegrationService {
 
       // Start performance monitoring
       if (this.config.enablePerformanceMonitoring) {
-        this.startPerformanceMonitoring();
+  void his.startPerformanceMonitoring();
       }
 
       logPerformance('Cache integration service initialized', 0, {
@@ -123,7 +123,7 @@ class CacheIntegrationService {
       
       // Listen for service worker messages
       navigator.serviceWorker.addEventListener('message', (event) => {
-        this.handleServiceWorkerMessage(event);
+  void his.handleServiceWorkerMessage(event);
       });
 
       logPerformance('Service worker registered', 0, {
@@ -139,13 +139,13 @@ class CacheIntegrationService {
     
     switch (type) {
       case 'PROFILE_SYNC_SUCCESS':
-        this.handleProfileSyncSuccess(data);
+  void his.handleProfileSyncSuccess(data);
         break;
       case 'COACH_DATA_SYNC_SUCCESS':
-        this.handleCoachDataSyncSuccess(data);
+  void his.handleCoachDataSyncSuccess(data);
         break;
       case 'SESSION_DATA_SYNC_SUCCESS':
-        this.handleSessionDataSyncSuccess(data);
+  void his.handleSessionDataSyncSuccess(data);
         break;
       default:
         logPerformance('Unknown service worker message', 0, { type });
@@ -155,7 +155,7 @@ class CacheIntegrationService {
   private handleProfileSyncSuccess(data: any): void {
     // Update local cache with synced data
     const key = cacheUtils.getUserProfileKey(data.data.id);
-    userProfileCache.set(key, data.data, undefined, CachePriority.HIGH);
+  void userProfileCache.set(key, data.data, undefined, CachePriority.HIGH);
     
     logPerformance('Profile sync success handled', 0, {
       userId: data.data.id
@@ -165,7 +165,7 @@ class CacheIntegrationService {
   private handleCoachDataSyncSuccess(data: any): void {
     // Update local cache with synced data
     const key = cacheUtils.getCoachDataKey(data.data.id);
-    coachDataCache.set(key, data.data, undefined, CachePriority.HIGH);
+  void coachDataCache.set(key, data.data, undefined, CachePriority.HIGH);
     
     logPerformance('Coach data sync success handled', 0, {
       coachId: data.data.id
@@ -175,7 +175,7 @@ class CacheIntegrationService {
   private handleSessionDataSyncSuccess(data: any): void {
     // Update local cache with synced data
     const key = cacheUtils.getSessionDataKey(data.data.id);
-    sessionDataCache.set(key, data.data, undefined, CachePriority.HIGH);
+  void sessionDataCache.set(key, data.data, undefined, CachePriority.HIGH);
     
     logPerformance('Session data sync success handled', 0, {
       sessionId: data.data.id
@@ -561,7 +561,7 @@ class CacheIntegrationService {
    */
   private startPerformanceMonitoring(): void {
     this.performanceMonitor = setInterval(() => {
-      this.generatePerformanceReport();
+  void his.generatePerformanceReport();
     }, this.config.monitoringInterval);
   }
 
@@ -642,22 +642,22 @@ class CacheIntegrationService {
     
     // Overall hit rate recommendations
     if (report.overall.hitRate < 0.7) {
-      recommendations.push('Consider increasing cache TTL or improving cache warming strategy');
+  void recommendations.push('Consider increasing cache TTL or improving cache warming strategy');
     }
     
     // Memory usage recommendations
     if (report.overall.memoryUsage > 100 * 1024 * 1024) {
-      recommendations.push('High memory usage detected - consider enabling compression or reducing cache sizes');
+  void recommendations.push('High memory usage detected - consider enabling compression or reducing cache sizes');
     }
     
     // Per-cache recommendations
     for (const [cacheName, stats] of Object.entries(report.byCache)) {
       if (stats.hitRate < 0.5) {
-        recommendations.push(`${cacheName}: Low hit rate detected - review caching strategy`);
+  void recommendations.push(`${cacheName}: Low hit rate detected - review caching strategy`);
       }
       
       if (stats.efficiency < 50) {
-        recommendations.push(`${cacheName}: Low efficiency - consider optimization`);
+  void recommendations.push(`${cacheName}: Low efficiency - consider optimization`);
       }
     }
     

@@ -163,32 +163,32 @@ export interface BaseComponentProps {
 export type HookReturn<T, A = Record<string, SafeFunction>> = [T, A];
 
 // Type guards
-export const isError = (value: unknown): value is Error => {
+export const _isError = (value: unknown): value is Error => {
   return value instanceof Error;
 };
 
-export const isSafeError = (value: unknown): value is SafeError => {
+export const _isSafeError = (value: unknown): value is SafeError => {
   return typeof value === 'object' && value !== null && 'message' in value;
 };
 
-export const isRecord = (value: unknown): value is SafeRecord => {
+export const _isRecord = (value: unknown): value is SafeRecord => {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 };
 
-export const isArray = <T>(value: unknown): value is SafeArray<T> => {
+export const _isArray = <T>(value: unknown): value is SafeArray<T> => {
   return Array.isArray(value);
 };
 
-export const isFunction = (value: unknown): value is SafeFunction => {
+export const _isFunction = (value: unknown): value is SafeFunction => {
   return typeof value === 'function';
 };
 
-export const isAsyncFunction = (value: unknown): value is SafeAsyncFunction => {
+export const _isAsyncFunction = (value: unknown): value is SafeAsyncFunction => {
   return typeof value === 'function';
 };
 
 // Utility functions for safe operations
-export const safeStringify = (value: unknown): string => {
+export const _safeStringify = (value: unknown): string => {
   try {
     return JSON.stringify(value);
   } catch {
@@ -196,7 +196,7 @@ export const safeStringify = (value: unknown): string => {
   }
 };
 
-export const safeParse = <T = unknown>(value: string): T | null => {
+export const _safeParse = <T = unknown>(value: string): T | null => {
   try {
     return JSON.parse(value) as T;
   } catch {
@@ -204,19 +204,19 @@ export const safeParse = <T = unknown>(value: string): T | null => {
   }
 };
 
-export const safeNumber = (value: unknown): number => {
-  const num = Number(value);
+export const _safeNumber = (value: unknown): number => {
+  const _num = Number(value);
   return isNaN(num) ? 0 : num;
 };
 
-export const safeString = (value: unknown): string => {
+export const _safeString = (value: unknown): string => {
   return String(value ?? '');
 };
 
-export const safeArray = <T>(value: unknown): T[] => {
+export const _safeArray = <T>(value: unknown): T[] => {
   return isArray<T>(value) ? value : [];
 };
 
-export const safeRecord = (value: unknown): SafeRecord => {
+export const _safeRecord = (value: unknown): SafeRecord => {
   return isRecord(value) ? value : {};
 };

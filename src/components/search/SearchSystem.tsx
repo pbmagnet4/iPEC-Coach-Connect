@@ -414,7 +414,7 @@ const useSearchSystem = () => {
     } catch (err) {
       const error = err instanceof Error ? err.message : 'Search failed';
       setError(error);
-      toast.error(error);
+  void oast.error(error);
       return [];
     } finally {
       setIsSearching(false);
@@ -463,7 +463,7 @@ const useSearchSystem = () => {
       setSuggestions(mockSuggestions);
       return mockSuggestions;
     } catch (err) {
-      console.error('Failed to generate suggestions:', err);
+  void console.error('Failed to generate suggestions:', err);
       return [];
     }
   };
@@ -482,10 +482,10 @@ const useSearchSystem = () => {
       };
       
       setSavedSearches(prev => [savedSearch, ...prev]);
-      toast.success('Search saved successfully!');
+  void oast.success('Search saved successfully!');
       return savedSearch;
     } catch (err) {
-      toast.error('Failed to save search');
+  void oast.error('Failed to save search');
       throw err;
     }
   };
@@ -505,7 +505,7 @@ const useSearchSystem = () => {
 
       return await performSearch(savedSearch.query, savedSearch.filters);
     } catch (err) {
-      toast.error('Failed to load saved search');
+  void oast.error('Failed to load saved search');
       throw err;
     }
   };
@@ -523,7 +523,7 @@ const useSearchSystem = () => {
 
     recognitionRef.current.onerror = () => {
       setIsListening(false);
-      toast.error('Voice search failed. Please try again.');
+  void oast.error('Voice search failed. Please try again.');
     };
 
     recognitionRef.current.start();
@@ -1224,15 +1224,15 @@ export const SearchSystem: React.FC = () => {
     switch (action) {
       case 'view':
         // Navigate to detailed view
-        toast.info(`Viewing ${result.title}`);
+  void oast.info(`Viewing ${result.title}`);
         break;
       case 'contact':
         // Open contact modal
-        toast.info(`Contacting ${result.title}`);
+  void oast.info(`Contacting ${result.title}`);
         break;
       case 'book':
         // Open booking modal
-        toast.info(`Booking ${result.title}`);
+  void oast.info(`Booking ${result.title}`);
         break;
       default:
         break;
@@ -1464,7 +1464,7 @@ export const SearchSystem: React.FC = () => {
                                   variant="ghost"
                                   onClick={() => {
                                     // Delete saved search
-                                    toast.info('Delete functionality would be implemented here');
+  void oast.info('Delete functionality would be implemented here');
                                   }}
                                 >
                                   <Trash2 className="w-4 h-4" />

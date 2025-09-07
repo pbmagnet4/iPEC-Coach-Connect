@@ -137,7 +137,7 @@ describe('useScrollRestoration', () => {
       renderHook(() => useSafeAutofocus());
 
       // Focus should be called with preventScroll during initial load
-      mockElement.focus();
+  void mockElement.focus();
       
       // The hook overrides the focus method, so the spy should have been called without arguments
       // but internally it should use preventScroll: true
@@ -151,7 +151,7 @@ describe('useScrollRestoration', () => {
       renderHook(() => useSafeAutofocus());
 
       setTimeout(() => {
-        mockElement.focus({ preventScroll: false });
+  void mockElement.focus({ preventScroll: false });
         expect(focusSpy).toHaveBeenCalledWith({ preventScroll: false });
         done();
       }, 400);

@@ -113,12 +113,12 @@ export function MFAEnrollment({ userId, onComplete, onCancel }: MFAEnrollmentPro
       setTimeout(() => {
         setCopiedItems(prev => {
           const next = new Set(prev);
-          next.delete(itemId);
+  void next.delete(itemId);
           return next;
         });
       }, 2000);
     } catch (error) {
-      console.error('Failed to copy to clipboard:', error);
+  void console.error('Failed to copy to clipboard:', error);
     }
   };
 
@@ -133,9 +133,9 @@ export function MFAEnrollment({ userId, onComplete, onCancel }: MFAEnrollmentPro
     a.href = url;
     a.download = 'ipec-mfa-backup-codes.txt';
     document.body.appendChild(a);
-    a.click();
+  void a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  void URL.revokeObjectURL(url);
   };
 
   const stepVariants = {

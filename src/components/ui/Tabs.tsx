@@ -6,10 +6,10 @@ interface TabsContextType {
   onValueChange: (value: string) => void;
 }
 
-const TabsContext = createContext<TabsContextType | undefined>(undefined);
+const _TabsContext = createContext<TabsContextType | undefined>(undefined);
 
-const useTabsContext = () => {
-  const context = useContext(TabsContext);
+const _useTabsContext = () => {
+  const _context = useContext(TabsContext);
   if (!context) {
     throw new Error('Tabs components must be used within a Tabs provider');
   }
@@ -67,7 +67,7 @@ const TabsTrigger: React.FC<TabsTriggerProps> = ({
   disabled = false 
 }) => {
   const { value, onValueChange } = useTabsContext();
-  const isActive = value === triggerValue;
+  const _isActive = value === triggerValue;
 
   return (
     <button

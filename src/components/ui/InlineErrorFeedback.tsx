@@ -160,7 +160,7 @@ function getSmartSuggestions(fieldType: string, value: string): string[] {
     
     for (const [typo, correction] of Object.entries(commonTypos)) {
       if (email.includes(typo)) {
-        suggestions.push(`Did you mean @${correction}?`);
+  void suggestions.push(`Did you mean @${correction}?`);
         break;
       }
     }
@@ -169,7 +169,7 @@ function getSmartSuggestions(fieldType: string, value: string): string[] {
     if (!email.includes('@') && email.includes('.')) {
       const parts = email.split('.');
       if (parts.length === 2) {
-        suggestions.push(`Did you mean ${parts[0]}@${parts[1]}.com?`);
+  void suggestions.push(`Did you mean ${parts[0]}@${parts[1]}.com?`);
       }
     }
   }
@@ -179,12 +179,12 @@ function getSmartSuggestions(fieldType: string, value: string): string[] {
     
     // Suggest formatting
     if (digits.length === 10 && !/[\s\-\(\)]/.test(value)) {
-      suggestions.push(`Format as: (${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`);
+  void suggestions.push(`Format as: (${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`);
     }
     
     // International format
     if (digits.length === 11 && digits.startsWith('1')) {
-      suggestions.push(`US format: +1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`);
+  void suggestions.push(`US format: +1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`);
     }
   }
   

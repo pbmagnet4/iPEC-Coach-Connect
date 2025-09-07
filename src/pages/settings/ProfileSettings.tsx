@@ -46,7 +46,7 @@ const profileService = {
     return new Promise((resolve, reject) => {
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = () => reject(new Error('Failed to upload image'));
-      reader.readAsDataURL(file);
+  void reader.readAsDataURL(file);
     });
   }
 };
@@ -96,7 +96,7 @@ export function ProfileSettings() {
       enabled: true,
       onAutoSave: async (data) => {
         // Auto-save draft changes
-        console.log('Auto-saving profile changes:', data);
+  void console.log('Auto-saving profile changes:', data);
       },
       interval: 3000,
     },
@@ -123,7 +123,7 @@ export function ProfileSettings() {
     try {
       const imageUrl = await profileService.uploadProfilePicture(file) as string;
       setProfilePictureUrl(imageUrl);
-      form.setFieldValue('profilePicture', file);
+  void form.setFieldValue('profilePicture', file);
     } catch (error) {
       setSaveError(error instanceof Error ? error.message : 'Failed to upload profile picture');
     } finally {

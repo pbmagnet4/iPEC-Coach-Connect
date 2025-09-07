@@ -102,7 +102,7 @@ const mockTrustedDevice = {
 
 describe('MFAService', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
     
     // Default Supabase mocks
     (supabase.from as any).mockImplementation((table: string) => ({
@@ -120,7 +120,7 @@ describe('MFAService', () => {
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+  void vi.restoreAllMocks();
   });
 
   describe('initializeMFA', () => {
@@ -227,12 +227,12 @@ describe('MFAService', () => {
 
     beforeEach(() => {
       // Mock current time to ensure consistent TOTP generation
-      vi.useFakeTimers();
-      vi.setSystemTime(new Date('2024-01-01T12:00:00Z'));
+  void vi.useFakeTimers();
+  void vi.setSystemTime(new Date('2024-01-01T12:00:00Z'));
     });
 
     afterEach(() => {
-      vi.useRealTimers();
+  void vi.useRealTimers();
     });
 
     it('should successfully verify TOTP and enable MFA', async () => {
@@ -322,12 +322,12 @@ describe('MFAService', () => {
     const validBackupCode = 'BACKUP12';
 
     beforeEach(() => {
-      vi.useFakeTimers();
-      vi.setSystemTime(new Date('2024-01-01T12:00:00Z'));
+  void vi.useFakeTimers();
+  void vi.setSystemTime(new Date('2024-01-01T12:00:00Z'));
     });
 
     afterEach(() => {
-      vi.useRealTimers();
+  void vi.useRealTimers();
     });
 
     it('should successfully verify TOTP code during login', async () => {

@@ -262,7 +262,7 @@ export function NotificationSettings({ className = '', showHeader = true }: Noti
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (err) {
-      console.error('Failed to save preferences:', err);
+  void console.error('Failed to save preferences:', err);
     } finally {
       setSaving(false);
     }

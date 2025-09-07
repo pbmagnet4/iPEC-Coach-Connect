@@ -163,10 +163,10 @@ const useRoleManagement = () => {
   const assignUserRole = async (userId: string, role: ExtendedUserRole, reason?: string) => {
     try {
       // This would call the enhanced auth service
-      toast.success(`Successfully assigned ${role} role`);
+  void oast.success(`Successfully assigned ${role} role`);
       await fetchUserRoles(); // Refresh data
     } catch (err) {
-      toast.error('Failed to assign role');
+  void oast.error('Failed to assign role');
       throw err;
     }
   };
@@ -174,10 +174,10 @@ const useRoleManagement = () => {
   const removeUserRole = async (userId: string, role: ExtendedUserRole, reason?: string) => {
     try {
       // This would call the enhanced auth service
-      toast.success(`Successfully removed ${role} role`);
+  void oast.success(`Successfully removed ${role} role`);
       await fetchUserRoles(); // Refresh data
     } catch (err) {
-      toast.error('Failed to remove role');
+  void oast.error('Failed to remove role');
       throw err;
     }
   };
@@ -211,7 +211,7 @@ const RoleAssignmentModal: React.FC<{
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  void e.preventDefault();
     if (!selectedUser || !selectedRole) return;
 
     setIsSubmitting(true);
@@ -429,11 +429,11 @@ export const RoleManagement: React.FC = () => {
 
     try {
       // Implement bulk actions
-      toast.success(`${action} applied to ${selectedRoles.length} role(s)`);
+  void oast.success(`${action} applied to ${selectedRoles.length} role(s)`);
       setSelectedRoles([]);
       await fetchUserRoles();
     } catch (error) {
-      toast.error(`Failed to ${action} selected roles`);
+  void oast.error(`Failed to ${action} selected roles`);
     }
   };
 

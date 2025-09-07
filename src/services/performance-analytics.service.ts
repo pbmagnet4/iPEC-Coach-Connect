@@ -101,17 +101,17 @@ class PerformanceAnalyticsService {
       await this.createTables();
       
       // Start batch processing
-      this.startBatchProcessing();
+  void his.startBatchProcessing();
       
       // Set up Web Vitals collection
-      this.setupWebVitalsCollection();
+  void his.setupWebVitalsCollection();
       
       // Set up user behavior tracking
-      this.setupUserBehaviorTracking();
+  void his.setupUserBehaviorTracking();
 
-      console.log('Performance Analytics Service initialized');
+  void console.log('Performance Analytics Service initialized');
     } catch (error) {
-      console.error('Failed to initialize Performance Analytics Service:', error);
+  void console.error('Failed to initialize Performance Analytics Service:', error);
       throw error;
     }
   }
@@ -134,16 +134,16 @@ class PerformanceAnalyticsService {
       
       switch (timeRange) {
         case '1h':
-          startTime.setHours(endTime.getHours() - 1);
+  void startTime.setHours(endTime.getHours() - 1);
           break;
         case '24h':
-          startTime.setDate(endTime.getDate() - 1);
+  void startTime.setDate(endTime.getDate() - 1);
           break;
         case '7d':
-          startTime.setDate(endTime.getDate() - 7);
+  void startTime.setDate(endTime.getDate() - 7);
           break;
         case '30d':
-          startTime.setDate(endTime.getDate() - 30);
+  void startTime.setDate(endTime.getDate() - 30);
           break;
       }
 
@@ -164,11 +164,11 @@ class PerformanceAnalyticsService {
       };
 
       // Cache the results
-      cacheService.set(cacheKey, metrics, this.CACHE_TTL);
+  void cacheService.set(cacheKey, metrics, this.CACHE_TTL);
 
       return metrics;
     } catch (error) {
-      console.error('Failed to get performance metrics:', error);
+  void console.error('Failed to get performance metrics:', error);
       throw error;
     }
   }
@@ -183,7 +183,7 @@ class PerformanceAnalyticsService {
       ...measurement
     };
 
-    this.addToBatch(event);
+  void his.addToBatch(event);
   }
 
   /**
@@ -196,7 +196,7 @@ class PerformanceAnalyticsService {
       ...event
     };
 
-    this.addToBatch(behaviorEvent);
+  void his.addToBatch(behaviorEvent);
   }
 
   /**
@@ -209,7 +209,7 @@ class PerformanceAnalyticsService {
       ...event
     };
 
-    this.addToBatch(conversionEvent);
+  void his.addToBatch(conversionEvent);
   }
 
   /**
@@ -222,7 +222,7 @@ class PerformanceAnalyticsService {
       ...metric
     };
 
-    this.addToBatch(systemMetric);
+  void his.addToBatch(systemMetric);
   }
 
   /**
@@ -233,12 +233,12 @@ class PerformanceAnalyticsService {
       const metrics = await this.getMetrics(timeRange);
       
       if (format === 'csv') {
-        this.exportToCSV(metrics, timeRange);
+  void his.exportToCSV(metrics, timeRange);
       } else {
-        this.exportToJSON(metrics, timeRange);
+  void his.exportToJSON(metrics, timeRange);
       }
     } catch (error) {
-      console.error('Failed to export metrics:', error);
+  void console.error('Failed to export metrics:', error);
       throw error;
     }
   }
@@ -401,7 +401,7 @@ class PerformanceAnalyticsService {
 
     sessions?.forEach(event => {
       if (!sessionMap.has(event.session_id)) {
-        sessionMap.set(event.session_id, { events: [], duration: 0, pages: 0 });
+  void sessionMap.set(event.session_id, { events: [], duration: 0, pages: 0 });
       }
       
       const session = sessionMap.get(event.session_id);
@@ -413,7 +413,7 @@ class PerformanceAnalyticsService {
         const current = pageCounts.get(event.url) || { views: 0, totalTime: 0 };
         current.views++;
         current.totalTime += event.duration || 0;
-        pageCounts.set(event.url, current);
+  void pageCounts.set(event.url, current);
       }
       
       if (event.duration) {
@@ -507,14 +507,14 @@ class PerformanceAnalyticsService {
     this.pendingEvents.push(event);
 
     if (this.pendingEvents.length >= this.BATCH_SIZE) {
-      this.processBatch();
+  void his.processBatch();
     }
   }
 
   private startBatchProcessing(): void {
     this.batchTimer = setInterval(() => {
       if (this.pendingEvents.length > 0) {
-        this.processBatch();
+  void his.processBatch();
       }
     }, 5000); // Process every 5 seconds
   }
@@ -534,24 +534,24 @@ class PerformanceAnalyticsService {
       const promises: Promise<any>[] = [];
 
       if (webVitals.length > 0) {
-        promises.push(supabase.from('web_vitals').insert(webVitals));
+  void promises.push(supabase.from('web_vitals').insert(webVitals));
       }
 
       if (userBehavior.length > 0) {
-        promises.push(supabase.from('user_behavior_events').insert(userBehavior));
+  void promises.push(supabase.from('user_behavior_events').insert(userBehavior));
       }
 
       if (conversions.length > 0) {
-        promises.push(supabase.from('conversion_events').insert(conversions));
+  void promises.push(supabase.from('conversion_events').insert(conversions));
       }
 
       if (systemMetrics.length > 0) {
-        promises.push(supabase.from('system_metrics').insert(systemMetrics));
+  void promises.push(supabase.from('system_metrics').insert(systemMetrics));
       }
 
       await Promise.all(promises);
     } catch (error) {
-      console.error('Failed to process analytics batch:', error);
+  void console.error('Failed to process analytics batch:', error);
       // Re-add events to retry later
       this.pendingEvents.unshift(...events);
     }
@@ -562,10 +562,10 @@ class PerformanceAnalyticsService {
 
     // Check if web-vitals library is available
     if ('web-vitals' in window || typeof (window as any).webVitals !== 'undefined') {
-      this.collectWebVitals();
+  void his.collectWebVitals();
     } else {
       // Fallback: Manual performance measurements
-      this.collectManualWebVitals();
+  void his.collectManualWebVitals();
     }
   }
 
@@ -573,9 +573,9 @@ class PerformanceAnalyticsService {
     try {
       // This would use the web-vitals library if available
       // For now, we'll use the manual approach
-      this.collectManualWebVitals();
+  void his.collectManualWebVitals();
     } catch (error) {
-      console.error('Failed to collect web vitals:', error);
+  void console.error('Failed to collect web vitals:', error);
     }
   }
 
@@ -611,9 +611,9 @@ class PerformanceAnalyticsService {
           });
         });
 
-        observer.observe({ entryTypes: ['paint', 'largest-contentful-paint'] });
+  void observer.observe({ entryTypes: ['paint', 'largest-contentful-paint'] });
       } catch (error) {
-        console.error('Failed to set up performance observer:', error);
+  void console.error('Failed to set up performance observer:', error);
       }
     }
   }
@@ -649,7 +649,7 @@ class PerformanceAnalyticsService {
     let sessionId = sessionStorage.getItem('analytics_session_id');
     if (!sessionId) {
       sessionId = crypto.randomUUID();
-      sessionStorage.setItem('analytics_session_id', sessionId);
+  void sessionStorage.setItem('analytics_session_id', sessionId);
     }
     return sessionId;
   }
@@ -674,8 +674,8 @@ class PerformanceAnalyticsService {
     const link = document.createElement('a');
     link.href = url;
     link.download = `performance-metrics-${timeRange}-${new Date().toISOString().split('T')[0]}.csv`;
-    link.click();
-    URL.revokeObjectURL(url);
+  void link.click();
+  void URL.revokeObjectURL(url);
   }
 
   private exportToJSON(metrics: PerformanceMetrics, timeRange: string): void {
@@ -690,8 +690,8 @@ class PerformanceAnalyticsService {
     const link = document.createElement('a');
     link.href = url;
     link.download = `performance-metrics-${timeRange}-${new Date().toISOString().split('T')[0]}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
+  void link.click();
+  void URL.revokeObjectURL(url);
   }
 }
 

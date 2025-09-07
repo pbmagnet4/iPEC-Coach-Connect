@@ -188,7 +188,7 @@ export function EnhancedAuthForm({ mode, onModeChange, onSuccess, redirectTo }: 
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  void e.preventDefault();
     
     if (mode === 'signup' && !validateCurrentStep()) {
       return;

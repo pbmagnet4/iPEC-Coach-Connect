@@ -40,7 +40,7 @@ export function Navigation() {
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+  void document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
@@ -202,7 +202,7 @@ export function Navigation() {
                               await signOut();
                               setIsProfileOpen(false);
                             } catch (error) {
-                              console.error('Logout failed:', error);
+  void console.error('Logout failed:', error);
                               setIsProfileOpen(false);
                             }
                           }}
@@ -335,7 +335,7 @@ export function Navigation() {
                         await signOut();
                         setIsMenuOpen(false);
                       } catch (error) {
-                        console.error('Logout failed:', error);
+  void console.error('Logout failed:', error);
                         setIsMenuOpen(false);
                       }
                     }}

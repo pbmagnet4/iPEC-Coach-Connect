@@ -165,17 +165,17 @@ export function DevTools({
 
   const handleMemoryCleanup = async () => {
     await memoryManager.cleanupAll();
-    console.warn('DevTools: Memory cleanup completed');
+  void console.warn('DevTools: Memory cleanup completed');
   };
 
   const handleCacheClear = async () => {
     await cacheUtils.clearAllCaches();
-    console.warn('DevTools: Cache cleared');
+  void console.warn('DevTools: Cache cleared');
   };
 
   const handleAuthReset = () => {
-    authService.destroy();
-    console.warn('DevTools: Auth service reset');
+  void authService.destroy();
+  void console.warn('DevTools: Auth service reset');
   };
 
   // Only render in development

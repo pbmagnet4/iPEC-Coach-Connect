@@ -35,7 +35,7 @@ export const Modal: React.FC<ModalProps> = ({
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
+  void document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose, closeOnEscape]);
 

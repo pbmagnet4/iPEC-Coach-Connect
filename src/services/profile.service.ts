@@ -309,43 +309,43 @@ class UserProfileService {
 
     // Required fields validation
     if (!profile.full_name?.trim()) {
-      errors.push('Full name is required');
+  void errors.push('Full name is required');
     }
 
     // Username validation
     if (profile.username) {
       if (profile.username.length < 3) {
-        errors.push('Username must be at least 3 characters');
+  void errors.push('Username must be at least 3 characters');
       }
       if (!/^[a-zA-Z0-9_-]+$/.test(profile.username)) {
-        errors.push('Username can only contain letters, numbers, hyphens, and underscores');
+  void errors.push('Username can only contain letters, numbers, hyphens, and underscores');
       }
     }
 
     // Phone validation
     if (profile.phone && !/^\+?[\d\s-()]+$/.test(profile.phone)) {
-      errors.push('Invalid phone number format');
+  void errors.push('Invalid phone number format');
     }
 
     // Bio length validation
     if (profile.bio && profile.bio.length > 500) {
-      errors.push('Bio must be less than 500 characters');
+  void errors.push('Bio must be less than 500 characters');
     }
 
     // Warnings for incomplete profile
     if (!profile.bio) {
-      warnings.push('Consider adding a bio to help others learn about you');
+  void warnings.push('Consider adding a bio to help others learn about you');
     }
     if (!profile.avatar_url) {
-      warnings.push('Consider uploading a profile picture');
+  void warnings.push('Consider uploading a profile picture');
     }
     if (!profile.location) {
-      warnings.push('Consider adding your location');
+  void warnings.push('Consider adding your location');
     }
 
     const completeness = this.calculateProfileCompleteness(profile);
     if (completeness < 80) {
-      warnings.push('Your profile is not complete - consider filling out all fields');
+  void warnings.push('Your profile is not complete - consider filling out all fields');
     }
 
     return {
@@ -366,18 +366,18 @@ class UserProfileService {
     // File type validation
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
-      errors.push('Avatar must be a JPEG, PNG, or WebP image');
+  void errors.push('Avatar must be a JPEG, PNG, or WebP image');
     }
 
     // File size validation (5MB max)
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
-      errors.push('Avatar file size must be less than 5MB');
+  void errors.push('Avatar file size must be less than 5MB');
     }
 
     // Optimal size warning
     if (file.size > 1024 * 1024) {
-      warnings.push('Large image file - consider optimizing for faster loading');
+  void warnings.push('Large image file - consider optimizing for faster loading');
     }
 
     return {
@@ -397,21 +397,21 @@ class UserProfileService {
 
     // Timezone validation
     try {
-      Intl.DateTimeFormat(undefined, { timeZone: settings.preferences.timezone });
+  void Intl.DateTimeFormat(undefined, { timeZone: settings.preferences.timezone });
     } catch {
-      errors.push('Invalid timezone');
+  void errors.push('Invalid timezone');
     }
 
     // Language validation
     const supportedLanguages = ['en', 'es', 'fr', 'de'];
     if (!supportedLanguages.includes(settings.preferences.language)) {
-      errors.push('Unsupported language');
+  void errors.push('Unsupported language');
     }
 
     // Currency validation
     const supportedCurrencies = ['USD', 'EUR', 'GBP', 'CAD'];
     if (!supportedCurrencies.includes(settings.preferences.currency)) {
-      errors.push('Unsupported currency');
+  void errors.push('Unsupported currency');
     }
 
     return {
@@ -474,7 +474,7 @@ class UserProfileService {
         canvas.height = height;
 
         // Draw and compress
-        ctx.drawImage(img, 0, 0, width, height);
+  void ctx.drawImage(img, 0, 0, width, height);
         
         canvas.toBlob(
           (blob) => {

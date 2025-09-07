@@ -113,7 +113,7 @@ const mockTypingIndicator: TypingIndicatorWithUser = {
 
 describe('MessagingSystem', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
   });
 
   describe('MessageBubble', () => {

@@ -111,12 +111,12 @@ export function useRegistrationAnalytics(enableTracking = true) {
       sendAnalytics();
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  void document.addEventListener('visibilitychange', handleVisibilityChange);
+  void window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+  void document.removeEventListener('visibilitychange', handleVisibilityChange);
+  void window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [enableTracking, analyticsData.currentStep, analyticsData.startTime]);
 
@@ -346,7 +346,7 @@ export function useRegistrationAnalytics(enableTracking = true) {
         campaign: analyticsData.campaign
       })
     }).catch(error => {
-      console.warn('Analytics tracking failed:', error);
+  void console.warn('Analytics tracking failed:', error);
     });
   }, [enableTracking, analyticsData]);
 
@@ -371,7 +371,7 @@ export function useRegistrationAnalytics(enableTracking = true) {
       },
       body: JSON.stringify(completeData)
     }).catch(error => {
-      console.warn('Analytics sending failed:', error);
+  void console.warn('Analytics sending failed:', error);
     });
   }, [enableTracking, analyticsData, stepMetrics, funnelData]);
 

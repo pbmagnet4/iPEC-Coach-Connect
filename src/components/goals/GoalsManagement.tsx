@@ -399,11 +399,11 @@ const useGoalsManagement = () => {
       };
 
       setGoals(prev => [newGoal, ...prev]);
-      toast.success('Goal created successfully!');
+  void oast.success('Goal created successfully!');
       return newGoal;
     } catch (err) {
       const error = err instanceof Error ? err.message : 'Failed to create goal';
-      toast.error(error);
+  void oast.error(error);
       throw new Error(error);
     }
   };
@@ -415,9 +415,9 @@ const useGoalsManagement = () => {
           ? { ...goal, ...updates, updated_at: new Date().toISOString() }
           : goal
       ));
-      toast.success('Goal updated successfully!');
+  void oast.success('Goal updated successfully!');
     } catch (err) {
-      toast.error('Failed to update goal');
+  void oast.error('Failed to update goal');
       throw err;
     }
   };
@@ -425,9 +425,9 @@ const useGoalsManagement = () => {
   const deleteGoal = async (goalId: string) => {
     try {
       setGoals(prev => prev.filter(goal => goal.id !== goalId));
-      toast.success('Goal deleted successfully');
+  void oast.success('Goal deleted successfully');
     } catch (err) {
-      toast.error('Failed to delete goal');
+  void oast.error('Failed to delete goal');
       throw err;
     }
   };
@@ -452,9 +452,9 @@ const useGoalsManagement = () => {
           : goal
       ));
       
-      toast.success('Note added successfully!');
+  void oast.success('Note added successfully!');
     } catch (err) {
-      toast.error('Failed to add note');
+  void oast.error('Failed to add note');
       throw err;
     }
   };
@@ -518,7 +518,7 @@ const GoalCreationModal: React.FC<{
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  void e.preventDefault();
     if (!validateForm()) return;
 
     setIsSubmitting(true);

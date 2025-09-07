@@ -103,7 +103,7 @@ export function MessageComposer({
   // Handle key press
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
+  void e.preventDefault();
       handleSendMessage();
     }
   };
@@ -119,8 +119,8 @@ export function MessageComposer({
       
       // Restore cursor position
       setTimeout(() => {
-        textarea.setSelectionRange(start + emoji.length, start + emoji.length);
-        textarea.focus();
+  void extarea.setSelectionRange(start + emoji.length, start + emoji.length);
+  void extarea.focus();
       }, 0);
     } else {
       setMessage(prev => prev + emoji);
@@ -175,7 +175,7 @@ export function MessageComposer({
       // Focus back to textarea
       textareaRef.current?.focus();
     } catch (error) {
-      console.error('Failed to send message:', error);
+  void console.error('Failed to send message:', error);
       // Could show error toast here
     } finally {
       setIsSending(false);

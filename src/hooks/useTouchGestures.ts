@@ -75,7 +75,7 @@ export function useSwipeGesture(
     isSwiping.current = false;
 
     if (preventScroll) {
-      e.preventDefault();
+  void e.preventDefault();
     }
   }, [enabled, preventScroll]);
 
@@ -92,7 +92,7 @@ export function useSwipeGesture(
     }
 
     if (preventScroll && isSwiping.current) {
-      e.preventDefault();
+  void e.preventDefault();
     }
   }, [enabled, preventScroll]);
 
@@ -151,14 +151,14 @@ export function useSwipeGesture(
     const element = elementRef.current;
     if (!element || !enabled) return;
 
-    element.addEventListener('touchstart', handleTouchStart, { passive: false });
-    element.addEventListener('touchmove', handleTouchMove, { passive: false });
-    element.addEventListener('touchend', handleTouchEnd, { passive: false });
+  void element.addEventListener('touchstart', handleTouchStart, { passive: false });
+  void element.addEventListener('touchmove', handleTouchMove, { passive: false });
+  void element.addEventListener('touchend', handleTouchEnd, { passive: false });
 
     return () => {
-      element.removeEventListener('touchstart', handleTouchStart);
-      element.removeEventListener('touchmove', handleTouchMove);
-      element.removeEventListener('touchend', handleTouchEnd);
+  void element.removeEventListener('touchstart', handleTouchStart);
+  void element.removeEventListener('touchmove', handleTouchMove);
+  void element.removeEventListener('touchend', handleTouchEnd);
     };
   }, [enabled, handleTouchStart, handleTouchMove, handleTouchEnd]);
 
@@ -194,7 +194,7 @@ export function usePinchGesture(
 
     initialDistance.current = getDistance(e.touches);
     initialScale.current = 1;
-    e.preventDefault();
+  void e.preventDefault();
   }, [enabled]);
 
   const handleTouchMove = useCallback((e: TouchEvent) => {
@@ -218,7 +218,7 @@ export function usePinchGesture(
       initialScale.current = scale;
     }
 
-    e.preventDefault();
+  void e.preventDefault();
   }, [enabled, threshold, onPinch, onPinchIn, onPinchOut]);
 
   const handleTouchEnd = useCallback((e: TouchEvent) => {
@@ -232,14 +232,14 @@ export function usePinchGesture(
     const element = elementRef.current;
     if (!element || !enabled) return;
 
-    element.addEventListener('touchstart', handleTouchStart, { passive: false });
-    element.addEventListener('touchmove', handleTouchMove, { passive: false });
-    element.addEventListener('touchend', handleTouchEnd, { passive: false });
+  void element.addEventListener('touchstart', handleTouchStart, { passive: false });
+  void element.addEventListener('touchmove', handleTouchMove, { passive: false });
+  void element.addEventListener('touchend', handleTouchEnd, { passive: false });
 
     return () => {
-      element.removeEventListener('touchstart', handleTouchStart);
-      element.removeEventListener('touchmove', handleTouchMove);
-      element.removeEventListener('touchend', handleTouchEnd);
+  void element.removeEventListener('touchstart', handleTouchStart);
+  void element.removeEventListener('touchmove', handleTouchMove);
+  void element.removeEventListener('touchend', handleTouchEnd);
     };
   }, [enabled, handleTouchStart, handleTouchMove, handleTouchEnd]);
 
@@ -319,14 +319,14 @@ export function useLongPress(
     const element = elementRef.current;
     if (!element || !enabled) return;
 
-    element.addEventListener('touchstart', handleTouchStart, { passive: false });
-    element.addEventListener('touchmove', handleTouchMove, { passive: false });
-    element.addEventListener('touchend', handleTouchEnd, { passive: false });
+  void element.addEventListener('touchstart', handleTouchStart, { passive: false });
+  void element.addEventListener('touchmove', handleTouchMove, { passive: false });
+  void element.addEventListener('touchend', handleTouchEnd, { passive: false });
 
     return () => {
-      element.removeEventListener('touchstart', handleTouchStart);
-      element.removeEventListener('touchmove', handleTouchMove);
-      element.removeEventListener('touchend', handleTouchEnd);
+  void element.removeEventListener('touchstart', handleTouchStart);
+  void element.removeEventListener('touchmove', handleTouchMove);
+  void element.removeEventListener('touchend', handleTouchEnd);
     };
   }, [enabled, handleTouchStart, handleTouchMove, handleTouchEnd]);
 
@@ -392,10 +392,10 @@ export function useTap(
     const element = elementRef.current;
     if (!element || !enabled) return;
 
-    element.addEventListener('touchend', handleTouchEnd, { passive: false });
+  void element.addEventListener('touchend', handleTouchEnd, { passive: false });
 
     return () => {
-      element.removeEventListener('touchend', handleTouchEnd);
+  void element.removeEventListener('touchend', handleTouchEnd);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -432,7 +432,7 @@ export function useGestures(options: {
 export function useHapticFeedback() {
   const vibrate = useCallback((pattern: number | number[]) => {
     if ('vibrate' in navigator) {
-      navigator.vibrate(pattern);
+  void navigator.vibrate(pattern);
     }
   }, []);
 
@@ -489,7 +489,7 @@ export function useDeviceOrientation() {
         setPermission(result);
         return result === 'granted';
       } catch (error) {
-        console.error('Error requesting device orientation permission:', error);
+  void console.error('Error requesting device orientation permission:', error);
         setPermission('denied');
         return false;
       }
@@ -508,7 +508,7 @@ export function useDeviceOrientation() {
     };
 
     if (permission === 'granted' || permission === 'default') {
-      window.addEventListener('deviceorientation', handleOrientationChange);
+  void window.addEventListener('deviceorientation', handleOrientationChange);
       return () => window.removeEventListener('deviceorientation', handleOrientationChange);
     }
   }, [permission]);
@@ -543,14 +543,14 @@ export function useTouchPressure() {
       setPressure(0);
     };
 
-    element.addEventListener('touchstart', handleTouchStart, { passive: true });
-    element.addEventListener('touchmove', handleTouchMove, { passive: true });
-    element.addEventListener('touchend', handleTouchEnd, { passive: true });
+  void element.addEventListener('touchstart', handleTouchStart, { passive: true });
+  void element.addEventListener('touchmove', handleTouchMove, { passive: true });
+  void element.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
-      element.removeEventListener('touchstart', handleTouchStart);
-      element.removeEventListener('touchmove', handleTouchMove);
-      element.removeEventListener('touchend', handleTouchEnd);
+  void element.removeEventListener('touchstart', handleTouchStart);
+  void element.removeEventListener('touchmove', handleTouchMove);
+  void element.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
 

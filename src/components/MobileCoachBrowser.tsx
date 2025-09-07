@@ -149,7 +149,7 @@ export function MobileCoachBrowser({
     // Announce to screen reader
     const nextCoach = coaches[currentIndex + 1];
     if (nextCoach) {
-      screenReader.announce(`Showing ${nextCoach.name}, ${nextCoach.title}`);
+  void screenReader.announce(`Showing ${nextCoach.name}, ${nextCoach.title}`);
     }
   }, [isLastCoach, hasMore, onLoadMore, coaches, currentIndex, screenReader]);
 
@@ -162,7 +162,7 @@ export function MobileCoachBrowser({
     // Announce to screen reader
     const prevCoach = coaches[currentIndex - 1];
     if (prevCoach) {
-      screenReader.announce(`Showing ${prevCoach.name}, ${prevCoach.title}`);
+  void screenReader.announce(`Showing ${prevCoach.name}, ${prevCoach.title}`);
     }
   }, [isFirstCoach, coaches, currentIndex, screenReader]);
 
@@ -171,7 +171,7 @@ export function MobileCoachBrowser({
     const coach = coaches.find(c => c.id === coachId);
     if (coach) {
       const message = coach.isBookmarked ? 'Removed from bookmarks' : 'Added to bookmarks';
-      liveRegions.announcePolite(message);
+  void liveRegions.announcePolite(message);
     }
   }, [onBookmark, coaches, liveRegions]);
 
@@ -189,7 +189,7 @@ export function MobileCoachBrowser({
   const applyFilters = useCallback(() => {
     onFilter(filters);
     setShowFilters(false);
-    liveRegions.announcePolite('Filters applied');
+  void liveRegions.announcePolite('Filters applied');
   }, [filters, onFilter, liveRegions]);
 
   const resetFilters = useCallback(() => {
@@ -203,7 +203,7 @@ export function MobileCoachBrowser({
     };
     setFilters(resetFilters);
     onFilter(resetFilters);
-    liveRegions.announcePolite('Filters reset');
+  void liveRegions.announcePolite('Filters reset');
   }, [onFilter, liveRegions]);
 
   if (loading) {

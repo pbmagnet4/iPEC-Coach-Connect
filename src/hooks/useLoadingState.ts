@@ -65,7 +65,7 @@ export function useLoadingState<T = any>(
     
     const {connection} = (navigator as any);
     if (connection) {
-      connection.addEventListener('change', updateNetworkQuality);
+  void connection.addEventListener('change', updateNetworkQuality);
       return () => connection.removeEventListener('change', updateNetworkQuality);
     }
   }, [defaultOptions.networkAware]);
@@ -133,7 +133,7 @@ export function useLoadingState<T = any>(
       };
 
       // Emit analytics event
-      window.dispatchEvent(new CustomEvent('loadingAnalytics', { detail: analytics }));
+  void window.dispatchEvent(new CustomEvent('loadingAnalytics', { detail: analytics }));
 
     } catch (err) {
       const error = err as Error;
@@ -163,7 +163,7 @@ export function useLoadingState<T = any>(
         retryCount
       };
 
-      window.dispatchEvent(new CustomEvent('loadingAnalytics', { detail: analytics }));
+  void window.dispatchEvent(new CustomEvent('loadingAnalytics', { detail: analytics }));
     } finally {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);

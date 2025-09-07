@@ -17,9 +17,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
   className = ''
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const _timeoutRef = useRef<NodeJS.Timeout>();
 
-  const showTooltip = () => {
+  const _showTooltip = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -28,14 +28,14 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }, delay);
   };
 
-  const hideTooltip = () => {
+  const _hideTooltip = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
     setIsVisible(false);
   };
 
-  const getTooltipPosition = () => {
+  const _getTooltipPosition = () => {
     switch (placement) {
       case 'top':
         return 'bottom-full left-1/2 transform -translate-x-1/2 mb-2';
@@ -50,7 +50,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }
   };
 
-  const getArrowPosition = () => {
+  const _getArrowPosition = () => {
     switch (placement) {
       case 'top':
         return 'top-full left-1/2 transform -translate-x-1/2 border-t-gray-900 border-t-4 border-l-transparent border-r-transparent border-l-4 border-r-4';

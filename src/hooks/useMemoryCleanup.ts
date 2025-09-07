@@ -41,7 +41,7 @@ export function useEventListener<T extends EventTarget>(
     );
 
     return () => {
-      memoryManager.cleanup(cleanupId);
+  void memoryManager.cleanup(cleanupId);
     };
   }, [target, event, options]);
 }
@@ -82,7 +82,7 @@ export function useInterval(
     );
 
     return () => {
-      memoryManager.cleanup(cleanupId);
+  void memoryManager.cleanup(cleanupId);
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
@@ -143,8 +143,8 @@ export function useObserver<T extends { disconnect: () => void }>(
     );
 
     return () => {
-      memoryManager.cleanup(cleanupId);
-      observer.disconnect();
+  void memoryManager.cleanup(cleanupId);
+  void observer.disconnect();
       observerRef.current = null;
     };
   }, deps);
@@ -174,7 +174,7 @@ export function useResizeObserver(
       savedCallback.current?.(entries);
     });
 
-    observer.observe(element);
+  void observer.observe(element);
 
     // Register with memory manager
     const cleanupId = memoryManager.registerObserver(
@@ -185,8 +185,8 @@ export function useResizeObserver(
     );
 
     return () => {
-      memoryManager.cleanup(cleanupId);
-      observer.disconnect();
+  void memoryManager.cleanup(cleanupId);
+  void observer.disconnect();
     };
   }, [element]);
 }
@@ -214,7 +214,7 @@ export function useIntersectionObserver(
       savedCallback.current?.(entries);
     }, options);
 
-    observer.observe(element);
+  void observer.observe(element);
 
     // Register with memory manager
     const cleanupId = memoryManager.registerObserver(
@@ -225,8 +225,8 @@ export function useIntersectionObserver(
     );
 
     return () => {
-      memoryManager.cleanup(cleanupId);
-      observer.disconnect();
+  void memoryManager.cleanup(cleanupId);
+  void observer.disconnect();
     };
   }, [element, options]);
 }
@@ -254,7 +254,7 @@ export function useMutationObserver(
       savedCallback.current?.(mutations);
     });
 
-    observer.observe(element, options);
+  void observer.observe(element, options);
 
     // Register with memory manager
     const cleanupId = memoryManager.registerObserver(
@@ -265,8 +265,8 @@ export function useMutationObserver(
     );
 
     return () => {
-      memoryManager.cleanup(cleanupId);
-      observer.disconnect();
+  void memoryManager.cleanup(cleanupId);
+  void observer.disconnect();
     };
   }, [element, options]);
 }
@@ -293,8 +293,8 @@ export function useSubscription<T>(
     );
 
     return () => {
-      memoryManager.cleanup(cleanupId);
-      subscription.unsubscribe();
+  void memoryManager.cleanup(cleanupId);
+  void subscription.unsubscribe();
       subscriptionRef.current = null;
     };
   }, deps);
@@ -331,7 +331,7 @@ export function useAuthStateSubscription(
       );
 
       return () => {
-        memoryManager.cleanup(cleanupId);
+  void memoryManager.cleanup(cleanupId);
         unsubscribe();
       };
     });
@@ -376,8 +376,8 @@ export function useSupabaseSubscription<T>(
         );
 
         return () => {
-          memoryManager.cleanup(cleanupId);
-          result.unsubscribe();
+  void memoryManager.cleanup(cleanupId);
+  void result.unsubscribe();
         };
       } catch (error) {
         if (!cancelled) {
@@ -411,7 +411,7 @@ export function useComponentCleanup(): void {
 
     return () => {
       // Clean up all resources associated with this component
-      memoryManager.cleanupComponent(componentRef.current);
+  void memoryManager.cleanupComponent(componentRef.current);
     };
   }, []);
 }
@@ -465,7 +465,7 @@ export function useAsyncEffect(
         }
       } catch (error) {
         if (mountedRef.current) {
-          console.error('Async effect error:', error);
+  void console.error('Async effect error:', error);
         }
       }
     };
@@ -475,7 +475,7 @@ export function useAsyncEffect(
     return () => {
       mountedRef.current = false;
       if (cleanupRef.current) {
-        cleanupRef.current();
+  void cleanupRef.current();
         cleanupRef.current = null;
       }
     };
@@ -515,7 +515,7 @@ export function useCleanupManager(): {
       try {
         cleanupFn();
       } catch (error) {
-        console.error('Cleanup error:', error);
+  void console.error('Cleanup error:', error);
       }
     });
     cleanupCallbacks.current.clear();
@@ -616,7 +616,7 @@ export function useAbortableEffect(
         await effect(abortController.signal);
       } catch (error) {
         if (error.name !== 'AbortError') {
-          console.error('Abortable effect error:', error);
+  void console.error('Abortable effect error:', error);
         }
       }
     };
@@ -624,7 +624,7 @@ export function useAbortableEffect(
     runEffect();
 
     return () => {
-      abortController.abort();
+  void abortController.abort();
     };
   }, deps);
 }
@@ -722,15 +722,15 @@ export function useWebSocket(
         'websocket',
         () => {
           if (ws.readyState === WebSocket.OPEN) {
-            ws.close();
+  void ws.close();
           }
         },
         componentRef.current
       );
 
       return () => {
-        memoryManager.cleanup(cleanupId);
-        ws.close();
+  void memoryManager.cleanup(cleanupId);
+  void ws.close();
       };
     };
 
@@ -741,13 +741,13 @@ export function useWebSocket(
 
   const send = useCallback((data: string | ArrayBuffer | Blob) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(data);
+  void socket.send(data);
     }
   }, [socket]);
 
   const close = useCallback(() => {
     if (socket) {
-      socket.close();
+  void socket.close();
     }
   }, [socket]);
 
@@ -823,13 +823,13 @@ export function usePerformanceMonitoring(
   useEffect(() => {
     if (enabled) {
       mountTimeRef.current = performance.now();
-      console.log(`[Performance] ${componentName} mounted`);
+  void console.log(`[Performance] ${componentName} mounted`);
     }
 
     return () => {
       if (enabled) {
         const lifespan = performance.now() - mountTimeRef.current;
-        console.log(`[Performance] ${componentName} unmounted after ${lifespan.toFixed(2)}ms, ${renderCountRef.current} renders`);
+  void console.log(`[Performance] ${componentName} unmounted after ${lifespan.toFixed(2)}ms, ${renderCountRef.current} renders`);
       }
     };
   }, [componentName, enabled]);

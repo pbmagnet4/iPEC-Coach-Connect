@@ -291,7 +291,7 @@ export function ErrorMessagingDemo() {
               fieldType="email"
               showAllRules={showInlineDemo}
               onSuggestion={(suggestion) => {
-                console.log('Suggestion clicked:', suggestion);
+  void console.log('Suggestion clicked:', suggestion);
               }}
             />
             

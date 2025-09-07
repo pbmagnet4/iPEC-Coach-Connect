@@ -70,8 +70,8 @@ class CSRFProtection {
   ];
 
   constructor() {
-    this.loadTokensFromStorage();
-    this.setupCleanupInterval();
+  void his.loadTokensFromStorage();
+  void his.setupCleanupInterval();
   }
 
   /**
@@ -99,7 +99,7 @@ class CSRFProtection {
     };
 
     this.tokens.set(token, csrfToken);
-    this.saveTokensToStorage();
+  void his.saveTokensToStorage();
 
     logSecurity('CSRF token generated', 'low', {
       purpose,
@@ -131,7 +131,7 @@ class CSRFProtection {
     };
 
     this.formTokens.set(token, formToken);
-    this.saveFormTokensToStorage();
+  void his.saveFormTokensToStorage();
 
     logSecurity('CSRF form token generated', 'low', {
       formId,
@@ -168,7 +168,7 @@ class CSRFProtection {
     // Check if token has expired
     if (Date.now() > csrfToken.expiresAt) {
       this.tokens.delete(token);
-      this.saveTokensToStorage();
+  void his.saveTokensToStorage();
       
       logSecurity('CSRF token validation failed - token expired', 'medium', {
         purpose,
@@ -266,7 +266,7 @@ class CSRFProtection {
     // Check if token has expired
     if (Date.now() > formToken.expiresAt) {
       this.formTokens.delete(token);
-      this.saveFormTokensToStorage();
+  void his.saveFormTokensToStorage();
       
       logSecurity('CSRF form token validation failed - token expired', 'medium', {
         formId,
@@ -322,7 +322,7 @@ class CSRFProtection {
     if (validation.valid) {
       // Remove the token after successful validation (one-time use)
       this.tokens.delete(token);
-      this.saveTokensToStorage();
+  void his.saveTokensToStorage();
       
       logSecurity('CSRF token consumed', 'low', {
         purpose,
@@ -349,7 +349,7 @@ class CSRFProtection {
     if (validation.valid) {
       // Remove the token after successful validation (one-time use)
       this.formTokens.delete(token);
-      this.saveFormTokensToStorage();
+  void his.saveFormTokensToStorage();
       
       logSecurity('CSRF form token consumed', 'low', {
         formId,
@@ -488,7 +488,7 @@ class CSRFProtection {
    */
   private createSecureToken(): string {
     const array = new Uint8Array(32);
-    crypto.getRandomValues(array);
+  void crypto.getRandomValues(array);
     return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
   }
 
@@ -497,7 +497,7 @@ class CSRFProtection {
    */
   private createNonce(): string {
     const array = new Uint8Array(16);
-    crypto.getRandomValues(array);
+  void crypto.getRandomValues(array);
     return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
   }
 
@@ -506,7 +506,7 @@ class CSRFProtection {
    */
   private generateSessionId(): string {
     const array = new Uint8Array(16);
-    crypto.getRandomValues(array);
+  void crypto.getRandomValues(array);
     return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
   }
 
@@ -569,7 +569,7 @@ class CSRFProtection {
       }
       
       // Clean up expired tokens on load
-      this.cleanupExpiredTokens();
+  void his.cleanupExpiredTokens();
     } catch (error) {
       logSecurity('Failed to load CSRF tokens from storage', 'low', {
         error: error instanceof Error ? error.message : 'Unknown error'
@@ -589,14 +589,14 @@ class CSRFProtection {
       
       // Limit storage size
       if (tokenData.length > this.MAX_TOKENS) {
-        tokenData.sort((a, b) => b.data.timestamp - a.data.timestamp);
-        tokenData.splice(this.MAX_TOKENS);
+  void okenData.sort((a, b) => b.data.timestamp - a.data.timestamp);
+  void okenData.splice(this.MAX_TOKENS);
         
         // Update in-memory tokens
         this.tokens = new Map(tokenData.map(item => [item.token, item.data]));
       }
       
-      sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(tokenData));
+  void sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(tokenData));
     } catch (error) {
       logSecurity('Failed to save CSRF tokens to storage', 'low', {
         error: error instanceof Error ? error.message : 'Unknown error'
@@ -616,14 +616,14 @@ class CSRFProtection {
       
       // Limit storage size
       if (tokenData.length > this.MAX_FORM_TOKENS) {
-        tokenData.sort((a, b) => b.data.timestamp - a.data.timestamp);
-        tokenData.splice(this.MAX_FORM_TOKENS);
+  void okenData.sort((a, b) => b.data.timestamp - a.data.timestamp);
+  void okenData.splice(this.MAX_FORM_TOKENS);
         
         // Update in-memory tokens
         this.formTokens = new Map(tokenData.map(item => [item.token, item.data]));
       }
       
-      sessionStorage.setItem(this.FORM_STORAGE_KEY, JSON.stringify(tokenData));
+  void sessionStorage.setItem(this.FORM_STORAGE_KEY, JSON.stringify(tokenData));
     } catch (error) {
       logSecurity('Failed to save CSRF form tokens to storage', 'low', {
         error: error instanceof Error ? error.message : 'Unknown error'
@@ -656,11 +656,11 @@ class CSRFProtection {
     }
 
     if (cleanedCount > 0) {
-      this.saveTokensToStorage();
+  void his.saveTokensToStorage();
     }
 
     if (cleanedFormCount > 0) {
-      this.saveFormTokensToStorage();
+  void his.saveFormTokensToStorage();
     }
 
     if (cleanedCount > 0 || cleanedFormCount > 0) {
@@ -679,7 +679,7 @@ class CSRFProtection {
   private setupCleanupInterval(): void {
     // Clean up expired tokens every 5 minutes
     setInterval(() => {
-      this.cleanupExpiredTokens();
+  void his.cleanupExpiredTokens();
     }, 5 * 60 * 1000);
   }
 
@@ -689,8 +689,8 @@ class CSRFProtection {
   clearAllTokens(): void {
     this.tokens.clear();
     this.formTokens.clear();
-    sessionStorage.removeItem(this.STORAGE_KEY);
-    sessionStorage.removeItem(this.FORM_STORAGE_KEY);
+  void sessionStorage.removeItem(this.STORAGE_KEY);
+  void sessionStorage.removeItem(this.FORM_STORAGE_KEY);
     
     logSecurity('All CSRF tokens cleared', 'low', {
       clearedTokens: true,

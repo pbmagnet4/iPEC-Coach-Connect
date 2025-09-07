@@ -60,7 +60,7 @@ export function useMessaging(options: UseMessagingOptions = {}) {
         setUnreadCounts(unreadCountsMap);
       }
     } catch (error) {
-      console.error('Failed to load conversations:', error);
+  void console.error('Failed to load conversations:', error);
     } finally {
       setIsLoadingConversations(false);
     }
@@ -101,7 +101,7 @@ export function useMessaging(options: UseMessagingOptions = {}) {
         }));
       }
     } catch (error) {
-      console.error(`Failed to load messages for conversation ${conversationId}:`, error);
+  void console.error(`Failed to load messages for conversation ${conversationId}:`, error);
     } finally {
       setIsLoadingMessages(prev => ({ ...prev, [conversationId]: false }));
     }
@@ -136,7 +136,7 @@ export function useMessaging(options: UseMessagingOptions = {}) {
           }
         };
         
-        filePromises.push(sendFileMessage());
+  void filePromises.push(sendFileMessage());
       }
 
       // Send text message if content exists
@@ -160,7 +160,7 @@ export function useMessaging(options: UseMessagingOptions = {}) {
       await Promise.all(filePromises);
 
     } catch (error) {
-      console.error('Failed to send message:', error);
+  void console.error('Failed to send message:', error);
       throw error;
     }
   }, [currentUser]);
@@ -182,7 +182,7 @@ export function useMessaging(options: UseMessagingOptions = {}) {
         return result.data.conversationId;
       }
     } catch (error) {
-      console.error('Failed to start conversation:', error);
+  void console.error('Failed to start conversation:', error);
       throw error;
     }
 
@@ -196,7 +196,7 @@ export function useMessaging(options: UseMessagingOptions = {}) {
     try {
       await messagingService.sendTypingIndicator(conversationId, true);
     } catch (error) {
-      console.error('Failed to send typing indicator:', error);
+  void console.error('Failed to send typing indicator:', error);
     }
   }, [currentUser]);
 
@@ -206,7 +206,7 @@ export function useMessaging(options: UseMessagingOptions = {}) {
     try {
       await messagingService.sendTypingIndicator(conversationId, false);
     } catch (error) {
-      console.error('Failed to stop typing indicator:', error);
+  void console.error('Failed to stop typing indicator:', error);
     }
   }, [currentUser]);
 
@@ -232,7 +232,7 @@ export function useMessaging(options: UseMessagingOptions = {}) {
         )
       );
     } catch (error) {
-      console.error('Failed to mark conversation as read:', error);
+  void console.error('Failed to mark conversation as read:', error);
     }
   }, [currentUser]);
 
@@ -358,10 +358,10 @@ export function useMessaging(options: UseMessagingOptions = {}) {
 
     // Cleanup function
     return () => {
-      Object.values(subscriptionsRef.current).forEach(unsubscribe => unsubscribe());
+  void Object.values(subscriptionsRef.current).forEach(unsubscribe => unsubscribe());
       subscriptionsRef.current = {};
       
-      Object.values(typingTimeoutsRef.current).forEach(timeout => clearTimeout(timeout));
+  void Object.values(typingTimeoutsRef.current).forEach(timeout => clearTimeout(timeout));
       typingTimeoutsRef.current = {};
     };
   }, [conversations, currentUser, enableRealtime]);

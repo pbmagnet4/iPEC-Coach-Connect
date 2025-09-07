@@ -22,8 +22,8 @@ export const FormSkeleton: React.FC<FormSkeletonProps> = ({
   className = '',
   'data-testid': testId
 }) => {
-  const renderFormField = (index: number, fieldType?: 'input' | 'textarea' | 'select' | 'checkbox') => {
-    const type = fieldType || (index % 4 === 0 ? 'textarea' : index % 6 === 0 ? 'select' : 'input');
+  const _renderFormField = (index: number, fieldType?: 'input' | 'textarea' | 'select' | 'checkbox') => {
+    const _type = fieldType || (index % 4 === 0 ? 'textarea' : index % 6 === 0 ? 'select' : 'input');
     
     return (
       <div key={`form-field-${index}`} className="space-y-2">
@@ -156,7 +156,7 @@ export const FormSkeleton: React.FC<FormSkeletonProps> = ({
               {/* Section fields */}
               <div className="space-y-4">
                 {Array.from({ length: 3 }, (_, fieldIndex) => {
-                  const globalIndex = sectionIndex * 3 + fieldIndex;
+                  const _globalIndex = sectionIndex * 3 + fieldIndex;
                   return globalIndex < fieldCount ? renderFormField(globalIndex) : null;
                 })}
               </div>

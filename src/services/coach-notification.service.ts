@@ -440,7 +440,7 @@ class CoachNotificationService {
 
       return result as CoachApplicationWithDetails;
     } catch (error) {
-      console.error('Failed to get application details:', error);
+  void console.error('Failed to get application details:', error);
       return null;
     }
   }

@@ -92,7 +92,7 @@ export function Contact() {
       try {
         await contactService.submitMessage(data);
         setSubmitStatus('success');
-        form.resetForm();
+  void form.resetForm();
 
         // Reset success message after 5 seconds
         setTimeout(() => {

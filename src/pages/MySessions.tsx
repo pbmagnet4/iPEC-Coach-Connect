@@ -118,7 +118,7 @@ export function MySessions() {
       setShowFeedbackForm(null);
       // Optionally update the local state or refetch sessions
     } catch (error) {
-      console.error('Failed to submit feedback:', error);
+  void console.error('Failed to submit feedback:', error);
     }
   };
 

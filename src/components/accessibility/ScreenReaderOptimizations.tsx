@@ -23,7 +23,7 @@ export function AccessibleHeading({
 
   useEffect(() => {
     if (announce && typeof children === 'string') {
-      liveRegions.announcePolite(`Heading level ${level}: ${children}`);
+  void liveRegions.announcePolite(`Heading level ${level}: ${children}`);
     }
   }, [announce, children, level, liveRegions]);
 
@@ -62,7 +62,7 @@ export function AccessibleList({
 
   useEffect(() => {
     if (announce) {
-      liveRegions.announcePolite(`List with ${items.length} items`);
+  void liveRegions.announcePolite(`List with ${items.length} items`);
     }
   }, [announce, items.length, liveRegions]);
 
@@ -150,7 +150,7 @@ export function AccessibleTable({
               onClick={() => handleSort(index)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
+  void e.preventDefault();
                   handleSort(index);
                 }
               }}
@@ -280,7 +280,7 @@ export function AccessibleProgress({
 
   useEffect(() => {
     if (announce && percentage !== previousPercentage.current) {
-      liveRegions.announcePolite(`${label}: ${percentage}% complete`);
+  void liveRegions.announcePolite(`${label}: ${percentage}% complete`);
       previousPercentage.current = percentage;
     }
   }, [announce, percentage, label, liveRegions]);
@@ -507,7 +507,7 @@ export function AccessibleTabs({
     if (tab && !tab.disabled) {
       setActiveTab(tabId);
       onChange?.(tabId);
-      liveRegions.announcePolite(`Selected tab: ${tab.label}`);
+  void liveRegions.announcePolite(`Selected tab: ${tab.label}`);
     }
   };
 
@@ -532,7 +532,7 @@ export function AccessibleTabs({
         return;
     }
 
-    e.preventDefault();
+  void e.preventDefault();
     const nextTab = items[nextIndex];
     if (nextTab && !nextTab.disabled) {
       handleTabChange(nextTab.id);

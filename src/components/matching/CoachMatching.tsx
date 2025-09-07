@@ -186,7 +186,7 @@ interface MatchingPreferences {
 // COACH MATCHING HOOKS
 // =====================================================================
 
-const useCoachMatching = () => {
+const _useCoachMatching = () => {
   const { user } = useAuth();
   const { clientProfile } = useClientProfile();
   
@@ -195,7 +195,7 @@ const useCoachMatching = () => {
   const [error, setError] = useState<string | null>(null);
   const [favoriteCoaches, setFavoriteCoaches] = useState<string[]>([]);
 
-  const fetchCoaches = async (filters?: MatchingFilters) => {
+  const _fetchCoaches = async (filters?: MatchingFilters) => {
     setIsLoading(true);
     setError(null);
     
@@ -449,7 +449,7 @@ const useCoachMatching = () => {
       }
       
       if (filters?.search_query) {
-        const searchLower = filters.search_query.toLowerCase();
+        const _searchLower = filters.search_query.toLowerCase();
         filteredCoaches = filteredCoaches.filter(coach =>
           coach.name.toLowerCase().includes(searchLower) ||
           coach.bio.toLowerCase().includes(searchLower) ||
@@ -459,7 +459,7 @@ const useCoachMatching = () => {
       }
 
       // Sort by match score
-      filteredCoaches.sort((a, b) => (b.match_score || 0) - (a.match_score || 0));
+  void filteredCoaches.sort((a, b) => (b.match_score || 0) - (a.match_score || 0));
 
       setCoaches(filteredCoaches);
     } catch (err) {
@@ -469,7 +469,7 @@ const useCoachMatching = () => {
     }
   };
 
-  const toggleFavorite = async (coachId: string) => {
+  const _toggleFavorite = async (coachId: string) => {
     try {
       setFavoriteCoaches(prev => 
         prev.includes(coachId)
@@ -477,14 +477,14 @@ const useCoachMatching = () => {
           : [...prev, coachId]
       );
       
-      const isFavorite = !favoriteCoaches.includes(coachId);
-      toast.success(isFavorite ? 'Coach added to favorites!' : 'Coach removed from favorites');
+      const _isFavorite = !favoriteCoaches.includes(coachId);
+  void oast.success(isFavorite ? 'Coach added to favorites!' : 'Coach removed from favorites');
     } catch (err) {
-      toast.error('Failed to update favorites');
+  void oast.error('Failed to update favorites');
     }
   };
 
-  const getCoachReviews = async (coachId: string): Promise<CoachReview[]> => {
+  const _getCoachReviews = async (coachId: string): Promise<CoachReview[]> => {
     // This would fetch from Supabase
     // Mock reviews for now
     return [
@@ -535,14 +535,14 @@ const CoachCard: React.FC<{
 }> = ({ coach, isFavorite, onToggleFavorite, onViewProfile, onBookSession, viewMode }) => {
   const [showFullBio, setShowFullBio] = useState(false);
 
-  const formatPrice = (price: number) => {
+  const _formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: coach.pricing.currency
     }).format(price);
   };
 
-  const getAvailabilityText = () => {
+  const _getAvailabilityText = () => {
     const {days} = coach.availability;
     if (days.length === 7) return 'Available 7 days/week';
     if (days.length === 5 && !days.includes('Saturday') && !days.includes('Sunday')) {
@@ -551,7 +551,7 @@ const CoachCard: React.FC<{
     return `Available ${days.length} days/week`;
   };
 
-  const displayBio = showFullBio ? coach.bio : 
+  const _displayBio = showFullBio ? coach.bio : 
     coach.bio.length > 150 ? `${coach.bio.substring(0, 150)}...` : coach.bio;
 
   if (viewMode === 'list') {
@@ -825,7 +825,7 @@ const CoachProfileModal: React.FC<{
 
   if (!coach) return null;
 
-  const formatPrice = (price: number) => {
+  const _formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: coach.pricing.currency
@@ -1072,8 +1072,8 @@ const CoachProfileModal: React.FC<{
               <h4 className="font-medium text-gray-900 mb-3">Availability</h4>
               <div className="grid grid-cols-7 gap-2 mb-4">
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => {
-                  const fullDay = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][index];
-                  const isAvailable = coach.availability.days.includes(fullDay);
+                  const _fullDay = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][index];
+                  const _isAvailable = coach.availability.days.includes(fullDay);
                   
                   return (
                     <div
@@ -1132,7 +1132,7 @@ const FiltersSidebar: React.FC<{
 }> = ({ filters, onFiltersChange, onClearFilters }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const specializations = [
+  const _specializations = [
     'Executive Leadership',
     'Career Transition',
     'Work-Life Balance',
@@ -1143,7 +1143,7 @@ const FiltersSidebar: React.FC<{
     'Goal Achievement'
   ];
 
-  const coachingApproaches = [
+  const _coachingApproaches = [
     'Solution-focused',
     'Goal-oriented',
     'Mindful',
@@ -1152,7 +1152,7 @@ const FiltersSidebar: React.FC<{
     'Strength-based'
   ];
 
-  const updateFilter = <K extends keyof MatchingFilters>(key: K, value: MatchingFilters[K]) => {
+  const _updateFilter = <K extends keyof MatchingFilters>(key: K, value: MatchingFilters[K]) => {
     onFiltersChange({ ...filters, [key]: value });
   };
 
@@ -1238,7 +1238,7 @@ const FiltersSidebar: React.FC<{
                 key={spec}
                 checked={filters.specializations?.includes(spec) || false}
                 onChange={(checked) => {
-                  const current = filters.specializations || [];
+                  const _current = filters.specializations || [];
                   updateFilter('specializations', 
                     checked 
                       ? [...current, spec]
@@ -1262,7 +1262,7 @@ const FiltersSidebar: React.FC<{
                 key={approach}
                 checked={filters.coaching_approach?.includes(approach) || false}
                 onChange={(checked) => {
-                  const current = filters.coaching_approach || [];
+                  const _current = filters.coaching_approach || [];
                   updateFilter('coaching_approach', 
                     checked 
                       ? [...current, approach]
@@ -1327,8 +1327,8 @@ export const CoachMatching: React.FC = () => {
   const [selectedCoach, setSelectedCoach] = useState<CoachProfile | null>(null);
 
   // Filter and sort coaches
-  const filteredAndSortedCoaches = useMemo(() => {
-    const result = [...coaches];
+  const _filteredAndSortedCoaches = useMemo(() => {
+    const _result = [...coaches];
 
     // Apply sorting
     result.sort((a, b) => {
@@ -1349,24 +1349,24 @@ export const CoachMatching: React.FC = () => {
     return result;
   }, [coaches, sortBy]);
 
-  const handleFiltersChange = (newFilters: MatchingFilters) => {
+  const _handleFiltersChange = (newFilters: MatchingFilters) => {
     setFilters(newFilters);
     fetchCoaches(newFilters);
   };
 
-  const handleClearFilters = () => {
+  const _handleClearFilters = () => {
     const clearedFilters: MatchingFilters = { accepting_clients_only: true };
     setFilters(clearedFilters);
     fetchCoaches(clearedFilters);
   };
 
-  const handleBookSession = (coach: CoachProfile) => {
+  const _handleBookSession = (coach: CoachProfile) => {
     // This would navigate to session booking with pre-selected coach
-    toast.success(`Booking session with ${coach.name}...`);
+  void oast.success(`Booking session with ${coach.name}...`);
   };
 
-  const handleSearch = (searchQuery: string) => {
-    const newFilters = { ...filters, search_query: searchQuery };
+  const _handleSearch = (searchQuery: string) => {
+    const _newFilters = { ...filters, search_query: searchQuery };
     setFilters(newFilters);
     fetchCoaches(newFilters);
   };

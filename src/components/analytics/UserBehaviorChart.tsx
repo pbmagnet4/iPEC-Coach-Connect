@@ -114,7 +114,7 @@ export function UserBehaviorChart({ data, timeRange }: UserBehaviorChartProps) {
 
     for (let i = intervalCount - 1; i >= 0; i--) {
       const time = new Date(now.getTime() - (i * intervalSize));
-      intervals.push(formatTimeLabel(time, range));
+  void intervals.push(formatTimeLabel(time, range));
     }
 
     return intervals;

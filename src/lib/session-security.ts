@@ -116,7 +116,7 @@ class SessionSecurityManager {
       cleanupInterval: config.cleanupInterval || 60, // 1 hour
     };
 
-    this.initializeSecuritySystem();
+  void his.initializeSecuritySystem();
   }
 
   /**
@@ -133,11 +133,11 @@ class SessionSecurityManager {
       await this.loadExistingSessions();
 
       // Setup cleanup interval
-      this.setupCleanupInterval();
+  void his.setupCleanupInterval();
 
       // Configure security headers
       if (this.config.securityHeaders) {
-        this.configureSecurityHeaders();
+  void his.configureSecurityHeaders();
       }
 
       logSecurity('Session security system initialized', 'low', {
@@ -386,7 +386,7 @@ class SessionSecurityManager {
       // Remove from user sessions
       const userSessions = this.userSessions.get(session.userId);
       if (userSessions) {
-        userSessions.delete(sessionId);
+  void userSessions.delete(sessionId);
         if (userSessions.size === 0) {
           this.userSessions.delete(session.userId);
         }
@@ -574,11 +574,11 @@ class SessionSecurityManager {
       // Draw some text and shapes
       ctx.textBaseline = 'top';
       ctx.font = '14px Arial';
-      ctx.fillText('iPEC Coach Connect Security', 2, 2);
+  void ctx.fillText('iPEC Coach Connect Security', 2, 2);
       
       // Draw a colored rectangle
       ctx.fillStyle = 'rgba(255,0,0,0.5)';
-      ctx.fillRect(10, 10, 100, 50);
+  void ctx.fillRect(10, 10, 100, 50);
       
       return canvas.toDataURL();
     } catch {
@@ -657,10 +657,10 @@ class SessionSecurityManager {
       for (const sessionId of userSessions) {
         const session = await this.getSession(sessionId);
         if (session && session.isActive && Date.now() < session.expiresAt) {
-          activeSessions.push({ sessionId, lastActivity: session.lastActivity });
+  void activeSessions.push({ sessionId, lastActivity: session.lastActivity });
         } else {
           // Remove expired/invalid sessions
-          userSessions.delete(sessionId);
+  void userSessions.delete(sessionId);
           await this.removeSession(sessionId);
         }
       }
@@ -727,7 +727,7 @@ class SessionSecurityManager {
     try {
       if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
         const array = new Uint8Array(32);
-        crypto.getRandomValues(array);
+  void crypto.getRandomValues(array);
         return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
       }
       
@@ -837,8 +837,8 @@ class SessionSecurityManager {
         );
         
         const combined = new Uint8Array(iv.length + encrypted.byteLength);
-        combined.set(iv);
-        combined.set(new Uint8Array(encrypted), iv.length);
+  void combined.set(iv);
+  void combined.set(new Uint8Array(encrypted), iv.length);
         
         return btoa(String.fromCharCode.apply(null, Array.from(combined)));
       }
@@ -893,7 +893,7 @@ class SessionSecurityManager {
       const serialized = JSON.stringify(session);
       const encrypted = await this.encryptData(serialized);
       
-      localStorage.setItem(`ipec_session_${session.sessionId}`, encrypted);
+  void localStorage.setItem(`ipec_session_${session.sessionId}`, encrypted);
       this.sessions.set(session.sessionId, session);
     } catch (error) {
       logSecurity('Failed to store session', 'high', {
@@ -956,7 +956,7 @@ class SessionSecurityManager {
    */
   private async removeSession(sessionId: string): Promise<void> {
     try {
-      localStorage.removeItem(`ipec_session_${sessionId}`);
+  void localStorage.removeItem(`ipec_session_${sessionId}`);
       this.sessions.delete(sessionId);
     } catch (error) {
       logSecurity('Failed to remove session', 'medium', {
@@ -1037,7 +1037,7 @@ class SessionSecurityManager {
    */
   private setupCleanupInterval(): void {
     this.cleanupInterval = setInterval(() => {
-      this.cleanupExpiredSessions();
+  void his.cleanupExpiredSessions();
     }, this.config.cleanupInterval * 60 * 1000);
   }
 
@@ -1051,7 +1051,7 @@ class SessionSecurityManager {
 
       for (const [sessionId, session] of this.sessions) {
         if (!session.isActive || now > session.expiresAt) {
-          sessionsToCleanup.push(sessionId);
+  void sessionsToCleanup.push(sessionId);
         }
       }
 

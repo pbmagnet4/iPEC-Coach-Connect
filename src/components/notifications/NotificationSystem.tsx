@@ -478,7 +478,7 @@ const useNotifications = () => {
           : n
       ));
     } catch (err) {
-      toast.error('Failed to mark notifications as read');
+  void oast.error('Failed to mark notifications as read');
     }
   };
 
@@ -486,9 +486,9 @@ const useNotifications = () => {
     try {
       const unreadIds = notifications.filter(n => !n.is_read).map(n => n.id);
       await markAsRead(unreadIds);
-      toast.success('All notifications marked as read');
+  void oast.success('All notifications marked as read');
     } catch (err) {
-      toast.error('Failed to mark all as read');
+  void oast.error('Failed to mark all as read');
     }
   };
 
@@ -499,27 +499,27 @@ const useNotifications = () => {
           ? { ...n, is_archived: true }
           : n
       ));
-      toast.success(`${notificationIds.length} notification(s) archived`);
+  void oast.success(`${notificationIds.length} notification(s) archived`);
     } catch (err) {
-      toast.error('Failed to archive notifications');
+  void oast.error('Failed to archive notifications');
     }
   };
 
   const deleteNotifications = async (notificationIds: string[]) => {
     try {
       setNotifications(prev => prev.filter(n => !notificationIds.includes(n.id)));
-      toast.success(`${notificationIds.length} notification(s) deleted`);
+  void oast.success(`${notificationIds.length} notification(s) deleted`);
     } catch (err) {
-      toast.error('Failed to delete notifications');
+  void oast.error('Failed to delete notifications');
     }
   };
 
   const updatePreferences = async (newPreferences: NotificationPreferences) => {
     try {
       setPreferences(newPreferences);
-      toast.success('Notification preferences updated');
+  void oast.success('Notification preferences updated');
     } catch (err) {
-      toast.error('Failed to update preferences');
+  void oast.error('Failed to update preferences');
     }
   };
 
@@ -1082,7 +1082,7 @@ export const NotificationCenter: React.FC<{
     const groups: Record<string, Notification[]> = {};
     const today = new Date();
     const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
+  void yesterday.setDate(yesterday.getDate() - 1);
 
     filtered.forEach(notification => {
       const date = new Date(notification.created_at);
@@ -1114,7 +1114,7 @@ export const NotificationCenter: React.FC<{
       onClose();
     } else if (action.action_type === 'api_call') {
       // Handle API call
-      console.log('API call:', action.action_data);
+  void console.log('API call:', action.action_data);
     }
   };
 

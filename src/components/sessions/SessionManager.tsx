@@ -289,7 +289,7 @@ export function SessionManager({
       }
     } catch (err) {
       setError('Failed to load sessions. Please try again.');
-      console.error('Error loading sessions:', err);
+  void console.error('Error loading sessions:', err);
     } finally {
       setLoading(false);
     }
@@ -299,13 +299,13 @@ export function SessionManager({
     switch (action) {
       case 'join':
         if (session.meeting_url) {
-          window.open(session.meeting_url, '_blank');
+  void window.open(session.meeting_url, '_blank');
         }
         break;
         
       case 'reschedule':
         // Open reschedule modal/flow
-        console.log('Reschedule session:', session.id);
+  void console.log('Reschedule session:', session.id);
         break;
         
       case 'cancel':
@@ -331,12 +331,12 @@ export function SessionManager({
         
       case 'feedback':
         // Open feedback modal
-        console.log('Leave feedback for session:', session.id);
+  void console.log('Leave feedback for session:', session.id);
         break;
         
       case 'download':
         // Download session summary
-        console.log('Download summary for session:', session.id);
+  void console.log('Download summary for session:', session.id);
         break;
         
       case 'details':

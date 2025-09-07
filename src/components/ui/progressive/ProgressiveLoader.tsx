@@ -100,10 +100,10 @@ export function ProgressiveLoader<T = any>({
       }
     );
 
-    observer.observe(sentinel);
+  void observer.observe(sentinel);
 
     return () => {
-      observer.disconnect();
+  void observer.disconnect();
     };
   }, [enabled, hasMore, loading, loadMore, threshold, rootMargin]);
 

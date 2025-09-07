@@ -225,8 +225,8 @@ const useDashboardData = () => {
         }
         
       } catch (error) {
-        console.error('Failed to fetch dashboard data:', error);
-        toast.error('Failed to load dashboard data');
+  void console.error('Failed to fetch dashboard data:', error);
+  void oast.error('Failed to load dashboard data');
         
         // Set empty arrays on error to show empty states
         setUpcomingSessions([]);

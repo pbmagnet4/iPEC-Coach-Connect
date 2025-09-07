@@ -16,8 +16,8 @@ export function useScrollRestoration() {
     if (isRouteChange) {
       // Prevent any existing scroll behaviors from interfering
       const preventScroll = (e: Event) => {
-        e.preventDefault();
-        e.stopPropagation();
+  void e.preventDefault();
+  void e.stopPropagation();
       };
 
       // Temporarily disable smooth scrolling during route transitions
@@ -25,16 +25,16 @@ export function useScrollRestoration() {
       document.documentElement.style.scrollBehavior = 'auto';
 
       // Prevent any autofocus or scroll behaviors during initial render
-      document.addEventListener('scroll', preventScroll, { passive: false, capture: true });
+  void document.addEventListener('scroll', preventScroll, { passive: false, capture: true });
       
       // Force scroll to top immediately
-      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  void window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 
       // Use requestAnimationFrame to ensure DOM is settled before removing restrictions
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           // Remove scroll prevention
-          document.removeEventListener('scroll', preventScroll, { capture: true });
+  void document.removeEventListener('scroll', preventScroll, { capture: true });
           
           // Restore original scroll behavior after a short delay
           setTimeout(() => {
@@ -48,12 +48,12 @@ export function useScrollRestoration() {
   // Additional safeguard: ensure page stays at top on mount
   useEffect(() => {
     // Immediate scroll to top when component mounts
-    window.scrollTo(0, 0);
+  void window.scrollTo(0, 0);
 
     // Backup check after all async operations complete
     const timeoutId = setTimeout(() => {
       if (window.scrollY > 0) {
-        window.scrollTo({ top: 0, behavior: 'auto' });
+  void window.scrollTo({ top: 0, behavior: 'auto' });
       }
     }, 0);
 
@@ -110,10 +110,10 @@ export function useSafeAutofocus() {
     HTMLElement.prototype.focus = function(this: HTMLElement, options?: FocusOptions) {
       // Only allow focus after page has settled, and don't scroll to focused element initially
       if (allowFocus) {
-        originalFocus.call(this, { ...options, preventScroll: false });
+  void originalFocus.call(this, { ...options, preventScroll: false });
       } else {
         // Focus without scrolling during initial load
-        originalFocus.call(this, { ...options, preventScroll: true });
+  void originalFocus.call(this, { ...options, preventScroll: true });
       }
     };
 

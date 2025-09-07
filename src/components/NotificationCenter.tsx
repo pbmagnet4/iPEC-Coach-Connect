@@ -36,7 +36,7 @@ export function NotificationCenter({ className }: NotificationCenterProps) {
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+  void document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
@@ -141,7 +141,7 @@ export function NotificationCenter({ className }: NotificationCenterProps) {
                         </div>
                         <button
                           onClick={(e) => {
-                            e.stopPropagation();
+  void e.stopPropagation();
                             removeNotification(notification.id);
                           }}
                           className="text-gray-400 hover:text-gray-600"

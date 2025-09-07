@@ -32,7 +32,7 @@ export function Hero() {
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+  void document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
@@ -62,7 +62,7 @@ export function Hero() {
           setIsLoadingLocation(false);
         },
         (error) => {
-          console.error('Error getting location:', error);
+  void console.error('Error getting location:', error);
           setIsLoadingLocation(false);
         }
       );
@@ -81,21 +81,21 @@ export function Hero() {
 
     switch (e.key) {
       case 'ArrowDown':
-        e.preventDefault();
+  void e.preventDefault();
         setSelectedIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : 0));
         break;
       case 'ArrowUp':
-        e.preventDefault();
+  void e.preventDefault();
         setSelectedIndex(prev => (prev > 0 ? prev - 1 : suggestions.length - 1));
         break;
       case 'Enter':
-        e.preventDefault();
+  void e.preventDefault();
         if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
           handleSuggestionClick(suggestions[selectedIndex]);
         }
         break;
       case 'Escape':
-        e.preventDefault();
+  void e.preventDefault();
         setShowSuggestions(false);
         setSelectedIndex(-1);
         break;
@@ -103,9 +103,9 @@ export function Hero() {
   };
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  void e.preventDefault();
     // Implement search functionality
-    console.log('Searching for:', { location, specialty });
+  void console.log('Searching for:', { location, specialty });
   };
 
   return (

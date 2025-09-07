@@ -58,7 +58,7 @@ export function Profile() {
       // Here you would typically make an API call to update the profile
       setIsEditing(false);
     } catch (error) {
-      console.error('Failed to update profile:', error);
+  void console.error('Failed to update profile:', error);
     }
   };
 

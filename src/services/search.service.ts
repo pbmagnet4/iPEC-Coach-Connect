@@ -209,7 +209,7 @@ class SearchService {
       return result;
 
     } catch (error) {
-      console.error('Coach search error:', error);
+  void console.error('Coach search error:', error);
       throw error;
     }
   }
@@ -239,7 +239,7 @@ class SearchService {
       searches.forEach((searchResult, index) => {
         const contentType = ['coach', 'course', 'resource'][index];
         searchResult.items.forEach(item => {
-          allItems.push(this.transformToSearchableContent(item, contentType));
+  void allItems.push(this.transformToSearchableContent(item, contentType));
         });
       });
 
@@ -268,7 +268,7 @@ class SearchService {
       return result;
 
     } catch (error) {
-      console.error('Universal search error:', error);
+  void console.error('Universal search error:', error);
       throw error;
     }
   }
@@ -324,7 +324,7 @@ class SearchService {
       };
 
     } catch (error) {
-      console.error('Course search error:', error);
+  void console.error('Course search error:', error);
       throw error;
     }
   }
@@ -379,7 +379,7 @@ class SearchService {
       };
 
     } catch (error) {
-      console.error('Resource search error:', error);
+  void console.error('Resource search error:', error);
       throw error;
     }
   }
@@ -401,12 +401,12 @@ class SearchService {
       // Query suggestions
       if (query.length >= 2) {
         const queryTerms = await this.getQuerySuggestions(query, type);
-        suggestions.push(...queryTerms);
+  void suggestions.push(...queryTerms);
       }
 
       // Category suggestions
       const categories = await this.getCategorySuggestions(type);
-      suggestions.push(...categories);
+  void suggestions.push(...categories);
 
       // Cache suggestions
       await cacheService.set(cacheKey, suggestions, this.CACHE_TTL);
@@ -414,7 +414,7 @@ class SearchService {
       return suggestions;
 
     } catch (error) {
-      console.error('Suggestion generation error:', error);
+  void console.error('Suggestion generation error:', error);
       return [];
     }
   }
@@ -475,7 +475,7 @@ class SearchService {
       return options;
 
     } catch (error) {
-      console.error('Filter options error:', error);
+  void console.error('Filter options error:', error);
       return {};
     }
   }
@@ -495,7 +495,7 @@ class SearchService {
           timestamp: new Date().toISOString()
         });
     } catch (error) {
-      console.error('Save search error:', error);
+  void console.error('Save search error:', error);
       // Don't throw - this is analytics only
     }
   }

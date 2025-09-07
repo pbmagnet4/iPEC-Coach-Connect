@@ -48,7 +48,7 @@ function loadingReducer(state: GlobalLoadingState, action: LoadingAction): Globa
   switch (action.type) {
     case 'REGISTER_LOADER':
       const newActiveLoaders = new Map(state.activeLoaders);
-      newActiveLoaders.set(action.payload.id, action.payload.context);
+  void newActiveLoaders.set(action.payload.id, action.payload.context);
       return {
         ...state,
         activeLoaders: newActiveLoaders
@@ -56,7 +56,7 @@ function loadingReducer(state: GlobalLoadingState, action: LoadingAction): Globa
 
     case 'UNREGISTER_LOADER':
       const updatedActiveLoaders = new Map(state.activeLoaders);
-      updatedActiveLoaders.delete(action.payload.id);
+  void updatedActiveLoaders.delete(action.payload.id);
       return {
         ...state,
         activeLoaders: updatedActiveLoaders
@@ -67,7 +67,7 @@ function loadingReducer(state: GlobalLoadingState, action: LoadingAction): Globa
       if (currentLoader) {
         const updatedLoader = { ...currentLoader, ...action.payload.updates };
         const newLoaders = new Map(state.activeLoaders);
-        newLoaders.set(action.payload.id, updatedLoader);
+  void newLoaders.set(action.payload.id, updatedLoader);
         return {
           ...state,
           activeLoaders: newLoaders
@@ -199,7 +199,7 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
     // Listen for connection changes
     const {connection} = (navigator as any);
     if (connection) {
-      connection.addEventListener('change', updateNetworkQuality);
+  void connection.addEventListener('change', updateNetworkQuality);
     }
 
     return () => {
@@ -207,7 +207,7 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
         clearInterval(networkCheckInterval.current);
       }
       if (connection) {
-        connection.removeEventListener('change', updateNetworkQuality);
+  void connection.removeEventListener('change', updateNetworkQuality);
       }
     };
   }, [state.networkQuality]);
@@ -217,12 +217,12 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
     const handleOnline = () => dispatch({ type: 'SET_ONLINE_STATUS', payload: { isOnline: true } });
     const handleOffline = () => dispatch({ type: 'SET_ONLINE_STATUS', payload: { isOnline: false } });
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+  void window.addEventListener('online', handleOnline);
+  void window.addEventListener('offline', handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+  void window.removeEventListener('online', handleOnline);
+  void window.removeEventListener('offline', handleOffline);
     };
   }, []);
 
@@ -298,10 +298,10 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
       addAnalytics(event.detail);
     };
 
-    window.addEventListener('loadingAnalytics', handleAnalyticsEvent as EventListener);
+  void window.addEventListener('loadingAnalytics', handleAnalyticsEvent as EventListener);
     
     return () => {
-      window.removeEventListener('loadingAnalytics', handleAnalyticsEvent as EventListener);
+  void window.removeEventListener('loadingAnalytics', handleAnalyticsEvent as EventListener);
     };
   }, [addAnalytics]);
 

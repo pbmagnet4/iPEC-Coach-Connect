@@ -103,7 +103,7 @@ class SessionSecurityMiddleware {
 
       if (timeUntilExpiry < warningThreshold) {
         warningMessage = `Session expires in ${Math.ceil(timeUntilExpiry / 60000)} minutes`;
-        this.trackSessionWarning(secureSession.sessionId, timeUntilExpiry);
+  void his.trackSessionWarning(secureSession.sessionId, timeUntilExpiry);
       }
 
       // Handle auto-refresh
@@ -126,7 +126,7 @@ class SessionSecurityMiddleware {
 
       // Track activity
       if (this.config.activityTracking) {
-        this.trackSessionActivity(secureSession.sessionId, context);
+  void his.trackSessionActivity(secureSession.sessionId, context);
       }
 
       return {
@@ -268,7 +268,7 @@ class SessionSecurityMiddleware {
       this.sessionWarnings.set(sessionId, now);
       
       // Emit warning event (could be used by UI components)
-      this.emitSessionWarning(sessionId, timeUntilExpiry);
+  void his.emitSessionWarning(sessionId, timeUntilExpiry);
     }
   }
 
@@ -301,7 +301,7 @@ class SessionSecurityMiddleware {
         }
       });
       
-      window.dispatchEvent(event);
+  void window.dispatchEvent(event);
     } catch (error) {
       // Ignore errors in event emission
     }
@@ -385,7 +385,7 @@ class SessionSecurityMiddleware {
       
       // Track successful API call
       if (this.config.activityTracking) {
-        this.trackSessionActivity(context.sessionId || '', context);
+  void his.trackSessionActivity(context.sessionId || '', context);
       }
       
       return result;

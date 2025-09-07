@@ -12,7 +12,7 @@ import { AuthPrompt, CommunityAuthPrompt, QuickAuthPrompt } from '../AuthPrompt'
 import { useUnifiedUserStore } from '../../../stores/unified-user-store';
 
 // Mock the unified user store
-jest.mock('../../../stores/unified-user-store');
+  void jest.mock('../../../stores/unified-user-store');
 const mockUseUnifiedUserStore = useUnifiedUserStore as jest.MockedFunction<typeof useUnifiedUserStore>;
 
 // Mock navigation
@@ -33,7 +33,7 @@ const renderWithRouter = (component: React.ReactElement) => {
 
 describe('AuthPrompt Component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+  void jest.clearAllMocks();
   });
 
   describe('when user is not authenticated', () => {
@@ -75,7 +75,7 @@ describe('AuthPrompt Component', () => {
         <AuthPrompt action="participate" context="in this discussion" />
       );
 
-      fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
+  void fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
 
       expect(mockNavigate).toHaveBeenCalledWith('/login', {
         state: {
@@ -91,7 +91,7 @@ describe('AuthPrompt Component', () => {
         <AuthPrompt action="create" />
       );
 
-      fireEvent.click(screen.getByRole('button', { name: /sign up/i }));
+  void fireEvent.click(screen.getByRole('button', { name: /sign up/i }));
 
       expect(mockNavigate).toHaveBeenCalledWith('/register', {
         state: {
@@ -109,7 +109,7 @@ describe('AuthPrompt Component', () => {
         <AuthPrompt action="participate" onAuthStart={mockOnAuthStart} />
       );
 
-      fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
+  void fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
 
       expect(mockOnAuthStart).toHaveBeenCalled();
     });
@@ -173,11 +173,11 @@ describe('AuthPrompt Component', () => {
         );
 
         const signInButton = screen.getByRole('button', { name: /sign in/i });
-        signInButton.focus();
+  void signInButton.focus();
         
         expect(document.activeElement).toBe(signInButton);
         
-        fireEvent.keyDown(signInButton, { key: 'Tab' });
+  void fireEvent.keyDown(signInButton, { key: 'Tab' });
         
         const signUpButton = screen.getByRole('button', { name: /sign up/i });
         expect(document.activeElement).toBe(signUpButton);
@@ -229,7 +229,7 @@ describe('AuthPrompt Component', () => {
 
 describe('QuickAuthPrompt Component', () => {
   beforeEach(() => {
-    mockUseUnifiedUserStore.mockReturnValue(false);
+  void mockUseUnifiedUserStore.mockReturnValue(false);
   });
 
   it('renders as inline compact prompt', () => {
@@ -243,7 +243,7 @@ describe('QuickAuthPrompt Component', () => {
 
 describe('CommunityAuthPrompt Component', () => {
   beforeEach(() => {
-    mockUseUnifiedUserStore.mockReturnValue(false);
+  void mockUseUnifiedUserStore.mockReturnValue(false);
   });
 
   it('renders as card with emphasized sign up', () => {

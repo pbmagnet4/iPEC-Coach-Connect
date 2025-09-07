@@ -353,7 +353,7 @@ class MessagingService {
     const subscriptionKey = `conversation_${conversationId}`;
     
     // Unsubscribe existing subscription if any
-    this.unsubscribeFromConversation(conversationId);
+  void his.unsubscribeFromConversation(conversationId);
     
     const unsubscribe = subscriptions.subscribeToTable(
       'messages',
@@ -435,7 +435,7 @@ class MessagingService {
       .subscribe();
 
     const cleanup = () => {
-      supabase.removeChannel(channel);
+  void supabase.removeChannel(channel);
     };
 
     this.typingSubscriptions.set(conversationId, cleanup);

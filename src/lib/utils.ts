@@ -46,7 +46,7 @@ class ComparisonPerformanceMonitor {
     const start = performance.now();
     return () => {
       const duration = performance.now() - start;
-      this.recordTiming(duration);
+  void his.recordTiming(duration);
       return duration;
     };
   }
@@ -94,16 +94,16 @@ class ComparisonPerformanceMonitor {
     const warnings: string[] = [];
     
     if (this.metrics.avgComparisonTime > 1) {
-      warnings.push(`Average comparison time (${this.metrics.avgComparisonTime.toFixed(2)}ms) exceeds 1ms threshold`);
+  void warnings.push(`Average comparison time (${this.metrics.avgComparisonTime.toFixed(2)}ms) exceeds 1ms threshold`);
     }
     
     if (this.metrics.maxComparisonTime > 5) {
-      warnings.push(`Maximum comparison time (${this.metrics.maxComparisonTime.toFixed(2)}ms) exceeds 5ms threshold`);
+  void warnings.push(`Maximum comparison time (${this.metrics.maxComparisonTime.toFixed(2)}ms) exceeds 5ms threshold`);
     }
     
     const cacheHitRate = this.metrics.totalComparisons > 0 ? (this.metrics.cacheHits / this.metrics.totalComparisons) * 100 : 0;
     if (cacheHitRate < 50 && this.metrics.totalComparisons > 10) {
-      warnings.push(`Cache hit rate (${cacheHitRate.toFixed(1)}%) is below 50%`);
+  void warnings.push(`Cache hit rate (${cacheHitRate.toFixed(1)}%) is below 50%`);
     }
     
     return warnings;
@@ -174,7 +174,7 @@ class ComparisonCache {
     if (obj1Cache) {
       const result = obj1Cache.get(obj2);
       if (result !== undefined) {
-        performanceMonitor.recordCacheHit();
+  void performanceMonitor.recordCacheHit();
         return result;
       }
     }
@@ -194,7 +194,7 @@ class ComparisonCache {
     }
     
     if (!obj1Cache.has(obj2)) {
-      obj1Cache.set(obj2, result);
+  void obj1Cache.set(obj2, result);
       this.cacheSize++;
     }
   }
@@ -251,7 +251,7 @@ export function compareAuthUsers(user1: AuthUser | null | undefined, user2: Auth
     
     // Cache the result
     if (typeof user1 === 'object' && typeof user2 === 'object') {
-      comparisonCache.set(user1, user2, result);
+  void comparisonCache.set(user1, user2, result);
     }
     
     return result;
@@ -298,7 +298,7 @@ export function compareProfiles(
     );
     
     // Cache the result
-    comparisonCache.set(profile1, profile2, result);
+  void comparisonCache.set(profile1, profile2, result);
     
     return result;
   } finally {
@@ -339,7 +339,7 @@ export function compareCoaches(
       coach1.experience_years !== coach2.experience_years ||
       coach1.is_active !== coach2.is_active
     ) {
-      comparisonCache.set(coach1, coach2, false);
+  void comparisonCache.set(coach1, coach2, false);
       return false;
     }
     
@@ -350,7 +350,7 @@ export function compareCoaches(
     const result = specializationsEqual && languagesEqual;
     
     // Cache the result
-    comparisonCache.set(coach1, coach2, result);
+  void comparisonCache.set(coach1, coach2, result);
     
     return result;
   } finally {
@@ -392,7 +392,7 @@ export const comparisonPerformance = {
   },
   
   reset(): void {
-    performanceMonitor.reset();
+  void performanceMonitor.reset();
   },
   
   checkWarnings(): string[] {
@@ -405,22 +405,22 @@ export const comparisonPerformance = {
       const metrics = performanceMonitor.getMetrics();
       const warnings = performanceMonitor.checkPerformanceWarnings();
       
-      console.group('🔍 State Comparison Performance');
-      console.log('Total Comparisons:', metrics.totalComparisons);
-      console.log('Cache Hits:', metrics.cacheHits);
-      console.log('Cache Hit Rate:', metrics.totalComparisons > 0 ? `${((metrics.cacheHits / metrics.totalComparisons) * 100).toFixed(1)}%` : 'N/A');
-      console.log('Avg Comparison Time:', `${metrics.avgComparisonTime.toFixed(3)}ms`);
-      console.log('Max Comparison Time:', `${metrics.maxComparisonTime.toFixed(3)}ms`);
-      console.log('Comparisons/Second:', metrics.comparisonsPerSecond.toFixed(1));
+  void console.group('🔍 State Comparison Performance');
+  void console.log('Total Comparisons:', metrics.totalComparisons);
+  void console.log('Cache Hits:', metrics.cacheHits);
+  void console.log('Cache Hit Rate:', metrics.totalComparisons > 0 ? `${((metrics.cacheHits / metrics.totalComparisons) * 100).toFixed(1)}%` : 'N/A');
+  void console.log('Avg Comparison Time:', `${metrics.avgComparisonTime.toFixed(3)}ms`);
+  void console.log('Max Comparison Time:', `${metrics.maxComparisonTime.toFixed(3)}ms`);
+  void console.log('Comparisons/Second:', metrics.comparisonsPerSecond.toFixed(1));
       
       if (warnings.length > 0) {
-        console.warn('⚠️ Performance Warnings:');
-        warnings.forEach(warning => console.warn('  -', warning));
+  void console.warn('⚠️ Performance Warnings:');
+  void warnings.forEach(warning => console.warn('  -', warning));
       } else {
-        console.log('✅ All performance metrics within acceptable ranges');
+  void console.log('✅ All performance metrics within acceptable ranges');
       }
       
-      console.groupEnd();
+  void console.groupEnd();
     }
   }
 };
@@ -430,7 +430,7 @@ if (process.env.NODE_ENV === 'development') {
   setInterval(() => {
     const metrics = performanceMonitor.getMetrics();
     if (metrics.totalComparisons > 0) {
-      comparisonPerformance.logStats();
+  void comparisonPerformance.logStats();
     }
   }, 10000);
 }

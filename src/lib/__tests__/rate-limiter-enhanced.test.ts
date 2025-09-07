@@ -95,7 +95,7 @@ describe('EnhancedRateLimiter', () => {
     rateLimiter = new EnhancedRateLimiter(mockStore);
     
     // Clear any existing mock calls
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
   });
   
   afterEach(() => {
@@ -235,7 +235,7 @@ describe('EnhancedRateLimiter', () => {
       const options = { clientIdentifier: 'test@example.com', userId };
       
       // Add user to verified list
-      rateLimiter.addVerifiedUser(userId);
+  void rateLimiter.addVerifiedUser(userId);
       
       // Verified users should get 2x the limit (10 instead of 5)
       const result = await rateLimiter.isAllowed('auth.signin', options);
@@ -248,7 +248,7 @@ describe('EnhancedRateLimiter', () => {
       const options = { clientIdentifier: 'test@example.com', userId };
       
       // Add admin override
-      rateLimiter.addAdminOverride(userId);
+  void rateLimiter.addAdminOverride(userId);
       
       // Admin should always be allowed
       const result = await rateLimiter.isAllowed('auth.signin', options);

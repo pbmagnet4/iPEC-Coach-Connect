@@ -23,9 +23,9 @@ export const MessageSkeleton: React.FC<MessageSkeletonProps> = ({
   className = '',
   'data-testid': testId
 }) => {
-  const renderSingleSkeleton = (index: number) => {
-    const isComment = variant === 'comment';
-    const indentClass = isComment ? 'ml-8' : '';
+  const _renderSingleSkeleton = (index: number) => {
+    const _isComment = variant === 'comment';
+    const _indentClass = isComment ? 'ml-8' : '';
     
     return (
       <div 
@@ -119,7 +119,7 @@ export const DiscussionSkeleton: React.FC<DiscussionSkeletonProps> = ({
   className = '',
   'data-testid': testId
 }) => {
-  const renderSingleSkeleton = (index: number) => (
+  const _renderSingleSkeleton = (index: number) => (
     <div 
       key={`discussion-skeleton-${index}`}
       className={`bg-white border rounded-lg p-4 hover:bg-gray-50 ${className}`}
@@ -225,7 +225,7 @@ export const EventSkeleton: React.FC<EventSkeletonProps> = ({
   className = '',
   'data-testid': testId
 }) => {
-  const renderSingleSkeleton = (index: number) => {
+  const _renderSingleSkeleton = (index: number) => {
     if (variant === 'list') {
       return (
         <div 
@@ -335,7 +335,7 @@ export const EventSkeleton: React.FC<EventSkeletonProps> = ({
     return renderSingleSkeleton(0);
   }
 
-  const containerClasses = variant === 'card'
+  const _containerClasses = variant === 'card'
     ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
     : 'space-y-4';
 
@@ -355,7 +355,7 @@ export const GroupSkeleton: React.FC<EventSkeletonProps> = ({
   className = '',
   'data-testid': testId
 }) => {
-  const renderSingleSkeleton = (index: number) => (
+  const _renderSingleSkeleton = (index: number) => (
     <div 
       key={`group-skeleton-${index}`}
       className={`bg-white border rounded-lg overflow-hidden ${className}`}

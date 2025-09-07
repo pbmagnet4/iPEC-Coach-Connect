@@ -16,8 +16,8 @@ import { authService } from '../auth.service';
 import { supabase } from '../../lib/supabase';
 
 // Mock dependencies
-vi.mock('../stripe.service');
-vi.mock('../auth.service');
+  void vi.mock('../stripe.service');
+  void vi.mock('../auth.service');
 vi.mock('../../lib/supabase', () => ({
   supabase: {
     from: vi.fn(() => ({
@@ -80,7 +80,7 @@ describe('Payment Service', () => {
   };
 
   beforeEach(() => {
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
     
     // Mock auth service
     vi.mocked(authService.getState).mockReturnValue({
@@ -250,7 +250,7 @@ describe('Payment Service', () => {
           created_at: '2024-01-01T00:00:00Z',
         };
 
-        vi.mocked(iPECPaymentService.core.processRefund).mockResolvedValue(mockRefund as any);
+  void vi.mocked(iPECPaymentService.core.processRefund).mockResolvedValue(mockRefund as any);
 
         // Mock payment logging
         (supabase.from as any)().insert
@@ -297,7 +297,7 @@ describe('Payment Service', () => {
           created_at: '2024-01-01T00:00:00Z',
         };
 
-        vi.mocked(iPECPaymentService.core.processRefund).mockResolvedValue(mockRefund as any);
+  void vi.mocked(iPECPaymentService.core.processRefund).mockResolvedValue(mockRefund as any);
 
         const result = await iPECPaymentService.booking.cancelSessionWithRefund(sessionId);
 

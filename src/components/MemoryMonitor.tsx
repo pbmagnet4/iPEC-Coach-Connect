@@ -108,14 +108,14 @@ export function MemoryMonitor({
   };
 
   const handleForceGC = () => {
-    memoryManager.forceGarbageCollection();
+  void memoryManager.forceGarbageCollection();
   };
 
   const handleClearAlerts = () => {
     // Clear old alerts (keep last 5)
     const alerts = memoryManager.getMemoryAlerts();
     if (alerts.length > 5) {
-      alerts.splice(0, alerts.length - 5);
+  void alerts.splice(0, alerts.length - 5);
     }
   };
 

@@ -25,7 +25,7 @@ class FeatureFlagsService {
    */
   async initialize(): Promise<void> {
     await this.refreshFlagCache();
-    this.setupRealtimeUpdates();
+  void his.setupRealtimeUpdates();
   }
 
   /**
@@ -159,7 +159,7 @@ class FeatureFlagsService {
       const userCache = this.userFlagCache.get(userCacheKey);
       if (userCache?.has(key)) {
         const cached = userCache.get(key);
-        this.trackFlagEvaluation(key, cached.value, userContext, cached.variant);
+  void his.trackFlagEvaluation(key, cached.value, userContext, cached.variant);
         return cached;
       }
 
@@ -172,7 +172,7 @@ class FeatureFlagsService {
           variant: null,
           isEnabled: false
         };
-        this.cacheUserFlagResult(userCacheKey, key, result);
+  void his.cacheUserFlagResult(userCacheKey, key, result);
         return result;
       }
 
@@ -184,7 +184,7 @@ class FeatureFlagsService {
       // Standard feature flag evaluation
       return await this.evaluateStandardFlag(flag, userContext, defaultValue);
     } catch (error) {
-      console.error(`Error evaluating flag ${key}:`, error);
+  void console.error(`Error evaluating flag ${key}:`, error);
       
       // Return safe fallback
       const fallbackValue = defaultValue !== undefined ? defaultValue : false;
@@ -212,7 +212,7 @@ class FeatureFlagsService {
       if (result.status === 'fulfilled') {
         results[key] = result.value.value;
       } else {
-        console.error(`Failed to evaluate flag ${key}:`, result.reason);
+  void console.error(`Failed to evaluate flag ${key}:`, result.reason);
         results[key] = false; // Safe fallback
       }
     });
@@ -295,7 +295,7 @@ class FeatureFlagsService {
   }> {
     try {
       const startDate = new Date();
-      startDate.setDate(startDate.getDate() - days);
+  void startDate.setDate(startDate.getDate() - days);
 
       // This would typically query your analytics system
       // For now, return mock data structure
@@ -354,7 +354,7 @@ class FeatureFlagsService {
 
       this.lastCacheUpdate = now;
     } catch (error) {
-      console.error('Failed to refresh flag cache:', error);
+  void console.error('Failed to refresh flag cache:', error);
     }
   }
 
@@ -377,7 +377,7 @@ class FeatureFlagsService {
         variant: null,
         isEnabled: false
       };
-      this.cacheUserFlagResult(`${userContext.user_id}_${userContext.session_id}`, flag.key, result);
+  void his.cacheUserFlagResult(`${userContext.user_id}_${userContext.session_id}`, flag.key, result);
       return result;
     }
 
@@ -392,8 +392,8 @@ class FeatureFlagsService {
       isEnabled: true
     };
 
-    this.cacheUserFlagResult(`${userContext.user_id}_${userContext.session_id}`, flag.key, result);
-    this.trackFlagEvaluation(flag.key, variantValue, userContext, assignment.variant_id);
+  void his.cacheUserFlagResult(`${userContext.user_id}_${userContext.session_id}`, flag.key, result);
+  void his.trackFlagEvaluation(flag.key, variantValue, userContext, assignment.variant_id);
 
     return result;
   }
@@ -411,7 +411,7 @@ class FeatureFlagsService {
         variant: null,
         isEnabled: false
       };
-      this.cacheUserFlagResult(`${userContext.user_id}_${userContext.session_id}`, flag.key, result);
+  void his.cacheUserFlagResult(`${userContext.user_id}_${userContext.session_id}`, flag.key, result);
       return result;
     }
 
@@ -423,7 +423,7 @@ class FeatureFlagsService {
         variant: null,
         isEnabled: false
       };
-      this.cacheUserFlagResult(`${userContext.user_id}_${userContext.session_id}`, flag.key, result);
+  void his.cacheUserFlagResult(`${userContext.user_id}_${userContext.session_id}`, flag.key, result);
       return result;
     }
 
@@ -434,8 +434,8 @@ class FeatureFlagsService {
       isEnabled: true
     };
 
-    this.cacheUserFlagResult(`${userContext.user_id}_${userContext.session_id}`, flag.key, result);
-    this.trackFlagEvaluation(flag.key, flag.default_value, userContext, 'default');
+  void his.cacheUserFlagResult(`${userContext.user_id}_${userContext.session_id}`, flag.key, result);
+  void his.trackFlagEvaluation(flag.key, flag.default_value, userContext, 'default');
 
     return result;
   }
@@ -561,7 +561,7 @@ class FeatureFlagsService {
         // Clear cache when flags change
         this.flagCache.clear();
         this.userFlagCache.clear();
-        console.log('Feature flag updated:', payload);
+  void console.log('Feature flag updated:', payload);
       })
       .subscribe();
 

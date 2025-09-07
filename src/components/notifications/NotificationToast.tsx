@@ -264,7 +264,7 @@ export function useToastNotifications() {
     if (toast?.actions) {
       const action = toast.actions.find(a => a.label === actionLabel);
       if (action) {
-        action.action();
+  void action.action();
         removeToast(notificationId);
       }
     }

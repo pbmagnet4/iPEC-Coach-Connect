@@ -91,7 +91,7 @@ export class AppErrorBase extends Error {
 
     // Capture stack trace
     if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor);
+  void Error.captureStackTrace(this, this.constructor);
     }
   }
 
@@ -223,8 +223,8 @@ class ErrorHandler {
   private errorListeners: ((error: AppError) => void)[] = [];
 
   constructor() {
-    this.initializeRecoveryStrategies();
-    this.setupGlobalErrorHandlers();
+  void his.initializeRecoveryStrategies();
+  void his.setupGlobalErrorHandlers();
   }
 
   /**
@@ -244,13 +244,13 @@ class ErrorHandler {
     }
 
     // Log the error
-    this.logError(appError);
+  void his.logError(appError);
 
     // Notify listeners
-    this.notifyListeners(appError);
+  void his.notifyListeners(appError);
 
     // Attempt recovery
-    this.attemptRecovery(appError);
+  void his.attemptRecovery(appError);
 
     return appError;
   }
@@ -283,7 +283,7 @@ class ErrorHandler {
         await strategy.recover(error);
         return true;
       } catch (recoveryError) {
-        console.error('Error recovery failed:', recoveryError);
+  void console.error('Error recovery failed:', recoveryError);
         return false;
       }
     }
@@ -406,20 +406,20 @@ class ErrorHandler {
     const isDevelopment = import.meta.env.VITE_ENABLE_DEBUG_MODE === 'true';
 
     if (isDevelopment) {
-      console.group(`🚨 ${error.category.toUpperCase()} ERROR`);
-      console.error('Message:', error.message);
-      console.error('ID:', error.id);
-      console.error('Severity:', error.severity);
-      console.error('Code:', error.code);
-      console.error('Details:', error.details);
-      console.error('Context:', error.context);
-      console.error('Stack:', error.stack);
-      console.groupEnd();
+  void console.group(`🚨 ${error.category.toUpperCase()} ERROR`);
+  void console.error('Message:', error.message);
+  void console.error('ID:', error.id);
+  void console.error('Severity:', error.severity);
+  void console.error('Code:', error.code);
+  void console.error('Details:', error.details);
+  void console.error('Context:', error.context);
+  void console.error('Stack:', error.stack);
+  void console.groupEnd();
     }
 
     // In production, send to monitoring service
     if (isProduction && error.severity !== ErrorSeverity.LOW) {
-      this.sendToMonitoring(error);
+  void his.sendToMonitoring(error);
     }
   }
 

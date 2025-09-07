@@ -30,7 +30,7 @@ class AnalyticsService {
 
     try {
       if (this.config.debug) {
-        console.log('[Analytics] Registration Event:', event);
+  void console.log('[Analytics] Registration Event:', event);
       }
 
       // Mock API call - replace with your actual analytics endpoint
@@ -56,7 +56,7 @@ class AnalyticsService {
         throw new Error(`Analytics request failed: ${response.status}`);
       }
     } catch (error) {
-      console.warn('[Analytics] Failed to track event:', error);
+  void console.warn('[Analytics] Failed to track event:', error);
     }
   }
 
@@ -68,7 +68,7 @@ class AnalyticsService {
 
     try {
       if (this.config.debug) {
-        console.log('[Analytics] Funnel Data:', data);
+  void console.log('[Analytics] Funnel Data:', data);
       }
 
       // Mock API call - replace with your actual analytics endpoint
@@ -89,7 +89,7 @@ class AnalyticsService {
         throw new Error(`Analytics request failed: ${response.status}`);
       }
     } catch (error) {
-      console.warn('[Analytics] Failed to track funnel data:', error);
+  void console.warn('[Analytics] Failed to track funnel data:', error);
     }
   }
 
@@ -101,7 +101,7 @@ class AnalyticsService {
 
     try {
       if (this.config.debug) {
-        console.log('[Analytics] A/B Test:', { testName, variant });
+  void console.log('[Analytics] A/B Test:', { testName, variant });
       }
 
       // Mock API call - replace with your actual analytics endpoint
@@ -123,7 +123,7 @@ class AnalyticsService {
         throw new Error(`Analytics request failed: ${response.status}`);
       }
     } catch (error) {
-      console.warn('[Analytics] Failed to track A/B test:', error);
+  void console.warn('[Analytics] Failed to track A/B test:', error);
     }
   }
 
@@ -147,7 +147,7 @@ class AnalyticsService {
       };
 
       if (this.config.debug) {
-        console.log('[Analytics] Experiment Exposure:', data);
+  void console.log('[Analytics] Experiment Exposure:', data);
       }
 
       await this.sendAnalyticsEvent('experiment_exposure', data);
@@ -156,7 +156,7 @@ class AnalyticsService {
         variant_id: variantId
       });
     } catch (error) {
-      console.warn('[Analytics] Failed to track experiment exposure:', error);
+  void console.warn('[Analytics] Failed to track experiment exposure:', error);
     }
   }
 
@@ -187,7 +187,7 @@ class AnalyticsService {
       };
 
       if (this.config.debug) {
-        console.log('[Analytics] A/B Conversion:', data);
+  void console.log('[Analytics] A/B Conversion:', data);
       }
 
       await this.sendAnalyticsEvent('ab_conversion', data);
@@ -198,7 +198,7 @@ class AnalyticsService {
         value
       });
     } catch (error) {
-      console.warn('[Analytics] Failed to track A/B conversion:', error);
+  void console.warn('[Analytics] Failed to track A/B conversion:', error);
     }
   }
 
@@ -226,12 +226,12 @@ class AnalyticsService {
       };
 
       if (this.config.debug) {
-        console.log('[Analytics] Feature Flag Evaluation:', data);
+  void console.log('[Analytics] Feature Flag Evaluation:', data);
       }
 
       await this.sendAnalyticsEvent('feature_flag_evaluation', data);
     } catch (error) {
-      console.warn('[Analytics] Failed to track feature flag evaluation:', error);
+  void console.warn('[Analytics] Failed to track feature flag evaluation:', error);
     }
   }
 
@@ -252,13 +252,13 @@ class AnalyticsService {
       };
 
       if (this.config.debug) {
-        console.log(`[Analytics] ${eventName}:`, data);
+  void console.log(`[Analytics] ${eventName}:`, data);
       }
 
       await this.sendAnalyticsEvent(eventName, data);
-      this.trackGoogleAnalytics(eventName, properties);
+  void his.trackGoogleAnalytics(eventName, properties);
     } catch (error) {
-      console.warn(`[Analytics] Failed to track ${eventName}:`, error);
+  void console.warn(`[Analytics] Failed to track ${eventName}:`, error);
     }
   }
 
@@ -330,7 +330,7 @@ class AnalyticsService {
 
     try {
       if (this.config.debug) {
-        console.log('[Analytics] Conversion:', { type, value, metadata });
+  void console.log('[Analytics] Conversion:', { type, value, metadata });
       }
 
       // Mock API call - replace with your actual analytics endpoint
@@ -353,7 +353,7 @@ class AnalyticsService {
         throw new Error(`Analytics request failed: ${response.status}`);
       }
     } catch (error) {
-      console.warn('[Analytics] Failed to track conversion:', error);
+  void console.warn('[Analytics] Failed to track conversion:', error);
     }
   }
 
@@ -371,7 +371,7 @@ class AnalyticsService {
     let sessionId = sessionStorage.getItem('analytics_session_id');
     if (!sessionId) {
       sessionId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-      sessionStorage.setItem('analytics_session_id', sessionId);
+  void sessionStorage.setItem('analytics_session_id', sessionId);
     }
     return sessionId;
   }
@@ -394,7 +394,7 @@ class AnalyticsService {
         throw new Error(`Analytics request failed: ${response.status}`);
       }
     } catch (error) {
-      console.warn(`[Analytics] Failed to send ${eventName} event:`, error);
+  void console.warn(`[Analytics] Failed to send ${eventName} event:`, error);
     }
   }
 
@@ -443,7 +443,7 @@ export const analyticsService = new AnalyticsService({
 
 // Initialize with Google Analytics if measurement ID is available
 if (process.env.REACT_APP_GA_MEASUREMENT_ID) {
-  analyticsService.initializeGoogleAnalytics(process.env.REACT_APP_GA_MEASUREMENT_ID);
+  void analyticsService.initializeGoogleAnalytics(process.env.REACT_APP_GA_MEASUREMENT_ID);
 }
 
 export default analyticsService;

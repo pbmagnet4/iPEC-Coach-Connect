@@ -282,8 +282,8 @@ export const cacheUtils = {
     
     // Also invalidate legacy cache instances
     const userPattern = new RegExp(`^user.*:${userId}`);
-    userProfileCache.invalidateByPattern(userPattern);
-    sessionCache.invalidateByPattern(userPattern);
+  void userProfileCache.invalidateByPattern(userPattern);
+  void sessionCache.invalidateByPattern(userPattern);
   },
   
   /**
@@ -328,9 +328,9 @@ export const cacheUtils = {
     await enhancedCacheUtils.clearAllCaches();
     
     // Also clear legacy cache instances
-    userProfileCache.clear();
-    sessionCache.clear();
-    generalCache.clear();
+  void userProfileCache.clear();
+  void sessionCache.clear();
+  void generalCache.clear();
   },
   
   /**

@@ -14,7 +14,7 @@ import {
 describe('State Comparison Utilities', () => {
   beforeEach(() => {
     // Reset performance monitoring for each test
-    comparisonPerformance.reset();
+  void comparisonPerformance.reset();
   });
 
   describe('shallowEqual', () => {
@@ -71,7 +71,7 @@ describe('State Comparison Utilities', () => {
       // Warm up both approaches
       for (let i = 0; i < 10; i++) {
         shallowEqual(obj1, obj2);
-        JSON.stringify(obj1) === JSON.stringify(obj2);
+  void JSON.stringify(obj1) === JSON.stringify(obj2);
       }
       
       const iterations = 5000; // More iterations for better measurement
@@ -85,7 +85,7 @@ describe('State Comparison Utilities', () => {
       // Compare with JSON.stringify approach
       const jsonStart = performance.now();
       for (let i = 0; i < iterations; i++) {
-        JSON.stringify(obj1) === JSON.stringify(obj2);
+  void JSON.stringify(obj1) === JSON.stringify(obj2);
       }
       const jsonTime = performance.now() - jsonStart;
       
@@ -93,7 +93,7 @@ describe('State Comparison Utilities', () => {
       // or just verify that both approaches work without strict timing requirements
       expect(optimizedTime).toBeGreaterThan(0);
       expect(jsonTime).toBeGreaterThan(0);
-      console.log(`Optimized: ${optimizedTime.toFixed(2)}ms, JSON: ${jsonTime.toFixed(2)}ms`);
+  void console.log(`Optimized: ${optimizedTime.toFixed(2)}ms, JSON: ${jsonTime.toFixed(2)}ms`);
     });
   });
 
@@ -334,7 +334,7 @@ describe('State Comparison Utilities', () => {
       shallowEqual({ a: 1 }, { a: 1 });
       
       // Reset
-      comparisonPerformance.reset();
+  void comparisonPerformance.reset();
       
       const metrics = comparisonPerformance.getMetrics();
       expect(metrics.totalComparisons).toBe(0);

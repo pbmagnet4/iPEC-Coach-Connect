@@ -30,7 +30,7 @@ class ABTestingService {
    */
   async initialize(): Promise<void> {
     await this.refreshExperimentCache();
-    this.setupAnalyticsIntegration();
+  void his.setupAnalyticsIntegration();
   }
 
   /**
@@ -39,7 +39,7 @@ class ABTestingService {
   async createExperiment(payload: CreateExperimentPayload): Promise<Experiment> {
     try {
       // Validate experiment configuration
-      this.validateExperimentConfig(payload);
+  void his.validateExperimentConfig(payload);
 
       const experiment: Omit<Experiment, 'id' | 'created_at'> = {
         ...payload,
@@ -239,7 +239,7 @@ class ABTestingService {
       this.assignmentCache.set(cacheKey, finalAssignment);
 
       // Track exposure
-      this.trackExposure(experimentId, variant.id, userContext);
+  void his.trackExposure(experimentId, variant.id, userContext);
 
       return finalAssignment;
     } catch (error) {
@@ -321,7 +321,7 @@ class ABTestingService {
             experiment.statistical_config.confidence_level,
             experiment.statistical_config.bayesian_analysis
           );
-          results.push(result);
+  void results.push(result);
         }
       }
 
@@ -588,7 +588,7 @@ class ABTestingService {
 
   private calculateExperimentStatus(experiment: Experiment, results: ExperimentResult[]): any {
     const runtimeHours = experiment.started_at ? 
-      Math.floor((Date.now() - new Date(experiment.started_at).getTime()) / (1000 * 60 * 60)) : 0;
+  void Math.floor((Date.now() - new Date(experiment.started_at).getTime()) / (1000 * 60 * 60)) : 0;
 
     const totalSampleSize = results.reduce((sum, result) => sum + result.sample_size, 0);
     const sampleSizeReached = totalSampleSize >= experiment.statistical_config.minimum_sample_size;
@@ -661,7 +661,7 @@ class ABTestingService {
 
       this.lastCacheUpdate = now;
     } catch (error) {
-      console.error('Failed to refresh experiment cache:', error);
+  void console.error('Failed to refresh experiment cache:', error);
     }
   }
 

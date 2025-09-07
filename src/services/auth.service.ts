@@ -135,9 +135,9 @@ class AuthService {
   private isDestroyed = false;
 
   constructor() {
-    this.initializeAuth();
-    this.setupSecureSessionCleanup();
-    this.setupSessionValidation();
+  void his.initializeAuth();
+  void his.setupSecureSessionCleanup();
+  void his.setupSessionValidation();
   }
 
   /**
@@ -150,7 +150,7 @@ class AuthService {
       if (session?.user) {
         await this.loadUserData(session.user);
       } else {
-        this.updateState({ isLoading: false });
+  void his.updateState({ isLoading: false });
       }
 
       // Monitor auth state changes with memory management
@@ -169,7 +169,7 @@ class AuthService {
           const currentSecureSession = this.currentState.secureSession;
           
           if (currentUser) {
-            this.invalidateUserCache(currentUser.id);
+  void his.invalidateUserCache(currentUser.id);
           }
           
           // Invalidate secure session
@@ -220,10 +220,10 @@ class AuthService {
                 userId: this.currentState.user?.id,
                 error: error instanceof Error ? error.message : 'Unknown error'
               });
-              this.updateState({ session });
+  void his.updateState({ session });
             }
           } else {
-            this.updateState({ session });
+  void his.updateState({ session });
           }
         }
       });
@@ -236,8 +236,8 @@ class AuthService {
         this
       );
     } catch (error) {
-      console.error('Failed to initialize auth:', error);
-      this.updateState({ isLoading: false });
+  void console.error('Failed to initialize auth:', error);
+  void his.updateState({ isLoading: false });
     }
   }
 
@@ -247,7 +247,7 @@ class AuthService {
    */
   private async loadUserData(user: SupabaseAuthUser) {
     try {
-      this.updateState({ user, isLoading: true });
+  void his.updateState({ user, isLoading: true });
 
       // Enhanced cache strategy with multiple cache levels
       const cacheKey = cacheUtils.getUserProfileKey(user.id);
@@ -342,15 +342,15 @@ class AuthService {
         // Multi-level caching strategy for optimal performance
         if (profileWithCoach) {
           // L1 cache: Session-level (5 minutes, faster access)
-          userProfileCache.set(sessionCacheKey, profileWithCoach, 5 * 60 * 1000);
+  void userProfileCache.set(sessionCacheKey, profileWithCoach, 5 * 60 * 1000);
           
           // L2 cache: Persistent (30 minutes, longer retention)
-          userProfileCache.set(cacheKey, profileWithCoach, 30 * 60 * 1000);
+  void userProfileCache.set(cacheKey, profileWithCoach, 30 * 60 * 1000);
           
           // Cache warming: Pre-populate related data if coach
           if (profileWithCoach.coaches && profileWithCoach.coaches.length > 0) {
             const coachCacheKey = `coach_${user.id}`;
-            userProfileCache.set(coachCacheKey, profileWithCoach.coaches[0], 30 * 60 * 1000);
+  void userProfileCache.set(coachCacheKey, profileWithCoach.coaches[0], 30 * 60 * 1000);
           }
         }
       } else {
@@ -381,8 +381,8 @@ class AuthService {
             dataCorruption: true
           });
           // Clear corrupted cache
-          userProfileCache.delete(cacheKey);
-          userProfileCache.delete(sessionCacheKey);
+  void userProfileCache.delete(cacheKey);
+  void userProfileCache.delete(sessionCacheKey);
         }
         
         // Type-safe coach data extraction
@@ -469,7 +469,7 @@ class AuthService {
         mfaVerified,
       });
     } catch (error) {
-      console.error('Failed to load user data:', error);
+  void console.error('Failed to load user data:', error);
       this.updateState({ 
         isLoading: false,
         isAuthenticated: false 
@@ -482,7 +482,7 @@ class AuthService {
    */
   private updateState(updates: Partial<AuthState>) {
     this.currentState = { ...this.currentState, ...updates };
-    this.notifyListeners();
+  void his.notifyListeners();
   }
 
   /**
@@ -517,7 +517,7 @@ class AuthService {
     };
 
     // Register with memory manager
-    memoryManager.registerListener('auth_service_listener', unsubscribe);
+  void memoryManager.registerListener('auth_service_listener', unsubscribe);
     
     return unsubscribe;
   }
@@ -538,7 +538,7 @@ class AuthService {
         return { error };
       }
 
-      this.updateState({ isLoading: true });
+  void his.updateState({ isLoading: true });
 
       // Create auth user
       const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -574,7 +574,7 @@ class AuthService {
           .upsert(profileData);
 
         if (profileError) {
-          console.warn('Profile creation warning:', profileError);
+  void console.warn('Profile creation warning:', profileError);
         }
       }
 
@@ -591,7 +591,7 @@ class AuthService {
         recordAuthAttempt('auth.signup', false, data.email);
       }
       
-      this.updateState({ isLoading: false });
+  void his.updateState({ isLoading: false });
       return { error: supabaseError };
     }
   }
@@ -630,7 +630,7 @@ class AuthService {
         await this.applyProgressiveDelay(rateLimitCheck.delay);
       }
 
-      this.updateState({ isLoading: true });
+  void his.updateState({ isLoading: true });
 
       const { data: authData, error } = await supabase.auth.signInWithPassword({
         email: data.email,
@@ -673,7 +673,7 @@ class AuthService {
         });
       }
       
-      this.updateState({ isLoading: false });
+  void his.updateState({ isLoading: false });
       return { error: supabaseError };
     }
   }
@@ -694,7 +694,7 @@ class AuthService {
         return { error };
       }
 
-      this.updateState({ isLoading: true });
+  void his.updateState({ isLoading: true });
 
       // Generate CSRF-protected state parameter
       const state = generateOAuthState('/dashboard');
@@ -719,7 +719,7 @@ class AuthService {
         ? error 
         : handleSupabaseError(error);
       
-      this.updateState({ isLoading: false });
+  void his.updateState({ isLoading: false });
       return { error: supabaseError };
     }
   }
@@ -729,7 +729,7 @@ class AuthService {
    */
   public async signOut(): Promise<AuthResult<void>> {
     try {
-      this.updateState({ isLoading: true });
+  void his.updateState({ isLoading: true });
 
       const { error } = await supabase.auth.signOut();
       
@@ -844,10 +844,10 @@ class AuthService {
       }
 
       // Invalidate all cache levels since profile was updated
-      this.invalidateUserCache(user.id);
+  void his.invalidateUserCache(user.id);
       
       // Update local state
-      this.updateState({ profile: data });
+  void his.updateState({ profile: data });
 
       return { data };
     } catch (error) {
@@ -896,7 +896,7 @@ class AuthService {
       }
 
       // Invalidate all cache levels since user became a coach (major role change)
-      this.invalidateUserCache(user.id);
+  void his.invalidateUserCache(user.id);
       
       // Update local state
       this.updateState({ 
@@ -1030,7 +1030,7 @@ class AuthService {
             await mfaService.trustDevice(user.id, 'Current Device');
           } catch (trustError) {
             // Continue even if device trust fails
-            console.warn('Device trust failed:', trustError);
+  void console.warn('Device trust failed:', trustError);
           }
         }
         
@@ -1074,7 +1074,7 @@ class AuthService {
       const mfaSettings = await mfaService.getMFASettings(user.id);
       
       if (mfaSettings) {
-        this.updateState({ mfaSettings });
+  void his.updateState({ mfaSettings });
         return { data: mfaSettings };
       } else {
         throw new SupabaseError('MFA settings not found');
@@ -1243,13 +1243,13 @@ class AuthService {
     const permissions: string[] = [];
     
     if (role === 'coach' && coach?.is_active) {
-      permissions.push('canCreateSessions', 'canManageCoachProfile', 'canViewAnalytics');
+  void permissions.push('canCreateSessions', 'canManageCoachProfile', 'canViewAnalytics');
     }
     if (role === 'admin') {
-      permissions.push('canAccessAdminPanel', 'canModerateContent', 'canViewAnalytics');
+  void permissions.push('canAccessAdminPanel', 'canModerateContent', 'canViewAnalytics');
     }
     if (role === 'coach') {
-      permissions.push('canManageCoachProfile', 'canModerateContent');
+  void permissions.push('canManageCoachProfile', 'canModerateContent');
     }
     
     return permissions;
@@ -1339,7 +1339,7 @@ class AuthService {
     }, 60 * 60 * 1000); // 1 hour
     
     // Register interval with memory manager
-    memoryManager.registerInterval('auth_service_cleanup', this.cleanupInterval, this);
+  void memoryManager.registerInterval('auth_service_cleanup', this.cleanupInterval, this);
   }
 
   /**
@@ -1392,7 +1392,7 @@ class AuthService {
     }, 5 * 60 * 1000); // 5 minutes
     
     // Register interval with memory manager
-    memoryManager.registerInterval('auth_service_validation', this.sessionValidationInterval, this);
+  void memoryManager.registerInterval('auth_service_validation', this.sessionValidationInterval, this);
   }
 
   /**
@@ -1406,7 +1406,7 @@ class AuthService {
 
     try {
       const validation = await validateSession(secureSession.sessionId);
-      this.updateState({ sessionValidation: validation });
+  void his.updateState({ sessionValidation: validation });
       return validation;
     } catch (error) {
       logSecurity('Current session validation failed', 'medium', {
@@ -1455,7 +1455,7 @@ class AuthService {
       }
 
       const sessions = await getConcurrentSessions(user.id);
-      this.updateState({ concurrentSessions: sessions.length });
+  void his.updateState({ concurrentSessions: sessions.length });
       
       return { data: sessions };
     } catch (error) {
@@ -1481,7 +1481,7 @@ class AuthService {
       
       // Update concurrent sessions count
       const sessions = await getConcurrentSessions(user.id);
-      this.updateState({ concurrentSessions: sessions.length });
+  void his.updateState({ concurrentSessions: sessions.length });
       
       return { data: undefined };
     } catch (error) {
@@ -1531,7 +1531,7 @@ class AuthService {
       userProfileCache.delete(coachCacheKey);   // Coach-specific cache
       
       // Also clear legacy cache for backward compatibility
-      cacheUtils.invalidateUserCache(userId);
+  void cacheUtils.invalidateUserCache(userId);
       
       logPerformance('User cache invalidated at all levels', 0, {
         userId,
@@ -1628,7 +1628,7 @@ class AuthService {
     // Clean up Supabase subscription
     if (this.supabaseAuthSubscription) {
       try {
-        this.supabaseAuthSubscription();
+  void his.supabaseAuthSubscription();
       } catch (error) {
         logSecurity('Failed to cleanup Supabase auth subscription', 'low', {
           error: error instanceof Error ? error.message : 'Unknown error'
@@ -1649,7 +1649,7 @@ class AuthService {
     }
     
     // Clean up all resources via memory manager
-    memoryManager.cleanupComponent(this);
+  void memoryManager.cleanupComponent(this);
     
     logSecurity('Auth service destroyed and cleaned up', 'low');
   }
@@ -1712,7 +1712,7 @@ export const useAuth = () => {
 // Setup cleanup on page unload
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', () => {
-    authService.destroy();
+  void authService.destroy();
   });
 }
 

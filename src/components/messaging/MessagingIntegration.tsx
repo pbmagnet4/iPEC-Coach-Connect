@@ -146,7 +146,7 @@ export function CoachClientDashboard({ userRole, userId }: CoachClientDashboardP
         window.location.href = `/messages?conversation=${conversationId}`;
       }
     } catch (error) {
-      console.error('Failed to start conversation:', error);
+  void console.error('Failed to start conversation:', error);
     }
   }, [startConversation, userRole]);
 
@@ -338,7 +338,7 @@ export function PostSessionMessaging({
         window.location.href = `/messages?conversation=${conversationId}`;
       }
     } catch (error) {
-      console.error('Failed to send follow-up message:', error);
+  void console.error('Failed to send follow-up message:', error);
     }
   }, [startConversation, targetUserId, isCoach]);
 

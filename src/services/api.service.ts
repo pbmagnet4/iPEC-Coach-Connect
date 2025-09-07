@@ -76,7 +76,7 @@ abstract class BaseApiService {
       const { data, error, count } = await queryFn();
       
       if (error) {
-        console.error('API Query Error:', error);
+  void console.error('API Query Error:', error);
         return { error: handleSupabaseError(error) };
       }
       
@@ -87,7 +87,7 @@ abstract class BaseApiService {
       
       return response;
     } catch (error) {
-      console.error('API Service Error:', error);
+  void console.error('API Service Error:', error);
       return { error: handleSupabaseError(error) };
     }
   }
@@ -114,7 +114,7 @@ abstract class BaseApiService {
       const { data, error, count } = await query;
       
       if (error) {
-        console.error('Paginated Query Error:', error);
+  void console.error('Paginated Query Error:', error);
         return { error: handleSupabaseError(error) };
       }
       
@@ -132,7 +132,7 @@ abstract class BaseApiService {
         }
       };
     } catch (error) {
-      console.error('Paginated Service Error:', error);
+  void console.error('Paginated Service Error:', error);
       return { error: handleSupabaseError(error) };
     }
   }
@@ -518,7 +518,7 @@ class SubscriptionService {
     const subscriptionKey = `notifications_${userId}`;
     
     // Unsubscribe existing subscription if any
-    this.unsubscribe(subscriptionKey);
+  void his.unsubscribe(subscriptionKey);
     
     const unsubscribe = supabase
       .channel(`notifications_${userId}`)
@@ -535,7 +535,7 @@ class SubscriptionService {
       .subscribe();
 
     const cleanup = () => {
-      supabase.removeChannel(unsubscribe);
+  void supabase.removeChannel(unsubscribe);
     };
 
     this.subscriptions.set(subscriptionKey, cleanup);
@@ -549,7 +549,7 @@ class SubscriptionService {
     const subscriptionKey = `sessions_${userId}`;
     
     // Unsubscribe existing subscription if any
-    this.unsubscribe(subscriptionKey);
+  void his.unsubscribe(subscriptionKey);
     
     const unsubscribe = supabase
       .channel(`sessions_${userId}`)
@@ -566,7 +566,7 @@ class SubscriptionService {
       .subscribe();
 
     const cleanup = () => {
-      supabase.removeChannel(unsubscribe);
+  void supabase.removeChannel(unsubscribe);
     };
 
     this.subscriptions.set(subscriptionKey, cleanup);

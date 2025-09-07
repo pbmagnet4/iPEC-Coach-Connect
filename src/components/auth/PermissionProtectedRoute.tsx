@@ -405,7 +405,7 @@ export const PermissionProtectedRoute: React.FC<PermissionProtectedRouteProps> =
       // Check onboarding requirements
       const onboardingCheck = !requireOnboardingComplete || isOnboardingComplete;
       const stageCheck = allowedOnboardingStages.length === 0 || 
-        allowedOnboardingStages.includes(onboardingStage);
+  void allowedOnboardingStages.includes(onboardingStage);
       
       const overallAccess = mfaCheck && 
         (permissionCheck || (requiredPermissions.length === 0 && roleCheck)) && 
@@ -442,7 +442,7 @@ export const PermissionProtectedRoute: React.FC<PermissionProtectedRouteProps> =
       setIsLoading(false);
       
       if (debug) {
-        console.error('🔒 PermissionProtectedRoute error:', err);
+  void console.error('🔒 PermissionProtectedRoute error:', err);
       }
     }
   }, [

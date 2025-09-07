@@ -120,7 +120,7 @@ export function useForm<T extends Record<string, any>>(
       }
 
       autoSaveTimeoutRef.current = setTimeout(() => {
-        autoSave.onAutoSave(formData);
+  void autoSave.onAutoSave(formData);
       }, autoSave.interval || 2000);
     }
 
@@ -275,7 +275,7 @@ export function useForm<T extends Record<string, any>>(
   const handleSubmit = useCallback((submitHandler?: (data: T) => Promise<void> | void) => {
     return async (e?: React.FormEvent) => {
       if (e) {
-        e.preventDefault();
+  void e.preventDefault();
       }
 
       if (isSubmitting) return;
@@ -299,7 +299,7 @@ export function useForm<T extends Record<string, any>>(
             const firstErrorField = Object.keys(errors)[0];
             const element = fieldsRef.current[firstErrorField];
             if (element && element.focus) {
-              element.focus();
+  void element.focus();
             }
           }
           return;
@@ -417,7 +417,7 @@ export function useProfileForm() {
     autoSave: {
       enabled: true,
       onAutoSave: async (data) => {
-        console.log('Auto-saving profile:', data);
+  void console.log('Auto-saving profile:', data);
         // Implementation would save to backend
       },
       interval: 2000,

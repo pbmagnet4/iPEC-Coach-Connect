@@ -348,7 +348,7 @@ export function useCachePerformance() {
       const stats = await cacheIntegrationService.getCacheStats();
       setPerformance(stats);
     } catch (error) {
-      console.error('Failed to get cache performance:', error);
+  void console.error('Failed to get cache performance:', error);
     } finally {
       setLoading(false);
     }
@@ -383,7 +383,7 @@ export function useCacheDebug() {
       const info = await cacheIntegrationService.getDebugInfo();
       setDebugInfo(info);
     } catch (error) {
-      console.error('Failed to get cache debug info:', error);
+  void console.error('Failed to get cache debug info:', error);
     } finally {
       setLoading(false);
     }
@@ -419,7 +419,7 @@ async function getCachedData(key: string): Promise<any> {
     
     return null;
   } catch (error) {
-    console.error('Error getting cached data:', error);
+  void console.error('Error getting cached data:', error);
     return null;
   }
 }
@@ -444,7 +444,7 @@ async function setCachedData(
       await cacheIntegrationService.cacheLearningResource(key.split(':')[1], data);
     }
   } catch (error) {
-    console.error('Error setting cached data:', error);
+  void console.error('Error setting cached data:', error);
   }
 }
 
@@ -458,7 +458,7 @@ async function invalidateCachedData(key: string): Promise<void> {
       await cacheIntegrationService.invalidateSearchCache();
     }
   } catch (error) {
-    console.error('Error invalidating cached data:', error);
+  void console.error('Error invalidating cached data:', error);
   }
 }
 

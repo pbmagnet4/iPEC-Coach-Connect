@@ -60,7 +60,7 @@ class ErrorAnalyticsService {
 
   constructor() {
     this.sessionId = this.generateSessionId();
-    this.loadAnalytics();
+  void his.loadAnalytics();
   }
 
   private generateSessionId(): string {
@@ -95,8 +95,8 @@ class ErrorAnalyticsService {
       }
     };
 
-    this.addAnalytics(analytics);
-    this.logAnalytics(analytics);
+  void his.addAnalytics(analytics);
+  void his.logAnalytics(analytics);
   }
 
   /**
@@ -114,7 +114,7 @@ class ErrorAnalyticsService {
       if (timeToResolve !== undefined) {
         latestError.timeToResolve = timeToResolve;
       }
-      this.saveAnalytics();
+  void his.saveAnalytics();
     }
   }
 
@@ -132,7 +132,7 @@ class ErrorAnalyticsService {
     const latestError = this.findLatestError(errorCode);
     if (latestError) {
       latestError.userFeedback = feedback;
-      this.saveAnalytics();
+  void his.saveAnalytics();
     }
   }
 
@@ -360,7 +360,7 @@ class ErrorAnalyticsService {
       this.analytics = this.analytics.slice(-this.MAX_ANALYTICS_SIZE);
     }
     
-    this.saveAnalytics();
+  void his.saveAnalytics();
   }
 
   private saveAnalytics(): void {
@@ -371,9 +371,9 @@ class ErrorAnalyticsService {
         }
         return value;
       });
-      localStorage.setItem('ipec_error_analytics', serialized);
+  void localStorage.setItem('ipec_error_analytics', serialized);
     } catch (error) {
-      console.warn('Failed to save error analytics:', error);
+  void console.warn('Failed to save error analytics:', error);
     }
   }
 
@@ -388,7 +388,7 @@ class ErrorAnalyticsService {
         }));
       }
     } catch (error) {
-      console.warn('Failed to load error analytics:', error);
+  void console.warn('Failed to load error analytics:', error);
       this.analytics = [];
     }
   }
@@ -408,7 +408,7 @@ class ErrorAnalyticsService {
    */
   clearAnalytics(): void {
     this.analytics = [];
-    localStorage.removeItem('ipec_error_analytics');
+  void localStorage.removeItem('ipec_error_analytics');
   }
 
   /**
@@ -424,15 +424,15 @@ export const errorAnalyticsService = new ErrorAnalyticsService();
 
 // Export convenience functions
 export const trackError = (error: ErrorMessage, context?: ErrorContext, originalError?: any) => {
-  errorAnalyticsService.trackError(error, context, originalError);
+  void errorAnalyticsService.trackError(error, context, originalError);
 };
 
 export const trackRecoveryAttempt = (errorCode: string, success: boolean, timeToResolve?: number) => {
-  errorAnalyticsService.trackRecoveryAttempt(errorCode, success, timeToResolve);
+  void errorAnalyticsService.trackRecoveryAttempt(errorCode, success, timeToResolve);
 };
 
 export const trackUserFeedback = (errorCode: string, feedback: { helpful: boolean; rating: number; comment?: string }) => {
-  errorAnalyticsService.trackUserFeedback(errorCode, feedback);
+  void errorAnalyticsService.trackUserFeedback(errorCode, feedback);
 };
 
 export const getErrorInsights = () => {

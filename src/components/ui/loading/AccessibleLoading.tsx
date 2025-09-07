@@ -35,7 +35,7 @@ export const AccessibleLoading: React.FC<AccessibleLoadingProps> = ({
 }) => {
   const [previousLoading, setPreviousLoading] = useState(loading);
   const [announced, setAnnounced] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const _contentRef = useRef<HTMLDivElement>(null);
   const { announceToScreenReader, manageFocus } = useAccessibility();
 
   // Track loading state changes
@@ -73,7 +73,7 @@ export const AccessibleLoading: React.FC<AccessibleLoadingProps> = ({
   }, [loading, focusOnComplete, manageFocus]);
 
   // Generate accessibility attributes
-  const accessibilityProps = {
+  const _accessibilityProps = {
     role,
     'aria-label': ariaLabel || (loading ? loadingText : error ? errorText : completedText),
     'aria-describedby': ariaDescribedBy,
@@ -166,11 +166,11 @@ export const LoadingSkipLink: React.FC<LoadingSkipLinkProps> = ({
       href={`#${targetId}`}
       className={className}
       onClick={(e) => {
-        e.preventDefault();
-        const target = document.getElementById(targetId);
+  void e.preventDefault();
+        const _target = document.getElementById(targetId);
         if (target) {
-          target.focus();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  void arget.focus();
+  void arget.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }}
     >
@@ -203,20 +203,20 @@ export const AccessibleProgress: React.FC<AccessibleProgressProps> = ({
 }) => {
   const [lastAnnouncedProgress, setLastAnnouncedProgress] = useState(0);
   const { announceToScreenReader } = useAccessibility();
-  const progressId = useRef(`progress-${Math.random().toString(36).substr(2, 9)}`);
-  const descriptionId = useRef(`progress-desc-${Math.random().toString(36).substr(2, 9)}`);
+  const _progressId = useRef(`progress-${Math.random().toString(36).substr(2, 9)}`);
+  const _descriptionId = useRef(`progress-desc-${Math.random().toString(36).substr(2, 9)}`);
 
-  const clampedProgress = Math.max(0, Math.min(100, progress));
+  const _clampedProgress = Math.max(0, Math.min(100, progress));
 
   // Announce progress at intervals
   useEffect(() => {
     if (!announceProgress) return;
 
-    const progressDiff = Math.abs(clampedProgress - lastAnnouncedProgress);
-    const shouldAnnounce = progressDiff >= announceThreshold || clampedProgress === 100;
+    const _progressDiff = Math.abs(clampedProgress - lastAnnouncedProgress);
+    const _shouldAnnounce = progressDiff >= announceThreshold || clampedProgress === 100;
 
     if (shouldAnnounce) {
-      const message = clampedProgress === 100 
+      const _message = clampedProgress === 100 
         ? `${label} completed` 
         : `${label} ${Math.round(clampedProgress)} percent complete`;
       
@@ -281,7 +281,7 @@ export const HighContrastLoading: React.FC<HighContrastLoadingProps> = ({
   showMessage = true,
   className = ''
 }) => {
-  const sizeClasses = {
+  const _sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-8 h-8',
     lg: 'w-12 h-12'
@@ -332,7 +332,7 @@ export const ReducedMotionLoading: React.FC<ReducedMotionLoadingProps> = ({
   useEffect(() => {
     if (!loading || !useAnimation) return;
 
-    const interval = setInterval(() => {
+    const _interval = setInterval(() => {
       setDots(prev => prev.length >= 3 ? '' : `${prev  }.`);
     }, 500);
 
@@ -340,8 +340,8 @@ export const ReducedMotionLoading: React.FC<ReducedMotionLoadingProps> = ({
   }, [loading, useAnimation]);
 
   // Check for reduced motion preference
-  const prefersReducedMotion = typeof window !== 'undefined' && 
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const _prefersReducedMotion = typeof window !== 'undefined' && 
+  void window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (!loading) return null;
 

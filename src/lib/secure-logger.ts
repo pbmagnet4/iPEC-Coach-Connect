@@ -155,7 +155,7 @@ class SecureLogger {
    */
   debug(message: string, context?: LogContext): void {
     if (this.shouldLog('debug')) {
-      console.debug(this.formatMessage('debug', message, context));
+  void console.debug(this.formatMessage('debug', message, context));
     }
   }
 
@@ -164,7 +164,7 @@ class SecureLogger {
    */
   info(message: string, context?: LogContext): void {
     if (this.shouldLog('info')) {
-      console.info(this.formatMessage('info', message, context));
+  void console.info(this.formatMessage('info', message, context));
     }
   }
 
@@ -173,7 +173,7 @@ class SecureLogger {
    */
   warn(message: string, context?: LogContext): void {
     if (this.shouldLog('warn')) {
-      console.warn(this.formatMessage('warn', message, context));
+  void console.warn(this.formatMessage('warn', message, context));
     }
   }
 
@@ -182,7 +182,7 @@ class SecureLogger {
    */
   error(message: string, context?: LogContext): void {
     if (this.shouldLog('error')) {
-      console.error(this.formatMessage('error', message, context));
+  void console.error(this.formatMessage('error', message, context));
     }
   }
 
@@ -196,7 +196,7 @@ class SecureLogger {
       timestamp: new Date().toISOString()
     };
     
-    this.debug(`🔐 Auth event: ${event}`, safeContext);
+  void his.debug(`🔐 Auth event: ${event}`, safeContext);
   }
 
   /**
@@ -204,7 +204,7 @@ class SecureLogger {
    */
   performance(operation: string, duration: number, context?: LogContext): void {
     if (this.options.enablePerformanceLogging) {
-      this.debug(`⚡ Performance: ${operation} took ${duration}ms`, context);
+  void his.debug(`⚡ Performance: ${operation} took ${duration}ms`, context);
     }
   }
 
@@ -217,7 +217,7 @@ class SecureLogger {
       table, 
       ...this.sanitizeData(context) 
     };
-    this.debug(`📊 Database: ${operation} on ${table}`, safeContext);
+  void his.debug(`📊 Database: ${operation} on ${table}`, safeContext);
   }
 
   /**
@@ -232,9 +232,9 @@ class SecureLogger {
     };
     
     if (logLevel === 'error') {
-      this.error(`🛡️ Security: ${event}`, safeContext);
+  void his.error(`🛡️ Security: ${event}`, safeContext);
     } else {
-      this.warn(`🛡️ Security: ${event}`, safeContext);
+  void his.warn(`🛡️ Security: ${event}`, safeContext);
     }
   }
 }

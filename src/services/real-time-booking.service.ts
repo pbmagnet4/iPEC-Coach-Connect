@@ -54,7 +54,7 @@ class RealTimeBookingService {
           filter: `coach_id=eq.${coachId}`,
         },
         (payload: RealtimePayload) => {
-          this.handleSessionChange(payload, callback);
+  void his.handleSessionChange(payload, callback);
         }
       )
       .subscribe();
@@ -71,7 +71,7 @@ class RealTimeBookingService {
           filter: `coach_id=eq.${coachId}`,
         },
         (payload: RealtimePayload) => {
-          this.handleAvailabilityChange(coachId, payload, callback);
+  void his.handleAvailabilityChange(coachId, payload, callback);
         }
       )
       .subscribe();
@@ -79,8 +79,8 @@ class RealTimeBookingService {
     // Store cleanup function
     const cleanup = () => {
       this.bookingListeners.delete(callback);
-      supabase.removeChannel(sessionsSubscription);
-      supabase.removeChannel(availabilitySubscription);
+  void supabase.removeChannel(sessionsSubscription);
+  void supabase.removeChannel(availabilitySubscription);
       this.subscriptions.delete(subscriptionKey);
     };
 
@@ -107,12 +107,12 @@ class RealTimeBookingService {
         }
       });
 
-      subscriptions.push(cleanup);
+  void subscriptions.push(cleanup);
     }
 
     // Return combined cleanup function
     return () => {
-      subscriptions.forEach(cleanup => cleanup());
+  void subscriptions.forEach(cleanup => cleanup());
     };
   }
 
@@ -139,7 +139,7 @@ class RealTimeBookingService {
         .lte('scheduled_at', new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()); // Next 30 days
 
       if (error) {
-        console.error('Error checking session conflicts:', error);
+  void console.error('Error checking session conflicts:', error);
         return conflicts;
       }
 
@@ -177,7 +177,7 @@ class RealTimeBookingService {
       }
 
     } catch (error) {
-      console.error('Error checking booking conflicts:', error);
+  void console.error('Error checking booking conflicts:', error);
       conflicts.push({
         conflictType: 'double_booking',
         message: 'Unable to verify availability. Please try again.'
@@ -219,18 +219,18 @@ class RealTimeBookingService {
         });
 
       if (error) {
-        console.error('Error creating reservation:', error);
+  void console.error('Error creating reservation:', error);
         return { success: false };
       }
 
       // Set up automatic cleanup
       setTimeout(() => {
-        this.cleanupReservation(reservationId);
+  void his.cleanupReservation(reservationId);
       }, reservationTimeMinutes * 60 * 1000);
 
       return { success: true, reservationId };
     } catch (error) {
-      console.error('Error reserving time slot:', error);
+  void console.error('Error reserving time slot:', error);
       return { success: false };
     }
   }
@@ -259,7 +259,7 @@ class RealTimeBookingService {
 
       return [];
     } catch (error) {
-      console.error('Error refreshing coach availability:', error);
+  void console.error('Error refreshing coach availability:', error);
       return [];
     }
   }
@@ -359,7 +359,7 @@ class RealTimeBookingService {
         .delete()
         .eq('id', reservationId);
     } catch (error) {
-      console.error('Error cleaning up reservation:', error);
+  void console.error('Error cleaning up reservation:', error);
     }
   }
 

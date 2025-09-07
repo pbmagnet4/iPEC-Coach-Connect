@@ -36,7 +36,7 @@ interface ErrorMessageProps {
   autoRetryCountdown?: number;
 }
 
-const severityConfig = {
+const _severityConfig = {
   low: {
     icon: Info,
     bgColor: 'bg-blue-50',
@@ -80,20 +80,20 @@ export function ErrorMessage({
   const [showTechnicalDetails, setShowTechnicalDetails] = useState(false);
   const [correctionApplied, setCorrectionApplied] = useState(false);
 
-  const config = severityConfig[error.severity];
-  const IconComponent = config.icon;
-  const hasRecoverySteps = error.recoverySteps && error.recoverySteps.length > 0;
-  const hasHelpLinks = error.helpLinks && error.helpLinks.length > 0;
-  const hasSuggestions = error.suggestions && error.suggestions.length > 0;
-  const hasSmartCorrection = !!error.smartCorrection;
-  const hasQuickActions = error.quickActions && error.quickActions.length > 0;
-  const hasProgressiveDetails = !!error.progressiveDetails;
-  const hasAdditionalInfo = hasRecoverySteps || hasHelpLinks || hasSuggestions || hasProgressiveDetails;
+  const _config = severityConfig[error.severity];
+  const _IconComponent = config.icon;
+  const _hasRecoverySteps = error.recoverySteps && error.recoverySteps.length > 0;
+  const _hasHelpLinks = error.helpLinks && error.helpLinks.length > 0;
+  const _hasSuggestions = error.suggestions && error.suggestions.length > 0;
+  const _hasSmartCorrection = !!error.smartCorrection;
+  const _hasQuickActions = error.quickActions && error.quickActions.length > 0;
+  const _hasProgressiveDetails = !!error.progressiveDetails;
+  const _hasAdditionalInfo = hasRecoverySteps || hasHelpLinks || hasSuggestions || hasProgressiveDetails;
 
   // Handle auto-retry countdown
   useEffect(() => {
     if (countdown > 0 && error.autoRetry) {
-      const timer = setTimeout(() => {
+      const _timer = setTimeout(() => {
         setCountdown(countdown - 1);
       }, 1000);
       return () => clearTimeout(timer);
@@ -102,7 +102,7 @@ export function ErrorMessage({
     }
   }, [countdown, error.autoRetry, onRetry]);
 
-  const handleRetry = async () => {
+  const _handleRetry = async () => {
     if (!onRetry) return;
     
     setIsRetrying(true);
@@ -113,10 +113,10 @@ export function ErrorMessage({
     }
   };
 
-  const handleContactSupport = () => {
-    const supportUrl = '/contact';
-    const subject = encodeURIComponent(`Help with: ${error.title}`);
-    const body = encodeURIComponent(
+  const _handleContactSupport = () => {
+    const _supportUrl = '/contact';
+    const _subject = encodeURIComponent(`Help with: ${error.title}`);
+    const _body = encodeURIComponent(
       `I'm experiencing the following issue:\n\n` +
       `Error: ${error.title}\n` +
       `Description: ${error.message}\n` +
@@ -124,10 +124,10 @@ export function ErrorMessage({
       `Please help me resolve this issue.`
     );
     
-    window.open(`${supportUrl}?subject=${subject}&body=${body}`, '_blank');
+  void window.open(`${supportUrl}?subject=${subject}&body=${body}`, '_blank');
   };
 
-  const handleApplyCorrection = () => {
+  const _handleApplyCorrection = () => {
     if (error.smartCorrection?.action) {
       error.smartCorrection.action();
       setCorrectionApplied(true);
@@ -365,19 +365,19 @@ export function useErrorMessage() {
   const [error, setError] = useState<ErrorMessageType | null>(null);
   const [retryFunction, setRetryFunction] = useState<(() => Promise<void>) | null>(null);
 
-  const showError = (errorMessage: ErrorMessageType, retryFn?: () => Promise<void>) => {
+  const _showError = (errorMessage: ErrorMessageType, retryFn?: () => Promise<void>) => {
     setError(errorMessage);
     if (retryFn) {
       setRetryFunction(() => retryFn);
     }
   };
 
-  const clearError = () => {
+  const _clearError = () => {
     setError(null);
     setRetryFunction(null);
   };
 
-  const retry = async () => {
+  const _retry = async () => {
     if (retryFunction) {
       try {
         await retryFunction();
@@ -420,16 +420,16 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Error caught by boundary:', error, errorInfo);
+  void console.error('Error caught by boundary:', error, errorInfo);
   }
 
   retry = () => {
-    this.setState({ hasError: false, error: null });
+  void his.setState({ hasError: false, error: null });
   };
 
   render() {
     if (this.state.hasError) {
-      const FallbackComponent = this.props.fallback;
+      const _FallbackComponent = this.props.fallback;
       
       if (FallbackComponent) {
         return <FallbackComponent error={this.state.error!} retry={this.retry} />;

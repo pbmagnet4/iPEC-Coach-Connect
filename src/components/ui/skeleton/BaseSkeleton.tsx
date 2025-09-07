@@ -12,11 +12,11 @@ export interface BaseSkeletonProps extends SkeletonVariant {
 }
 
 // Base skeleton animation styles
-const skeletonBaseClasses = "bg-gray-200 rounded animate-pulse";
-const shimmerClasses = "relative overflow-hidden bg-gray-200 before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:animate-[shimmer_2s_infinite]";
+const _skeletonBaseClasses = "bg-gray-200 rounded animate-pulse";
+const _shimmerClasses = "relative overflow-hidden bg-gray-200 before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:animate-[shimmer_2s_infinite]";
 
 // Define the shimmer animation in CSS
-const shimmerKeyframes = `
+const _shimmerKeyframes = `
   @keyframes shimmer {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
@@ -25,7 +25,7 @@ const shimmerKeyframes = `
 
 // Inject styles if not already present
 if (typeof document !== 'undefined' && !document.getElementById('skeleton-styles')) {
-  const style = document.createElement('style');
+  const _style = document.createElement('style');
   style.id = 'skeleton-styles';
   style.textContent = shimmerKeyframes;
   document.head.appendChild(style);
@@ -50,9 +50,9 @@ export const BaseSkeleton: React.FC<BaseSkeletonProps> = ({
   const [showSkeleton, setShowSkeleton] = React.useState(false);
   const [isTransitioning, setIsTransitioning] = React.useState(false);
   
-  const delayTimeoutRef = React.useRef<NodeJS.Timeout>();
-  const minTimeoutRef = React.useRef<NodeJS.Timeout>();
-  const startTimeRef = React.useRef<number>(0);
+  const _delayTimeoutRef = React.useRef<NodeJS.Timeout>();
+  const _minTimeoutRef = React.useRef<NodeJS.Timeout>();
+  const _startTimeRef = React.useRef<number>(0);
 
   React.useEffect(() => {
     if (loading) {
@@ -73,8 +73,8 @@ export const BaseSkeleton: React.FC<BaseSkeletonProps> = ({
 
       // Ensure minimum display time if skeleton was shown
       if (showSkeleton) {
-        const elapsedTime = Date.now() - startTimeRef.current;
-        const remainingTime = Math.max(0, minDisplayTime - elapsedTime);
+        const _elapsedTime = Date.now() - startTimeRef.current;
+        const _remainingTime = Math.max(0, minDisplayTime - elapsedTime);
         
         setIsTransitioning(true);
         minTimeoutRef.current = setTimeout(() => {
@@ -91,7 +91,7 @@ export const BaseSkeleton: React.FC<BaseSkeletonProps> = ({
   }, [loading, delay, minDisplayTime, showSkeleton]);
 
   // Generate skeleton styles based on type and props
-  const getSkeletonStyles = (): React.CSSProperties => {
+  const _getSkeletonStyles = (): React.CSSProperties => {
     const styles: React.CSSProperties = {};
     
     if (height) {
@@ -106,18 +106,18 @@ export const BaseSkeleton: React.FC<BaseSkeletonProps> = ({
   };
 
   // Generate skeleton classes
-  const getSkeletonClasses = (): string => {
-    const baseClasses = animated && pulse ? shimmerClasses : skeletonBaseClasses;
-    const customClasses = className;
+  const _getSkeletonClasses = (): string => {
+    const _baseClasses = animated && pulse ? shimmerClasses : skeletonBaseClasses;
+    const _customClasses = className;
     
     return `${baseClasses} ${customClasses}`.trim();
   };
 
   // Generate individual skeleton element
-  const renderSkeletonElement = (index: number) => {
-    const key = `skeleton-${type}-${index}`;
-    const styles = getSkeletonStyles();
-    const classes = getSkeletonClasses();
+  const _renderSkeletonElement = (index: number) => {
+    const _key = `skeleton-${type}-${index}`;
+    const _styles = getSkeletonStyles();
+    const _classes = getSkeletonClasses();
     
     return (
       <div
@@ -133,7 +133,7 @@ export const BaseSkeleton: React.FC<BaseSkeletonProps> = ({
   };
 
   // Render multiple skeleton elements if count > 1
-  const renderSkeletons = () => {
+  const _renderSkeletons = () => {
     if (count === 1) {
       return renderSkeletonElement(0);
     }
@@ -151,7 +151,7 @@ export const BaseSkeleton: React.FC<BaseSkeletonProps> = ({
   }
 
   // If loading or showing skeleton, render skeleton with transition
-  const transitionClasses = isTransitioning 
+  const _transitionClasses = isTransitioning 
     ? 'transition-opacity duration-150 opacity-50' 
     : 'transition-opacity duration-150 opacity-100';
 
@@ -196,7 +196,7 @@ export const AvatarSkeleton: React.FC<Omit<BaseSkeletonProps, 'type'> & { size?:
   size = 'md', 
   ...props 
 }) => {
-  const sizeClasses = {
+  const _sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-12 h-12',
     lg: 'w-16 h-16',

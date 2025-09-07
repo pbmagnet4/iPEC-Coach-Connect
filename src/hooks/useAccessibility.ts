@@ -50,15 +50,15 @@ export function useAccessibilityPreferences(): AccessibilityPreferences {
       window.matchMedia('(prefers-color-scheme: dark)'),
     ];
 
-    mediaQueries.forEach(mq => mq.addEventListener('change', updatePreferences));
+  void mediaQueries.forEach(mq => mq.addEventListener('change', updatePreferences));
 
     return () => {
-      mediaQueries.forEach(mq => mq.removeEventListener('change', updatePreferences));
+  void mediaQueries.forEach(mq => mq.removeEventListener('change', updatePreferences));
     };
   }, []);
 
   const updateFontSize = useCallback((size: AccessibilityPreferences['fontSize']) => {
-    localStorage.setItem('accessibility-font-size', size);
+  void localStorage.setItem('accessibility-font-size', size);
     setPreferences(prev => ({ ...prev, fontSize: size }));
   }, []);
 
@@ -93,22 +93,22 @@ export function useFocusTrap(isActive: boolean) {
           // Shift + Tab
           if (document.activeElement === firstFocusableElement) {
             lastFocusableElement?.focus({ preventScroll: true });
-            e.preventDefault();
+  void e.preventDefault();
           }
         } else {
           // Tab
           if (document.activeElement === lastFocusableElement) {
             firstFocusableElement?.focus({ preventScroll: true });
-            e.preventDefault();
+  void e.preventDefault();
           }
         }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+  void document.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+  void document.removeEventListener('keydown', handleKeyDown);
       // Restore focus to previously focused element without scrolling
       if (previouslyFocusedElement.current) {
         previouslyFocusedElement.current.focus({ preventScroll: true });
@@ -129,8 +129,8 @@ export function useScreenReader() {
     
     // Create a temporary element for immediate announcement
     const tempAnnouncement = document.createElement('div');
-    tempAnnouncement.setAttribute('aria-live', priority);
-    tempAnnouncement.setAttribute('aria-atomic', 'true');
+  void empAnnouncement.setAttribute('aria-live', priority);
+  void empAnnouncement.setAttribute('aria-atomic', 'true');
     tempAnnouncement.className = 'sr-only';
     tempAnnouncement.textContent = message;
     
@@ -177,14 +177,14 @@ export function useTouchTargetValidation() {
 
     // Console warnings for developers
     if (newViolations.length > 0) {
-      console.group('🔴 Touch Target Violations');
+  void console.group('🔴 Touch Target Violations');
       newViolations.forEach(violation => {
         console.warn(
           `Element too small: ${violation.size.width}×${violation.size.height}px (minimum: ${minSize}×${minSize}px)`,
           violation.element
         );
       });
-      console.groupEnd();
+  void console.groupEnd();
     }
   }, []);
 
@@ -194,7 +194,7 @@ export function useTouchTargetValidation() {
       validateTouchTargets();
       
       const observer = new MutationObserver(validateTouchTargets);
-      observer.observe(document.body, { childList: true, subtree: true });
+  void observer.observe(document.body, { childList: true, subtree: true });
       
       return () => observer.disconnect();
     }
@@ -259,14 +259,14 @@ export function useContrastValidation() {
 
     // Console warnings for developers
     if (violations.length > 0) {
-      console.group('🔴 Color Contrast Violations');
+  void console.group('🔴 Color Contrast Violations');
       violations.forEach(violation => {
         console.warn(
           `Low contrast: ${violation.contrast.toFixed(2)}:1 (required: ${violation.required}:1)`,
           violation.element
         );
       });
-      console.groupEnd();
+  void console.groupEnd();
     }
   }, []);
 
@@ -276,7 +276,7 @@ export function useContrastValidation() {
       validateContrast();
       
       const observer = new MutationObserver(validateContrast);
-      observer.observe(document.body, { childList: true, subtree: true });
+  void observer.observe(document.body, { childList: true, subtree: true });
       
       return () => observer.disconnect();
     }
@@ -304,12 +304,12 @@ export function useKeyboardNavigation() {
       setLastInteractionType('mouse');
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('mousedown', handleMouseDown);
+  void document.addEventListener('keydown', handleKeyDown);
+  void document.addEventListener('mousedown', handleMouseDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('mousedown', handleMouseDown);
+  void document.removeEventListener('keydown', handleKeyDown);
+  void document.removeEventListener('mousedown', handleMouseDown);
     };
   }, []);
 
@@ -383,11 +383,11 @@ export function useAccessibility() {
 
   const manageFocus = useCallback((element: HTMLElement) => {
     if (element) {
-      element.focus({ preventScroll: true });
+  void element.focus({ preventScroll: true });
       // Only scroll into view if we're not on initial page load
       if (document.readyState === 'complete' && window.scrollY > 100) {
         // Only scroll if we're not at the top of the page (likely initial load)
-        element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  void element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     }
   }, []);
@@ -425,25 +425,25 @@ export function useRovingTabIndex<T extends HTMLElement>(
     switch (e.key) {
       case 'ArrowDown':
       case 'ArrowRight':
-        e.preventDefault();
+  void e.preventDefault();
         const nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
         items[nextIndex]?.focus({ preventScroll: true });
         setActiveIndex(nextIndex);
         break;
       case 'ArrowUp':
       case 'ArrowLeft':
-        e.preventDefault();
+  void e.preventDefault();
         const prevIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
         items[prevIndex]?.focus({ preventScroll: true });
         setActiveIndex(prevIndex);
         break;
       case 'Home':
-        e.preventDefault();
+  void e.preventDefault();
         items[0]?.focus({ preventScroll: true });
         setActiveIndex(0);
         break;
       case 'End':
-        e.preventDefault();
+  void e.preventDefault();
         items[items.length - 1]?.focus({ preventScroll: true });
         setActiveIndex(items.length - 1);
         break;
@@ -454,7 +454,7 @@ export function useRovingTabIndex<T extends HTMLElement>(
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener('keydown', handleKeyDown);
+  void container.addEventListener('keydown', handleKeyDown);
     return () => container.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 

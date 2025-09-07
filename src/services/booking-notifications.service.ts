@@ -58,9 +58,9 @@ class BookingNotificationsService {
       // Send to coach
       await this.sendCoachBookingNotification(session, calendarAttachment);
 
-      console.log(`Booking confirmation sent for session ${sessionId}`);
+  void console.log(`Booking confirmation sent for session ${sessionId}`);
     } catch (error) {
-      console.error('Error sending booking confirmation:', error);
+  void console.error('Error sending booking confirmation:', error);
       // Don't throw - notifications are non-critical
     }
   }
@@ -88,9 +88,9 @@ class BookingNotificationsService {
         await this.sendCoachCancellationNotification(session, reason);
       }
 
-      console.log(`Cancellation notifications sent for session ${sessionId}`);
+  void console.log(`Cancellation notifications sent for session ${sessionId}`);
     } catch (error) {
-      console.error('Error sending cancellation notifications:', error);
+  void console.error('Error sending cancellation notifications:', error);
     }
   }
 
@@ -112,9 +112,9 @@ class BookingNotificationsService {
       // Send to both client and coach
       await this.sendRescheduleNotification(session, oldDateTime, newDateTime, reason, calendarAttachment);
 
-      console.log(`Reschedule notifications sent for session ${sessionId}`);
+  void console.log(`Reschedule notifications sent for session ${sessionId}`);
     } catch (error) {
-      console.error('Error sending reschedule notifications:', error);
+  void console.error('Error sending reschedule notifications:', error);
     }
   }
 
@@ -162,9 +162,9 @@ class BookingNotificationsService {
         });
       }
 
-      console.log(`${timeframe} reminder sent for session ${sessionId}`);
+  void console.log(`${timeframe} reminder sent for session ${sessionId}`);
     } catch (error) {
-      console.error('Error sending session reminders:', error);
+  void console.error('Error sending session reminders:', error);
     }
   }
 
@@ -182,9 +182,9 @@ class BookingNotificationsService {
       // Send completion summary to coach
       await this.sendCoachSessionSummary(session);
 
-      console.log(`Session completion notifications sent for session ${sessionId}`);
+  void console.log(`Session completion notifications sent for session ${sessionId}`);
     } catch (error) {
-      console.error('Error sending completion notifications:', error);
+  void console.error('Error sending completion notifications:', error);
     }
   }
 
@@ -215,9 +215,9 @@ class BookingNotificationsService {
         });
       }
 
-      console.log(`Follow-up suggestion sent for session ${sessionId}`);
+  void console.log(`Follow-up suggestion sent for session ${sessionId}`);
     } catch (error) {
-      console.error('Error sending follow-up suggestion:', error);
+  void console.error('Error sending follow-up suggestion:', error);
     }
   }
 
@@ -228,7 +228,7 @@ class BookingNotificationsService {
       const result = await sessionService.getSession(sessionId);
       return result.data || null;
     } catch (error) {
-      console.error('Error fetching session details:', error);
+  void console.error('Error fetching session details:', error);
       return null;
     }
   }
@@ -804,7 +804,7 @@ Don't forget to update your session notes if needed!`;
       // });
 
     } catch (error) {
-      console.error('Failed to send email notification:', error);
+  void console.error('Failed to send email notification:', error);
       throw error;
     }
   }

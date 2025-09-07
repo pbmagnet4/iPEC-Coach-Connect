@@ -106,7 +106,7 @@ export function CoachApplicationReviewDashboard({
         setApplications(result.data.data);
       }
     } catch (error) {
-      console.error('Failed to load applications:', error);
+  void console.error('Failed to load applications:', error);
     } finally {
       setIsLoading(false);
     }
@@ -208,7 +208,7 @@ export function CoachApplicationReviewDashboard({
       alert('Interview scheduled successfully!');
 
     } catch (error: any) {
-      console.error('Failed to schedule interview:', error);
+  void console.error('Failed to schedule interview:', error);
       alert(error.message || 'Failed to schedule interview');
     } finally {
       setIsSubmittingReview(false);
@@ -324,7 +324,7 @@ export function CoachApplicationReviewDashboard({
       alert(message);
 
     } catch (error: any) {
-      console.error('Failed to submit review:', error);
+  void console.error('Failed to submit review:', error);
       alert(error.message || 'Failed to submit review');
     } finally {
       setIsSubmittingReview(false);

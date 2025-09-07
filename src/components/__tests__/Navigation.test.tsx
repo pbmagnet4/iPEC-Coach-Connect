@@ -90,7 +90,7 @@ const renderNavigation = (ui: React.ReactElement) => {
 describe('Navigation Component', () => {
   beforeEach(() => {
     // Reset all mocks before each test
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
     
     // Default mock implementations
     mockUseAuth.mockReturnValue({
@@ -106,7 +106,7 @@ describe('Navigation Component', () => {
 
   afterEach(() => {
     // Clean up any side effects
-    vi.restoreAllMocks();
+  void vi.restoreAllMocks();
   });
 
   describe('Unauthenticated State', () => {
@@ -366,7 +366,7 @@ describe('Navigation Component', () => {
       expect(screen.queryByText('Courses')).not.toBeInTheDocument();
 
       // Hover over learning button
-      fireEvent.mouseEnter(learningButton.closest('div')!);
+  void fireEvent.mouseEnter(learningButton.closest('div')!);
 
       // Dropdown items should become visible
       await waitFor(() => {
@@ -381,7 +381,7 @@ describe('Navigation Component', () => {
       renderNavigation(<Navigation />);
 
       const coachingSection = screen.getByText('Coaching').closest('div');
-      fireEvent.mouseEnter(coachingSection!);
+  void fireEvent.mouseEnter(coachingSection!);
 
       await waitFor(() => {
         const aboutCoaching = screen.getByText('About Coaching').closest('a');
@@ -398,7 +398,7 @@ describe('Navigation Component', () => {
       renderNavigation(<Navigation />);
 
       const learningSection = screen.getByText('Learning').closest('div');
-      fireEvent.mouseEnter(learningSection!);
+  void fireEvent.mouseEnter(learningSection!);
 
       await waitFor(() => {
         expect(screen.getByText('Explore all learning resources')).toBeInTheDocument();

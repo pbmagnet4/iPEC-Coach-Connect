@@ -116,7 +116,7 @@ export function MFAVerification({ userId, onSuccess, onCancel }: MFAVerification
             onSuccess(trustResult.trustToken);
           } catch (trustError) {
             // Continue even if device trust fails
-            console.warn('Device trust failed:', trustError);
+  void console.warn('Device trust failed:', trustError);
             onSuccess();
           }
         } else {

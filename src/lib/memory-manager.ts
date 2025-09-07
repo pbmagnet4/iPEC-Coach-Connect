@@ -121,7 +121,7 @@ class MemoryManager {
     
     // Initialize in development mode
     if (this.developmentMode) {
-      this.initialize();
+  void his.initialize();
     }
   }
   
@@ -140,16 +140,16 @@ class MemoryManager {
     
     try {
       // Start monitoring
-      this.startMonitoring();
+  void his.startMonitoring();
       
       // Setup auto-cleanup
-      this.setupAutoCleanup();
+  void his.setupAutoCleanup();
       
       // Setup performance monitoring
-      this.setupPerformanceMonitoring();
+  void his.setupPerformanceMonitoring();
       
       // Setup unload cleanup
-      this.setupUnloadCleanup();
+  void his.setupUnloadCleanup();
       
       this.initialized = true;
       
@@ -199,8 +199,8 @@ class MemoryManager {
       this.componentRegistry.get(component)!.push(cleanup);
     }
     
-    this.updateStats();
-    this.checkThresholds();
+  void his.updateStats();
+  void his.checkThresholds();
     
     return id;
   }
@@ -215,7 +215,7 @@ class MemoryManager {
   ): string {
     const unsubscribe = () => {
       try {
-        subscription.unsubscribe();
+  void subscription.unsubscribe();
       } catch (error) {
         logSecurity('Subscription cleanup error', 'low', {
           source,
@@ -251,8 +251,8 @@ class MemoryManager {
       this.componentRegistry.get(component)!.push(cleanup);
     }
     
-    this.updateStats();
-    this.checkThresholds();
+  void his.updateStats();
+  void his.checkThresholds();
     
     return id;
   }
@@ -301,8 +301,8 @@ class MemoryManager {
       this.componentRegistry.get(component)!.push(cleanup);
     }
     
-    this.updateStats();
-    this.checkThresholds();
+  void his.updateStats();
+  void his.checkThresholds();
     
     return id;
   }
@@ -321,7 +321,7 @@ class MemoryManager {
     const id = `${source}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     // Add the event listener
-    element.addEventListener(event, listener, options);
+  void element.addEventListener(event, listener, options);
     
     // Register in event listener registry
     if (!this.eventListenerRegistry.has(source)) {
@@ -334,7 +334,7 @@ class MemoryManager {
       id,
       callback: () => {
         try {
-          element.removeEventListener(event, listener);
+  void element.removeEventListener(event, listener);
         } catch (error) {
           logSecurity('Event listener cleanup error', 'low', {
             source,
@@ -358,8 +358,8 @@ class MemoryManager {
       this.componentRegistry.get(component)!.push(cleanup);
     }
     
-    this.updateStats();
-    this.checkThresholds();
+  void his.updateStats();
+  void his.checkThresholds();
     
     return id;
   }
@@ -409,8 +409,8 @@ class MemoryManager {
       this.componentRegistry.get(component)!.push(cleanup);
     }
     
-    this.updateStats();
-    this.checkThresholds();
+  void his.updateStats();
+  void his.checkThresholds();
     
     return id;
   }
@@ -425,7 +425,7 @@ class MemoryManager {
     try {
       await cleanup.callback();
       this.cleanupCallbacks.delete(id);
-      this.updateStats();
+  void his.updateStats();
       return true;
     } catch (error) {
       logSecurity('Cleanup operation failed', 'medium', {
@@ -490,7 +490,7 @@ class MemoryManager {
     if (eventListeners) {
       for (const { element, event, listener } of eventListeners) {
         try {
-          element.removeEventListener(event, listener);
+  void element.removeEventListener(event, listener);
           cleaned++;
         } catch (error) {
           logSecurity('Event listener cleanup error', 'low', { source, error });
@@ -513,7 +513,7 @@ class MemoryManager {
       this.observerRegistry.delete(source);
     }
     
-    this.updateStats();
+  void his.updateStats();
     
     if (cleaned > 0) {
       logPerformance('Source cleanup completed', 0, {
@@ -548,14 +548,14 @@ class MemoryManager {
         this.cleanupCallbacks.delete(cleanup.id);
         cleaned++;
       } catch (error) {
-        errors.push(error instanceof Error ? error.message : 'Unknown error');
+  void errors.push(error instanceof Error ? error.message : 'Unknown error');
       }
     }
     
     // Remove component from registry
     this.componentRegistry.delete(component);
     
-    this.updateStats();
+  void his.updateStats();
     
     if (errors.length > 0) {
       logSecurity('Component cleanup completed with errors', 'low', {
@@ -622,7 +622,7 @@ class MemoryManager {
         this.cleanupInterval = null;
       }
       
-      this.updateStats();
+  void his.updateStats();
       
       const cleanupTime = performance.now() - startTime;
       logPerformance('Complete cleanup finished', cleanupTime, {
@@ -641,7 +641,7 @@ class MemoryManager {
    * Get current memory statistics
    */
   getMemoryStats(): MemoryStats {
-    this.updateStats();
+  void his.updateStats();
     return { ...this.memoryStats };
   }
   
@@ -663,7 +663,7 @@ class MemoryManager {
    * Check if memory usage is within thresholds
    */
   isMemoryHealthy(): boolean {
-    this.updateStats();
+  void his.updateStats();
     
     return (
       this.memoryStats.totalListeners < this.thresholds.maxListeners &&
@@ -779,7 +779,7 @@ class MemoryManager {
     
     // Check for potential memory leaks
     if (stats.totalListeners + stats.totalSubscriptions > this.thresholds.leakDetectionThreshold) {
-      this.detectMemoryLeaks();
+  void his.detectMemoryLeaks();
     }
   }
   
@@ -807,7 +807,7 @@ class MemoryManager {
         };
         
         this.memoryLeaks.push(leak);
-        this.triggerAlert('leak', `Potential memory leak detected: ${source}`, 'warning', leak);
+  void his.triggerAlert('leak', `Potential memory leak detected: ${source}`, 'warning', leak);
       }
     }
     
@@ -853,8 +853,8 @@ class MemoryManager {
     // Monitor in development mode
     if (this.developmentMode) {
       const monitorInterval = setInterval(() => {
-        this.updateStats();
-        this.checkThresholds();
+  void his.updateStats();
+  void his.checkThresholds();
         
         if (this.memoryStats.totalListeners > 100 || this.memoryStats.totalSubscriptions > 50) {
           logPerformance('Memory monitoring check', 0, {
@@ -864,7 +864,7 @@ class MemoryManager {
         }
       }, 30000); // Check every 30 seconds
       
-      this.registerInterval('memory_monitor', monitorInterval);
+  void his.registerInterval('memory_monitor', monitorInterval);
     }
   }
   
@@ -883,7 +883,7 @@ class MemoryManager {
         for (const [id, callback] of this.cleanupCallbacks) {
           // Clean up callbacks older than 1 hour that haven't been used
           if (now - callback.createdAt > 60 * 60 * 1000) {
-            expiredCallbacks.push(id);
+  void expiredCallbacks.push(id);
           }
         }
         
@@ -894,7 +894,7 @@ class MemoryManager {
         
         // Force garbage collection in development
         if (this.developmentMode) {
-          this.forceGarbageCollection();
+  void his.forceGarbageCollection();
         }
         
         const cleanupTime = performance.now() - startTime;
@@ -948,15 +948,15 @@ class MemoryManager {
     if (typeof window === 'undefined') return;
     
     const handleUnload = () => {
-      this.cleanupAll();
+  void his.cleanupAll();
     };
     
-    window.addEventListener('beforeunload', handleUnload);
-    window.addEventListener('unload', handleUnload);
+  void window.addEventListener('beforeunload', handleUnload);
+  void window.addEventListener('unload', handleUnload);
     
     // Register the unload cleanup
-    this.registerEventListener('memory_manager', window, 'beforeunload', handleUnload);
-    this.registerEventListener('memory_manager', window, 'unload', handleUnload);
+  void his.registerEventListener('memory_manager', window, 'beforeunload', handleUnload);
+  void his.registerEventListener('memory_manager', window, 'unload', handleUnload);
   }
 }
 
@@ -992,5 +992,5 @@ export type {
 
 // Auto-initialize in development mode
 if (process.env.NODE_ENV === 'development') {
-  memoryManager.initialize();
+  void memoryManager.initialize();
 }

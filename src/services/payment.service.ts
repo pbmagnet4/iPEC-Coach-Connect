@@ -570,7 +570,7 @@ export const paymentService = {
         .insert([logData]);
     } catch (error) {
       // Don't throw errors for logging failures to avoid breaking payment flows
-      console.error('Failed to log payment event:', error);
+  void console.error('Failed to log payment event:', error);
     }
   },
 

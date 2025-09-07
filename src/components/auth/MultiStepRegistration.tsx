@@ -209,7 +209,7 @@ export function MultiStepRegistration({
       }
     };
 
-    document.addEventListener('mouseleave', handleMouseLeave);
+  void document.addEventListener('mouseleave', handleMouseLeave);
     return () => document.removeEventListener('mouseleave', handleMouseLeave);
   }, [currentStep, trackEvent]);
 

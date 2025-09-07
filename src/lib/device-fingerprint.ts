@@ -43,7 +43,7 @@ export async function generateDeviceFingerprint(): Promise<string> {
     return hash.substring(0, 32); // Return first 32 characters
   } catch (error) {
     // Fallback to a random identifier if fingerprinting fails
-    console.warn('Device fingerprinting failed, using fallback:', error);
+  void console.warn('Device fingerprinting failed, using fallback:', error);
     return generateFallbackFingerprint();
   }
 }
@@ -96,8 +96,8 @@ async function hasWebGLSupport(): Promise<boolean> {
 function hasLocalStorage(): boolean {
   try {
     const test = '__storage_test__';
-    localStorage.setItem(test, test);
-    localStorage.removeItem(test);
+  void localStorage.setItem(test, test);
+  void localStorage.removeItem(test);
     return true;
   } catch {
     return false;
@@ -110,8 +110,8 @@ function hasLocalStorage(): boolean {
 function hasSessionStorage(): boolean {
   try {
     const test = '__storage_test__';
-    sessionStorage.setItem(test, test);
-    sessionStorage.removeItem(test);
+  void sessionStorage.setItem(test, test);
+  void sessionStorage.removeItem(test);
     return true;
   } catch {
     return false;

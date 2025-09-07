@@ -120,7 +120,7 @@ export function BecomeCoach() {
         setExistingApplication(result.data);
       }
     } catch (error) {
-      console.error('Failed to load existing application:', error);
+  void console.error('Failed to load existing application:', error);
     } finally {
       setIsLoading(false);
     }

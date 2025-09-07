@@ -116,10 +116,10 @@ export const serviceUtils = {
   async initialize() {
     try {
       // Services auto-initialize, but we can add any startup logic here
-      console.log('🚀 iPEC Coach Connect services initialized');
+  void console.log('🚀 iPEC Coach Connect services initialized');
       return true;
     } catch (error) {
-      console.error('❌ Failed to initialize services:', error);
+  void console.error('❌ Failed to initialize services:', error);
       return false;
     }
   },
@@ -156,8 +156,8 @@ export const serviceUtils = {
    * Clean up all service subscriptions
    */
   cleanup() {
-    subscriptionService.unsubscribeAll();
-    console.log('🧹 Services cleaned up');
+  void subscriptionService.unsubscribeAll();
+  void console.log('🧹 Services cleaned up');
   },
 
   /**
@@ -227,7 +227,7 @@ export const serviceUtils = {
       get<T>(key: string): T | null {
         const item = cache.get(key);
         if (!item || Date.now() > item.expires) {
-          cache.delete(key);
+  void cache.delete(key);
           return null;
         }
         return item.data;
@@ -241,11 +241,11 @@ export const serviceUtils = {
       },
       
       delete(key: string): void {
-        cache.delete(key);
+  void cache.delete(key);
       },
       
       clear(): void {
-        cache.clear();
+  void cache.clear();
       },
       
       size(): number {
@@ -355,6 +355,6 @@ if (import.meta.env.VITE_ENABLE_DEBUG_MODE === 'true') {
   (window as any).serviceUtils = serviceUtils;
   (window as any).serviceHealth = serviceHealth;
   
-  console.log('🔧 Services exposed to window for debugging');
-  console.log('🔧 Available: window.services, window.serviceUtils, window.serviceHealth');
+  void console.log('🔧 Services exposed to window for debugging');
+  void console.log('🔧 Available: window.services, window.serviceUtils, window.serviceHealth');
 }

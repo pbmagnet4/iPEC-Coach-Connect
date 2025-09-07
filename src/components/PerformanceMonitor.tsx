@@ -154,7 +154,7 @@ export const usePerformanceMonitoring = () => {
       });
       
     } catch (error) {
-      console.info('Web Vitals library not available, using fallback performance monitoring');
+  void console.info('Web Vitals library not available, using fallback performance monitoring');
       // Fallback to basic performance API measurements
       setupFallbackWebVitalsMonitoring();
     }
@@ -181,7 +181,7 @@ export const usePerformanceMonitoring = () => {
       reportMetric('TTFB', ttfb, PERFORMANCE_THRESHOLDS.ttfb);
     }
 
-    console.info('Using fallback performance monitoring - consider installing web-vitals package for enhanced metrics');
+  void console.info('Using fallback performance monitoring - consider installing web-vitals package for enhanced metrics');
   };
   
   // Set up resource monitoring
@@ -281,7 +281,7 @@ export const usePerformanceMonitoring = () => {
     
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.log(`${name}: ${value}ms (${rating})`);
+  void console.log(`${name}: ${value}ms (${rating})`);
     }
     
     // Send to analytics service (implement based on your needs)
@@ -304,7 +304,7 @@ export const usePerformanceMonitoring = () => {
         url: window.location.href
       });
       
-      navigator.sendBeacon('/api/metrics', data);
+  void navigator.sendBeacon('/api/metrics', data);
     }
   };
   

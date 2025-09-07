@@ -19,7 +19,7 @@ import {
 import { useUnifiedUserStore } from '../../../stores/unified-user-store';
 
 // Mock the unified user store
-jest.mock('../../../stores/unified-user-store');
+  void jest.mock('../../../stores/unified-user-store');
 const mockUseUnifiedUserStore = useUnifiedUserStore as jest.MockedFunction<typeof useUnifiedUserStore>;
 
 const renderWithRouter = (component: React.ReactElement) => {
@@ -158,7 +158,7 @@ describe('ConditionalAction Component', () => {
     });
 
     it('shows action when user has required roles', () => {
-      mockHasAnyRole.mockReturnValue(true);
+  void mockHasAnyRole.mockReturnValue(true);
 
       renderWithRouter(
         <ConditionalAction
@@ -173,7 +173,7 @@ describe('ConditionalAction Component', () => {
     });
 
     it('hides action when user lacks required roles', () => {
-      mockHasAnyRole.mockReturnValue(false);
+  void mockHasAnyRole.mockReturnValue(false);
 
       renderWithRouter(
         <ConditionalAction
@@ -188,7 +188,7 @@ describe('ConditionalAction Component', () => {
     });
 
     it('shows action when user has required permissions', () => {
-      mockCheckPermission.mockReturnValue(true);
+  void mockCheckPermission.mockReturnValue(true);
 
       renderWithRouter(
         <ConditionalAction
@@ -203,7 +203,7 @@ describe('ConditionalAction Component', () => {
     });
 
     it('hides action when user lacks required permissions', () => {
-      mockCheckPermission.mockReturnValue(false);
+  void mockCheckPermission.mockReturnValue(false);
 
       renderWithRouter(
         <ConditionalAction
@@ -275,7 +275,7 @@ describe('ProgressiveContent Component', () => {
     });
 
     it('shows role-based content when user has required role', () => {
-      mockHasAnyRole.mockReturnValue(true);
+  void mockHasAnyRole.mockReturnValue(true);
 
       renderWithRouter(
         <ProgressiveContent
@@ -289,7 +289,7 @@ describe('ProgressiveContent Component', () => {
     });
 
     it('hides role-based content when user lacks required role', () => {
-      mockHasAnyRole.mockReturnValue(false);
+  void mockHasAnyRole.mockReturnValue(false);
 
       renderWithRouter(
         <ProgressiveContent
@@ -406,7 +406,7 @@ describe('withAuthAwareness HOC', () => {
     });
 
     it('shows component when user has required roles', () => {
-      mockHasAnyRole.mockReturnValue(true);
+  void mockHasAnyRole.mockReturnValue(true);
       
       const WrappedComponent = withAuthAwareness(TestComponent, {
         requiredRoles: ['admin'],
@@ -418,7 +418,7 @@ describe('withAuthAwareness HOC', () => {
     });
 
     it('hides component when user lacks required roles', () => {
-      mockHasAnyRole.mockReturnValue(false);
+  void mockHasAnyRole.mockReturnValue(false);
       
       const WrappedComponent = withAuthAwareness(TestComponent, {
         requiredRoles: ['admin'],

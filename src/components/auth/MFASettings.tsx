@@ -162,9 +162,9 @@ export function MFASettings({ userId }: MFASettingsProps) {
     a.href = url;
     a.download = 'ipec-mfa-backup-codes.txt';
     document.body.appendChild(a);
-    a.click();
+  void a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  void URL.revokeObjectURL(url);
   };
 
   const getDeviceIcon = (deviceType: string | null) => {

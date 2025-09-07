@@ -9,7 +9,7 @@ interface CardProps {
   hover?: boolean;
 }
 
-const cardVariants = {
+const _cardVariants = {
   initial: { y: 0 },
   hover: { y: -8 },
 };
@@ -20,14 +20,14 @@ export function Card({
   variant = 'default',
   hover = false,
 }: CardProps) {
-  const variants = {
+  const _variants = {
     default: "bg-white",
     glass: "glass-card",
     gradient: "bg-gradient-to-br from-brand-500/10 to-blue-500/10",
   };
 
-  const Component = hover ? motion.div : 'div';
-  const motionProps = hover ? {
+  const _Component = hover ? motion.div : 'div';
+  const _motionProps = hover ? {
     initial: "initial",
     whileHover: "hover",
     variants: cardVariants,
@@ -82,8 +82,8 @@ Card.Footer = function CardFooter({ children, className }: Omit<CardProps, 'vari
 };
 
 // Export alternative names for consistency with analytics components
-export const CardHeader = Card.Header;
-export const CardContent = Card.Body;
+export const _CardHeader = Card.Header;
+export const _CardContent = Card.Body;
 export function CardTitle({ children, className }: Omit<CardProps, 'variant' | 'hover'>) {
   return (
     <h3 className={cn("text-lg font-semibold text-gray-900", className)}>

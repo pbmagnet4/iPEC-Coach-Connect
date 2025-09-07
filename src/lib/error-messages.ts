@@ -68,7 +68,7 @@ class ErrorMessageService {
     const errorType = this.categorizeError(error);
     
     // Track error frequency
-    this.trackError(errorCode);
+  void his.trackError(errorCode);
     
     // Get base error message
     const baseMessage = this.getBaseErrorMessage(errorCode, errorType);
@@ -80,7 +80,7 @@ class ErrorMessageService {
     const finalMessage = this.addRecoveryGuidance(enhancedMessage, errorCode, context);
     
     // Log error for analysis
-    this.logErrorForAnalysis(error, finalMessage, context);
+  void his.logErrorForAnalysis(error, finalMessage, context);
     
     return finalMessage;
   }
@@ -490,49 +490,49 @@ class ErrorMessageService {
       
       // Common email typos
       if (email.includes('@gmial.com') || email.includes('@gmai.com')) {
-        suggestions.push('Did you mean @gmail.com?');
+  void suggestions.push('Did you mean @gmail.com?');
       }
       if (email.includes('@yahooo.com') || email.includes('@yaho.com')) {
-        suggestions.push('Did you mean @yahoo.com?');
+  void suggestions.push('Did you mean @yahoo.com?');
       }
       if (email.includes('@hotmial.com') || email.includes('@hotmai.com')) {
-        suggestions.push('Did you mean @hotmail.com?');
+  void suggestions.push('Did you mean @hotmail.com?');
       }
       if (email.includes('@outlok.com')) {
-        suggestions.push('Did you mean @outlook.com?');
+  void suggestions.push('Did you mean @outlook.com?');
       }
       
       // Missing TLD
       if (!email.includes('.') && email.includes('@')) {
-        suggestions.push('Email addresses need a domain extension (e.g., .com, .org)');
+  void suggestions.push('Email addresses need a domain extension (e.g., .com, .org)');
       }
     }
 
     // Password suggestions
     if (errorCode === 'INVALID_CREDENTIALS' && context?.attemptCount) {
       if (context.attemptCount >= 2) {
-        suggestions.push('Check if Caps Lock is on');
-        suggestions.push('Try copying and pasting your password');
+  void suggestions.push('Check if Caps Lock is on');
+  void suggestions.push('Try copying and pasting your password');
       }
       if (context.attemptCount >= 3) {
-        suggestions.push('Consider resetting your password');
+  void suggestions.push('Consider resetting your password');
       }
     }
 
     // Browser-specific suggestions
     if (context?.browserInfo) {
       if (context.browserInfo.name === 'Safari' && errorCode === 'SECURITY_ERROR') {
-        suggestions.push('Try disabling "Prevent Cross-Site Tracking" in Safari settings');
+  void suggestions.push('Try disabling "Prevent Cross-Site Tracking" in Safari settings');
       }
       if (context.browserInfo.isMobile && errorCode === 'NETWORK_ERROR') {
-        suggestions.push('Try switching between WiFi and mobile data');
+  void suggestions.push('Try switching between WiFi and mobile data');
       }
     }
 
     // Network suggestions
     if (context?.networkInfo && !context.networkInfo.online) {
-      suggestions.push('Check if airplane mode is turned off');
-      suggestions.push('Try restarting your device');
+  void suggestions.push('Check if airplane mode is turned off');
+  void suggestions.push('Try restarting your device');
     }
 
     return suggestions.length > 0 ? suggestions : undefined;
@@ -767,7 +767,7 @@ export const getErrorStats = (): Record<string, number> => {
 };
 
 export const clearErrorHistory = (): void => {
-  errorMessageService.clearHistory();
+  void errorMessageService.clearHistory();
 };
 
 export default errorMessageService;

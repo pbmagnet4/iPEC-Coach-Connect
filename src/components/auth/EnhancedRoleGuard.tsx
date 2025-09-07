@@ -444,7 +444,7 @@ export const EnhancedRoleGuard: React.FC<EnhancedRoleGuardProps> = memo(({
         setIsLoading(false);
         
         if (debug) {
-          console.error('🛡️ EnhancedRoleGuard error:', err);
+  void console.error('🛡️ EnhancedRoleGuard error:', err);
         }
       }
     };

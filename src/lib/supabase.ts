@@ -111,7 +111,7 @@ class SupabaseConnectionMonitor {
   private listeners: ((status: ConnectionStatus) => void)[] = [];
 
   constructor() {
-    this.initializeMonitoring();
+  void his.initializeMonitoring();
   }
 
   private async initializeMonitoring() {
@@ -120,13 +120,13 @@ class SupabaseConnectionMonitor {
 
     // Monitor auth state changes
     supabase.auth.onAuthStateChange((event, session) => {
-      this.updateAuthStatus(!!session);
+  void his.updateAuthStatus(!!session);
       logAuth(event, !!session?.user, { connectionMonitor: true });
     });
 
     // Periodic connection checks
     setInterval(() => {
-      this.checkConnection();
+  void his.checkConnection();
     }, 30000); // Check every 30 seconds
   }
 
@@ -159,12 +159,12 @@ class SupabaseConnectionMonitor {
   }
 
   private updateAuthStatus(isAuthenticated: boolean) {
-    this.updateStatus({ isAuthenticated });
+  void his.updateStatus({ isAuthenticated });
   }
 
   private updateStatus(updates: Partial<ConnectionStatus>) {
     this.status = { ...this.status, ...updates };
-    this.notifyListeners();
+  void his.notifyListeners();
   }
 
   private notifyListeners() {
@@ -199,7 +199,7 @@ export const supabaseUtils = {
   async getCurrentUser() {
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error) {
-      console.error('Error getting current user:', error);
+  void console.error('Error getting current user:', error);
       return null;
     }
     return user;
@@ -211,7 +211,7 @@ export const supabaseUtils = {
   async getCurrentSession() {
     const { data: { session }, error } = await supabase.auth.getSession();
     if (error) {
-      console.error('Error getting current session:', error);
+  void console.error('Error getting current session:', error);
       return null;
     }
     return session;
@@ -231,7 +231,7 @@ export const supabaseUtils = {
   async signOut() {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.error('Error signing out:', error);
+  void console.error('Error signing out:', error);
       throw error;
     }
   },
@@ -249,7 +249,7 @@ export const supabaseUtils = {
         });
       
       if (error) {
-        console.error(`Error uploading to ${bucket}/${path}:`, error);
+  void console.error(`Error uploading to ${bucket}/${path}:`, error);
         throw error;
       }
       
@@ -270,7 +270,7 @@ export const supabaseUtils = {
         .remove(paths);
       
       if (error) {
-        console.error(`Error deleting from ${bucket}:`, error);
+  void console.error(`Error deleting from ${bucket}:`, error);
         throw error;
       }
       
@@ -287,13 +287,13 @@ export const supabaseUtils = {
         const { data, error } = await queryFn();
         
         if (error) {
-          console.error('Database query error:', error);
+  void console.error('Database query error:', error);
           throw new Error(error.message || 'Database query failed');
         }
         
         return data;
       } catch (error) {
-        console.error('Query execution error:', error);
+  void console.error('Query execution error:', error);
         throw error;
       }
     },
@@ -355,19 +355,19 @@ export const subscriptions = {
         },
         (payload) => {
           if (import.meta.env.VITE_ENABLE_DEBUG_MODE === 'true') {
-            console.log(`📡 ${table} change:`, payload);
+  void console.log(`📡 ${table} change:`, payload);
           }
           callback(payload);
         }
       )
       .subscribe((status) => {
         if (import.meta.env.VITE_ENABLE_DEBUG_MODE === 'true') {
-          console.log(`📡 ${table} subscription status:`, status);
+  void console.log(`📡 ${table} subscription status:`, status);
         }
       });
 
     return () => {
-      supabase.removeChannel(channel);
+  void supabase.removeChannel(channel);
     };
   },
 
@@ -400,8 +400,8 @@ if (import.meta.env.VITE_ENABLE_DEBUG_MODE === 'true') {
   (window as any).supabase = supabase;
   (window as any).supabaseUtils = supabaseUtils;
   
-  secureLogger.debug('🔧 Supabase client initialized for iPEC Coach Connect');
-  secureLogger.debug('🔧 Debug mode enabled - supabase client available on window');
+  void secureLogger.debug('🔧 Supabase client initialized for iPEC Coach Connect');
+  void secureLogger.debug('🔧 Debug mode enabled - supabase client available on window');
 }
 
 export default supabase;

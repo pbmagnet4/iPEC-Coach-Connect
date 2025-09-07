@@ -334,11 +334,11 @@ const useSessionManagement = () => {
       };
 
       setSessions(prev => [newSession, ...prev]);
-      toast.success('Session booked successfully!');
+  void oast.success('Session booked successfully!');
       return newSession;
     } catch (err) {
       const error = err instanceof Error ? err.message : 'Failed to book session';
-      toast.error(error);
+  void oast.error(error);
       throw new Error(error);
     }
   };
@@ -350,9 +350,9 @@ const useSessionManagement = () => {
           ? { ...session, ...updates, updated_at: new Date().toISOString() }
           : session
       ));
-      toast.success('Session updated successfully!');
+  void oast.success('Session updated successfully!');
     } catch (err) {
-      toast.error('Failed to update session');
+  void oast.error('Failed to update session');
       throw err;
     }
   };
@@ -364,9 +364,9 @@ const useSessionManagement = () => {
         cancelled_at: new Date().toISOString(),
         cancellation_reason: reason
       });
-      toast.success('Session cancelled successfully');
+  void oast.success('Session cancelled successfully');
     } catch (err) {
-      toast.error('Failed to cancel session');
+  void oast.error('Failed to cancel session');
       throw err;
     }
   };
@@ -424,7 +424,7 @@ const SessionBookingModal: React.FC<{
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  void e.preventDefault();
     if (!validateForm() || !formData.scheduledAt) return;
 
     setIsSubmitting(true);

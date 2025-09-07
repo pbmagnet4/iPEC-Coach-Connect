@@ -107,7 +107,7 @@ export const withIntersectionLoading = <P extends object>(
         ([entry]) => {
           if (entry.isIntersecting) {
             setIsIntersecting(true);
-            observer.disconnect();
+  void observer.disconnect();
           }
         },
         {
@@ -118,7 +118,7 @@ export const withIntersectionLoading = <P extends object>(
       );
 
       if (ref.current) {
-        observer.observe(ref.current);
+  void observer.observe(ref.current);
       }
 
       return () => observer.disconnect();

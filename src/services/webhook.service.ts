@@ -109,7 +109,7 @@ export const webhookProcessor = {
         })
         .eq('id', eventId);
     } catch (err) {
-      console.error('Failed to mark event as processed:', err);
+  void console.error('Failed to mark event as processed:', err);
     }
   }
 };
@@ -137,7 +137,7 @@ export const eventHandlers = {
       }
 
       if (!localPaymentIntent) {
-        console.warn(`Payment intent ${paymentIntent.id} not found in local database`);
+  void console.warn(`Payment intent ${paymentIntent.id} not found in local database`);
         return { success: true, processed: false };
       }
 
@@ -240,7 +240,7 @@ export const eventHandlers = {
       }
 
       if (!localSubscription) {
-        console.warn(`Subscription ${subscription.id} not found in local database`);
+  void console.warn(`Subscription ${subscription.id} not found in local database`);
         return { success: true, processed: false };
       }
 
@@ -326,7 +326,7 @@ export const eventHandlers = {
       }
 
       if (!localCustomer) {
-        console.warn(`Customer ${customer.id} not found in local database`);
+  void console.warn(`Customer ${customer.id} not found in local database`);
         return { success: true, processed: false };
       }
 
@@ -527,7 +527,7 @@ export const eventHandlers = {
         .insert([revenueData]);
 
     } catch (error) {
-      console.error('Failed to create revenue record:', error);
+  void console.error('Failed to create revenue record:', error);
       // Don't throw - this shouldn't break the webhook processing
     }
   },
@@ -541,7 +541,7 @@ export const eventHandlers = {
         .from('payment_processing_log')
         .insert([logData]);
     } catch (error) {
-      console.error('Failed to log webhook event:', error);
+  void console.error('Failed to log webhook event:', error);
       // Don't throw - logging failures shouldn't break webhook processing
     }
   }
@@ -613,7 +613,7 @@ export const processWebhook = async (
         break;
       
       default:
-        console.log(`Unhandled webhook event type: ${stripeEvent.type}`);
+  void console.log(`Unhandled webhook event type: ${stripeEvent.type}`);
         result = {
           success: true,
           processed: false,
@@ -719,7 +719,7 @@ export const retryFailedWebhooks = async (): Promise<{
     return { processed, failed };
 
   } catch (error) {
-    console.error('Failed to retry webhook events:', error);
+  void console.error('Failed to retry webhook events:', error);
     return { processed: 0, failed: 0 };
   }
 };

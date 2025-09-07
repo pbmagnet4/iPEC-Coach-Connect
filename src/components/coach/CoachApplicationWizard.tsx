@@ -190,7 +190,7 @@ export function CoachApplicationWizard({
         onApplicationSaved(result.data);
       }
     } catch (error) {
-      console.error('Auto-save failed:', error);
+  void console.error('Auto-save failed:', error);
     } finally {
       setIsSaving(false);
     }
@@ -396,7 +396,7 @@ export function CoachApplicationWizard({
       }
 
     } catch (error: any) {
-      console.error('Application submission failed:', error);
+  void console.error('Application submission failed:', error);
       setSubmitStatus('error');
       setErrors({ submit: error.message || 'Failed to submit application' });
     } finally {

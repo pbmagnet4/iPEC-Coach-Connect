@@ -12,12 +12,12 @@ import { Container } from '../ui/Container';
 
 export function MultiStepRegistrationExample() {
   const handleRegistrationSuccess = () => {
-    console.log('Registration completed successfully!');
+  void console.log('Registration completed successfully!');
     // Navigate to dashboard or show success message
   };
 
   const handleStepChange = (step: number, data: any) => {
-    console.log(`Step ${step} completed with data:`, data);
+  void console.log(`Step ${step} completed with data:`, data);
   };
 
   return (

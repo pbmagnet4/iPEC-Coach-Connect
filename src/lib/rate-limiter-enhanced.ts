@@ -186,8 +186,8 @@ export class EnhancedRateLimiter {
   
   constructor(store?: RateLimitStore) {
     this.store = store || new InMemoryRateLimitStore();
-    this.initializeConfigurations();
-    this.setupCleanupInterval();
+  void his.initializeConfigurations();
+  void his.setupCleanupInterval();
   }
   
   /**
@@ -279,16 +279,16 @@ export class EnhancedRateLimiter {
     const parts = [operationType];
     
     if (clientIdentifier) {
-      parts.push(clientIdentifier);
+  void parts.push(clientIdentifier);
     }
     
     if (ipAddress) {
-      parts.push(ipAddress);
+  void parts.push(ipAddress);
     }
     
     // If no identifiers provided, use browser fingerprint
     if (!clientIdentifier && !ipAddress) {
-      parts.push(this.getBrowserFingerprint());
+  void parts.push(this.getBrowserFingerprint());
     }
     
     return parts.join(':');
@@ -320,10 +320,10 @@ export class EnhancedRateLimiter {
         ctx.textBaseline = 'top';
         ctx.font = '14px Arial';
         ctx.fillStyle = '#f60';
-        ctx.fillRect(125, 1, 62, 20);
+  void ctx.fillRect(125, 1, 62, 20);
         ctx.fillStyle = '#069';
-        ctx.fillText('Browser fingerprint', 2, 15);
-        components.push(canvas.toDataURL());
+  void ctx.fillText('Browser fingerprint', 2, 15);
+  void components.push(canvas.toDataURL());
       }
     } catch (e) {
       // Canvas API might be blocked
@@ -894,7 +894,7 @@ let store: RateLimitStore;
 
 if (import.meta.env.VITE_RATE_LIMIT_STORAGE_TYPE === 'redis') {
   // TODO: Implement RedisRateLimitStore when Redis is configured
-  console.warn('Redis rate limit storage requested but not implemented, falling back to memory');
+  void console.warn('Redis rate limit storage requested but not implemented, falling back to memory');
   store = new InMemoryRateLimitStore();
 } else {
   store = new InMemoryRateLimitStore();

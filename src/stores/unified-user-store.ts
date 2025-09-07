@@ -234,7 +234,7 @@ const defaultMetrics: DashboardMetrics = {
 // STORE IMPLEMENTATION
 // =====================================================================
 
-export const useUnifiedUserStore = create<UnifiedUserState>()(
+export const _useUnifiedUserStore = create<UnifiedUserState>()(
   // Apply middleware stack
   devtools(
     persist(
@@ -324,7 +324,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               // =====================================================================
               
               updateProfile: async (updates: Partial<UserProfileData>) => {
-                const state = get();
+                const _state = get();
                 if (!state.userId) throw new Error('User not authenticated');
 
                 set((state) => {
@@ -333,8 +333,8 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
                 });
 
                 try {
-                  const authState = enhancedAuthService.getEnhancedState();
-                  const result = await enhancedAuthService.updateProfile(updates as any);
+                  const _authState = enhancedAuthService.getEnhancedState();
+                  const _result = await enhancedAuthService.updateProfile(updates as any);
                   
                   if (result.error) {
                     throw new Error(result.error.message);
@@ -342,7 +342,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
 
                   set((state) => {
                     if (state.profile && result.data) {
-                      Object.assign(state.profile, result.data);
+  void Object.assign(state.profile, result.data);
                     }
                     state.isLoading = false;
                   });
@@ -360,12 +360,12 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               },
 
               uploadAvatar: async (file: File) => {
-                const state = get();
+                const _state = get();
                 if (!state.userId) throw new Error('User not authenticated');
 
                 // Upload file to Supabase storage
-                const fileExt = file.name.split('.').pop();
-                const fileName = `${state.userId}-${Date.now()}.${fileExt}`;
+                const _fileExt = file.name.split('.').pop();
+                const _fileName = `${state.userId}-${Date.now()}.${fileExt}`;
                 
                 const { data, error } = await supabase.storage
                   .from('avatars')
@@ -391,10 +391,10 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               // =====================================================================
               
               assignRole: async (role: ExtendedUserRole) => {
-                const state = get();
+                const _state = get();
                 if (!state.userId) throw new Error('User not authenticated');
 
-                const result = await enhancedAuthService.assignRole(state.userId, role);
+                const _result = await enhancedAuthService.assignRole(state.userId, role);
                 if (result.error) {
                   throw new Error(result.error.message);
                 }
@@ -403,10 +403,10 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               },
 
               removeRole: async (role: ExtendedUserRole) => {
-                const state = get();
+                const _state = get();
                 if (!state.userId) throw new Error('User not authenticated');
 
-                const result = await enhancedAuthService.removeRole(state.userId, role);
+                const _result = await enhancedAuthService.removeRole(state.userId, role);
                 if (result.error) {
                   throw new Error(result.error.message);
                 }
@@ -418,11 +418,11 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
                 set((state) => {
                   state.roles = roles;
                   // Update primary role
-                  const primaryRole = roles
+                  const _primaryRole = roles
                     .filter(r => r.is_active)
                     .sort((a, b) => {
                       // Sort by hierarchy (admin > moderator > coach > client)
-                      const hierarchyMap = {
+                      const _hierarchyMap = {
                         'admin': 100,
                         'moderator': 80,
                         'support': 70,
@@ -444,11 +444,11 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               // =====================================================================
               
               checkPermission: (resource: string, action: string) => {
-                const state = get();
-                const permissionKey = `${resource}:${action}`;
+                const _state = get();
+                const _permissionKey = `${resource}:${action}`;
                 
                 // Check permission overrides first
-                const override = state.permissionOverrides.find(
+                const _override = state.permissionOverrides.find(
                   o => o.resource === resource && o.action === action
                 );
                 if (override) {
@@ -466,7 +466,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               },
 
               hasAnyRole: (roles: ExtendedUserRole[]) => {
-                const userRoles = get().roles.filter(r => r.is_active).map(r => r.role);
+                const _userRoles = get().roles.filter(r => r.is_active).map(r => r.role);
                 return roles.some(role => userRoles.includes(role));
               },
 
@@ -475,7 +475,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               // =====================================================================
               
               updateOnboardingStage: async (stage: OnboardingStage, data?: Record<string, any>) => {
-                const result = await enhancedAuthService.updateOnboardingStage(stage, data);
+                const _result = await enhancedAuthService.updateOnboardingStage(stage, data);
                 if (result.error) {
                   throw new Error(result.error.message);
                 }
@@ -505,14 +505,14 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               // =====================================================================
               
               updateClientProfile: async (updates: Partial<ClientProfile>) => {
-                const result = await enhancedAuthService.updateClientProfile(updates);
+                const _result = await enhancedAuthService.updateClientProfile(updates);
                 if (result.error) {
                   throw new Error(result.error.message);
                 }
                 
                 set((state) => {
                   if (state.clientProfile && result.data) {
-                    Object.assign(state.clientProfile, result.data);
+  void Object.assign(state.clientProfile, result.data);
                   } else if (result.data) {
                     state.clientProfile = result.data;
                   }
@@ -534,7 +534,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               // =====================================================================
               
               submitCoachApplication: async (applicationData: Partial<CoachApplication>) => {
-                const result = await enhancedAuthService.submitCoachApplication(applicationData);
+                const _result = await enhancedAuthService.submitCoachApplication(applicationData);
                 if (result.error) {
                   throw new Error(result.error.message);
                 }
@@ -545,7 +545,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               },
 
               updateCoachApplication: async (updates: Partial<CoachApplication>) => {
-                const state = get();
+                const _state = get();
                 if (!state.userId || !state.coachApplication) {
                   throw new Error('No coach application to update');
                 }
@@ -567,7 +567,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               },
 
               withdrawCoachApplication: async () => {
-                const state = get();
+                const _state = get();
                 if (!state.userId || !state.coachApplication) {
                   throw new Error('No coach application to withdraw');
                 }
@@ -621,7 +621,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               // =====================================================================
               
               refreshUserData: async () => {
-                const result = await enhancedAuthService.refreshUserData();
+                const _result = await enhancedAuthService.refreshUserData();
                 if (result.error) {
                   throw new Error(result.error.message);
                 }
@@ -631,11 +631,11 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               },
 
               syncToServer: async () => {
-                const state = get();
+                const _state = get();
                 if (!state.userId || !state.syncQueue.length) return;
 
                 // Process sync queue
-                const queue = [...state.syncQueue];
+                const _queue = [...state.syncQueue];
                 set((state) => {
                   state.syncQueue = [];
                 });
@@ -665,8 +665,8 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
                   
                   if (!profile) return;
 
-                  const joinedDate = new Date(profile.created_at);
-                  const now = new Date();
+                  const _joinedDate = new Date(profile.created_at);
+                  const _now = new Date();
                   
                   state.metrics = {
                     profileCompletion: state.profileCompletion,
@@ -681,10 +681,10 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               },
 
               subscribeToRealtime: () => {
-                const state = get();
+                const _state = get();
                 if (!state.userId || state.realtimeSubscription) return;
 
-                const subscription = supabase.channel(`user-${state.userId}`)
+                const _subscription = supabase.channel(`user-${state.userId}`)
                   .on('postgres_changes', 
                     { event: '*', schema: 'public', table: 'user_states' },
                     (payload) => {
@@ -707,7 +707,7 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
               },
 
               unsubscribeFromRealtime: () => {
-                const state = get();
+                const _state = get();
                 if (state.realtimeSubscription) {
                   state.realtimeSubscription.unsubscribe();
                   set((state) => {
@@ -763,9 +763,9 @@ export const useUnifiedUserStore = create<UnifiedUserState>()(
 // Subscribe to enhanced auth service changes
 let authServiceSubscription: (() => void) | null = null;
 
-const initializeStore = () => {
+const _initializeStore = () => {
   authServiceSubscription = enhancedAuthService.onEnhancedStateChange((authState) => {
-    const store = useUnifiedUserStore.getState();
+    const _store = useUnifiedUserStore.getState();
     
     // Batch update state from auth service
     useUnifiedUserStore.setState((state) => {
@@ -818,13 +818,13 @@ const initializeStore = () => {
     });
     
     // Calculate metrics after state update
-    store.calculateMetrics();
+  void store.calculateMetrics();
     
     // Subscribe to real-time updates if authenticated
     if (authState.isAuthenticated && authState.user) {
-      store.subscribeToRealtime();
+  void store.subscribeToRealtime();
     } else {
-      store.unsubscribeFromRealtime();
+  void store.unsubscribeFromRealtime();
     }
   });
 };
@@ -834,28 +834,28 @@ initializeStore();
 
 // Monitor online/offline status
 window.addEventListener('online', () => {
-  useUnifiedUserStore.setState({ isOnline: true });
+  void useUnifiedUserStore.setState({ isOnline: true });
   // Trigger sync when coming back online
-  const state = useUnifiedUserStore.getState();
+  const _state = useUnifiedUserStore.getState();
   if (state.isAuthenticated && state.syncQueue.length > 0) {
-    state.syncToServer().catch(console.error);
+  void state.syncToServer().catch(console.error);
   }
 });
 
 window.addEventListener('offline', () => {
-  useUnifiedUserStore.setState({ isOnline: false });
+  void useUnifiedUserStore.setState({ isOnline: false });
 });
 
 // Cleanup function
-export const destroyUnifiedUserStore = () => {
+export const _destroyUnifiedUserStore = () => {
   if (authServiceSubscription) {
     authServiceSubscription();
     authServiceSubscription = null;
   }
   
-  const state = useUnifiedUserStore.getState();
-  state.unsubscribeFromRealtime();
-  state.reset();
+  const _state = useUnifiedUserStore.getState();
+  void state.unsubscribeFromRealtime();
+  void state.reset();
 };
 
 // =====================================================================
@@ -863,7 +863,7 @@ export const destroyUnifiedUserStore = () => {
 // =====================================================================
 
 // Hook for authentication state
-export const useAuth = () => {
+export const _useAuth = () => {
   return useUnifiedUserStore((state) => ({
     isAuthenticated: state.isAuthenticated,
     isLoading: state.isLoading,
@@ -880,7 +880,7 @@ export const useAuth = () => {
 };
 
 // Hook for user roles and permissions
-export const useUserRoles = () => {
+export const _useUserRoles = () => {
   return useUnifiedUserStore((state) => ({
     roles: state.roles,
     primaryRole: state.primaryRole,
@@ -894,7 +894,7 @@ export const useUserRoles = () => {
 };
 
 // Hook for onboarding state
-export const useOnboarding = () => {
+export const _useOnboarding = () => {
   return useUnifiedUserStore((state) => ({
     onboardingStage: state.onboardingStage,
     onboardingData: state.onboardingData,
@@ -907,7 +907,7 @@ export const useOnboarding = () => {
 };
 
 // Hook for client profile
-export const useClientProfile = () => {
+export const _useClientProfile = () => {
   return useUnifiedUserStore((state) => ({
     clientProfile: state.clientProfile,
     updateClientProfile: state.updateClientProfile,
@@ -917,7 +917,7 @@ export const useClientProfile = () => {
 };
 
 // Hook for coach application
-export const useCoachApplication = () => {
+export const _useCoachApplication = () => {
   return useUnifiedUserStore((state) => ({
     coachApplication: state.coachApplication,
     submitCoachApplication: state.submitCoachApplication,
@@ -927,7 +927,7 @@ export const useCoachApplication = () => {
 };
 
 // Hook for user preferences
-export const useUserPreferences = () => {
+export const _useUserPreferences = () => {
   return useUnifiedUserStore((state) => ({
     preferences: state.preferences,
     updatePreferences: state.updatePreferences,
@@ -938,7 +938,7 @@ export const useUserPreferences = () => {
 };
 
 // Hook for dashboard metrics
-export const useDashboardMetrics = () => {
+export const _useDashboardMetrics = () => {
   return useUnifiedUserStore((state) => ({
     metrics: state.metrics,
     calculateMetrics: state.calculateMetrics,
@@ -1045,9 +1045,9 @@ export function transformToLegacyUser(
 ): LegacyUser | null {
   if (!profile) return null;
 
-  const fullName = profile.full_name ?? '';
+  const _fullName = profile.full_name ?? '';
   const [firstName = '', ...lastNameParts] = fullName.split(' ');
-  const lastName = lastNameParts.join(' ');
+  const _lastName = lastNameParts.join(' ');
 
   return {
     id: profile.id,
@@ -1065,9 +1065,9 @@ export function transformToLegacyUser(
  * 
  * @returns Legacy auth state with backward-compatible interface
  */
-export const useLegacyAuth = () => {
+export const _useLegacyAuth = () => {
   return useUnifiedUserStore((state) => {
-    const legacyUser = transformToLegacyUser(state.profile, state.primaryRole);
+    const _legacyUser = transformToLegacyUser(state.profile, state.primaryRole);
     
     return {
       user: legacyUser,
@@ -1076,7 +1076,7 @@ export const useLegacyAuth = () => {
       setUser: (_user: LegacyUser | null) => {
         // This is a compatibility shim - the enhanced system manages user state
         // Components should not directly set user, but this prevents errors
-        console.warn('setUser called on legacy compatibility layer - use enhanced auth service instead');
+  void console.warn('setUser called on legacy compatibility layer - use enhanced auth service instead');
       },
       setLoading: state.setLoading,
       setError: state.setError,
@@ -1090,16 +1090,16 @@ export const useLegacyAuth = () => {
  * 
  * @returns Legacy role state with backward-compatible interface
  */
-export const useLegacyRole = () => {
+export const _useLegacyRole = () => {
   return useUnifiedUserStore((state) => {
-    const legacyRole = mapExtendedRoleToLegacy(state.primaryRole);
+    const _legacyRole = mapExtendedRoleToLegacy(state.primaryRole);
     
     return {
       role: legacyRole,
       setRole: (_role: LegacyUserRole) => {
         // This is a compatibility shim - the enhanced system manages roles
         // Components should not directly set roles, but this prevents errors
-        console.warn('setRole called on legacy compatibility layer - use enhanced role management instead');
+  void console.warn('setRole called on legacy compatibility layer - use enhanced role management instead');
       },
     };
   });
@@ -1111,15 +1111,15 @@ export const useLegacyRole = () => {
  */
 export async function legacyHandleGoogleSignIn(): Promise<LegacyUser> {
   const { authService } = await import('../services/auth.service');
-  const result = await authService.signInWithGoogle();
+  const _result = await authService.signInWithGoogle();
   
   if (result.error) {
     throw new Error(result.error.message);
   }
 
   // Wait for state to update and return legacy user format
-  const state = useUnifiedUserStore.getState();
-  const legacyUser = transformToLegacyUser(state.profile, state.primaryRole);
+  const _state = useUnifiedUserStore.getState();
+  const _legacyUser = transformToLegacyUser(state.profile, state.primaryRole);
   
   if (!legacyUser) {
     throw new Error('Authentication successful but user data not available');
@@ -1130,7 +1130,7 @@ export async function legacyHandleGoogleSignIn(): Promise<LegacyUser> {
 
 export async function legacySignOut(): Promise<void> {
   const { authService } = await import('../services/auth.service');
-  const result = await authService.signOut();
+  const _result = await authService.signOut();
   
   if (result.error) {
     throw new Error(result.error.message);
@@ -1139,15 +1139,15 @@ export async function legacySignOut(): Promise<void> {
 
 export async function legacySignInWithEmail(email: string, password: string): Promise<LegacyUser> {
   const { authService } = await import('../services/auth.service');
-  const result = await authService.signIn({ email, password });
+  const _result = await authService.signIn({ email, password });
   
   if (result.error) {
     throw new Error(result.error.message);
   }
 
   // Wait for state to update and return legacy user format
-  const state = useUnifiedUserStore.getState();
-  const legacyUser = transformToLegacyUser(state.profile, state.primaryRole);
+  const _state = useUnifiedUserStore.getState();
+  const _legacyUser = transformToLegacyUser(state.profile, state.primaryRole);
   
   if (!legacyUser) {
     throw new Error('Authentication successful but user data not available');
@@ -1163,7 +1163,7 @@ export async function legacySignUpWithEmail(
   role: LegacyUserRole = 'client'
 ): Promise<LegacyUser> {
   const { authService } = await import('../services/auth.service');
-  const result = await authService.signUp({
+  const _result = await authService.signUp({
     email,
     password,
     fullName,
@@ -1175,8 +1175,8 @@ export async function legacySignUpWithEmail(
   }
 
   // Wait for state to update and return legacy user format
-  const state = useUnifiedUserStore.getState();
-  const legacyUser = transformToLegacyUser(state.profile, state.primaryRole);
+  const _state = useUnifiedUserStore.getState();
+  const _legacyUser = transformToLegacyUser(state.profile, state.primaryRole);
   
   if (!legacyUser) {
     throw new Error('Registration successful but user data not available');
@@ -1187,7 +1187,7 @@ export async function legacySignUpWithEmail(
 
 export async function legacyResetPassword(email: string): Promise<void> {
   const { authService } = await import('../services/auth.service');
-  const result = await authService.resetPassword({ email });
+  const _result = await authService.resetPassword({ email });
   
   if (result.error) {
     throw new Error(result.error.message);
@@ -1198,7 +1198,7 @@ export async function legacyResetPassword(email: string): Promise<void> {
  * Legacy utility functions for backward compatibility
  */
 export function legacyGetCurrentUser(): LegacyUser | null {
-  const state = useUnifiedUserStore.getState();
+  const _state = useUnifiedUserStore.getState();
   return transformToLegacyUser(state.profile, state.primaryRole);
 }
 
@@ -1207,7 +1207,7 @@ export function legacyIsAuthenticated(): boolean {
 }
 
 export function legacyGetUserRole(): LegacyUserRole | null {
-  const state = useUnifiedUserStore.getState();
+  const _state = useUnifiedUserStore.getState();
   return mapExtendedRoleToLegacy(state.primaryRole);
 }
 

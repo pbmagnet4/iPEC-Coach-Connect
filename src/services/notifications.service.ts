@@ -147,14 +147,14 @@ class NotificationsService {
       await this.setupRealtimeSubscriptions();
       
       // Start background processing
-      this.startBackgroundProcessing();
+  void his.startBackgroundProcessing();
       
       // Load user preferences cache
       await this.preloadUserPreferences();
 
-      console.log('Notifications Service initialized');
+  void console.log('Notifications Service initialized');
     } catch (error) {
-      console.error('Failed to initialize Notifications Service:', error);
+  void console.error('Failed to initialize Notifications Service:', error);
       throw error;
     }
   }
@@ -219,12 +219,12 @@ class NotificationsService {
 
       // Add to processing queue
       if (!options.scheduled_for || options.scheduled_for <= new Date()) {
-        this.addToQueue(createdNotification);
+  void his.addToQueue(createdNotification);
       }
 
       return createdNotification;
     } catch (error) {
-      console.error('Failed to send notification:', error);
+  void console.error('Failed to send notification:', error);
       throw error;
     }
   }
@@ -242,13 +242,13 @@ class NotificationsService {
       const batch = notifications.slice(i, i + batchSize);
       const batchPromises = batch.map(notification => 
         this.sendNotification(notification).catch(error => {
-          console.error('Bulk notification failed:', error);
+  void console.error('Bulk notification failed:', error);
           return null;
         })
       );
 
       const batchResults = await Promise.all(batchPromises);
-      results.push(...batchResults.filter(Boolean) as Notification[]);
+  void results.push(...batchResults.filter(Boolean) as Notification[]);
     }
 
     return results;
@@ -298,7 +298,7 @@ class NotificationsService {
         total: count || 0
       };
     } catch (error) {
-      console.error('Failed to get user notifications:', error);
+  void console.error('Failed to get user notifications:', error);
       throw error;
     }
   }
@@ -320,9 +320,9 @@ class NotificationsService {
       if (error) throw error;
 
       // Clear relevant cache
-      this.clearUserNotificationsCache(userId);
+  void his.clearUserNotificationsCache(userId);
     } catch (error) {
-      console.error('Failed to mark notification as read:', error);
+  void console.error('Failed to mark notification as read:', error);
       throw error;
     }
   }
@@ -344,9 +344,9 @@ class NotificationsService {
       if (error) throw error;
 
       // Clear relevant cache
-      this.clearUserNotificationsCache(userId);
+  void his.clearUserNotificationsCache(userId);
     } catch (error) {
-      console.error('Failed to mark notification as clicked:', error);
+  void console.error('Failed to mark notification as clicked:', error);
       throw error;
     }
   }
@@ -365,9 +365,9 @@ class NotificationsService {
       if (error) throw error;
 
       // Clear relevant cache
-      this.clearUserNotificationsCache(userId);
+  void his.clearUserNotificationsCache(userId);
     } catch (error) {
-      console.error('Failed to delete notification:', error);
+  void console.error('Failed to delete notification:', error);
       throw error;
     }
   }
@@ -399,11 +399,11 @@ class NotificationsService {
       }
 
       // Cache the preferences
-      cacheService.set(cacheKey, data, this.CACHE_TTL);
+  void cacheService.set(cacheKey, data, this.CACHE_TTL);
 
       return data;
     } catch (error) {
-      console.error('Failed to get user preferences:', error);
+  void console.error('Failed to get user preferences:', error);
       throw error;
     }
   }
@@ -430,11 +430,11 @@ class NotificationsService {
 
       // Clear cache
       const cacheKey = `notification_preferences_${userId}`;
-      cacheService.delete(cacheKey);
+  void cacheService.delete(cacheKey);
 
       return data;
     } catch (error) {
-      console.error('Failed to update user preferences:', error);
+  void console.error('Failed to update user preferences:', error);
       throw error;
     }
   }
@@ -456,7 +456,7 @@ class NotificationsService {
     return () => {
       const userSubscribers = this.subscribers.get(userId);
       if (userSubscribers) {
-        userSubscribers.delete(callback);
+  void userSubscribers.delete(callback);
         if (userSubscribers.size === 0) {
           this.subscribers.delete(userId);
         }
@@ -536,7 +536,7 @@ class NotificationsService {
 
       return stats;
     } catch (error) {
-      console.error('Failed to get notification stats:', error);
+  void console.error('Failed to get notification stats:', error);
       throw error;
     }
   }
@@ -556,7 +556,7 @@ class NotificationsService {
 
       return data;
     } catch (error) {
-      console.error('Failed to create notification template:', error);
+  void console.error('Failed to create notification template:', error);
       throw error;
     }
   }
@@ -582,7 +582,7 @@ class NotificationsService {
 
       return data || [];
     } catch (error) {
-      console.error('Failed to get notification templates:', error);
+  void console.error('Failed to get notification templates:', error);
       throw error;
     }
   }
@@ -670,7 +670,7 @@ class NotificationsService {
         },
         (payload) => {
           const notification = payload.new as Notification;
-          this.notifySubscribers(notification);
+  void his.notifySubscribers(notification);
         }
       )
       .subscribe();
@@ -765,7 +765,7 @@ class NotificationsService {
   private addToQueue(notification: Notification): void {
     this.messageQueue.push(notification);
     if (!this.isProcessingQueue) {
-      this.processQueue();
+  void his.processQueue();
     }
   }
 
@@ -782,7 +782,7 @@ class NotificationsService {
       try {
         await this.deliverNotification(notification);
       } catch (error) {
-        console.error('Failed to deliver notification:', error);
+  void console.error('Failed to deliver notification:', error);
         
         // Retry logic
         const retryCount = notification.metadata?.retry_count || 0;
@@ -864,19 +864,19 @@ class NotificationsService {
   private async sendEmail(notification: Notification): Promise<void> {
     // Email delivery implementation would go here
     // For now, we'll simulate success
-    console.log(`Sending email notification: ${notification.title}`);
+  void console.log(`Sending email notification: ${notification.title}`);
   }
 
   private async sendPushNotification(notification: Notification): Promise<void> {
     // Push notification delivery implementation would go here
     // For now, we'll simulate success
-    console.log(`Sending push notification: ${notification.title}`);
+  void console.log(`Sending push notification: ${notification.title}`);
   }
 
   private async sendSMS(notification: Notification): Promise<void> {
     // SMS delivery implementation would go here
     // For now, we'll simulate success
-    console.log(`Sending SMS notification: ${notification.title}`);
+  void console.log(`Sending SMS notification: ${notification.title}`);
   }
 
   private async markNotificationFailed(notificationId: string): Promise<void> {
@@ -896,7 +896,7 @@ class NotificationsService {
         try {
           callback(notification);
         } catch (error) {
-          console.error('Error in notification subscriber callback:', error);
+  void console.error('Error in notification subscriber callback:', error);
         }
       });
     }
@@ -915,11 +915,11 @@ class NotificationsService {
 
         if (scheduledNotifications) {
           scheduledNotifications.forEach(notification => {
-            this.addToQueue(notification);
+  void his.addToQueue(notification);
           });
         }
       } catch (error) {
-        console.error('Error processing scheduled notifications:', error);
+  void console.error('Error processing scheduled notifications:', error);
       }
     }, 60000); // 1 minute
   }
@@ -934,17 +934,17 @@ class NotificationsService {
       if (preferences) {
         preferences.forEach(pref => {
           const cacheKey = `notification_preferences_${pref.user_id}`;
-          cacheService.set(cacheKey, pref, this.CACHE_TTL);
+  void cacheService.set(cacheKey, pref, this.CACHE_TTL);
         });
       }
     } catch (error) {
-      console.error('Failed to preload user preferences:', error);
+  void console.error('Failed to preload user preferences:', error);
     }
   }
 
   private clearUserNotificationsCache(userId: string): void {
     const cacheKey = `notification_preferences_${userId}`;
-    cacheService.delete(cacheKey);
+  void cacheService.delete(cacheKey);
   }
 
   /**

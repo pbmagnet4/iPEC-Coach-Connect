@@ -588,7 +588,7 @@ export const ProfileCompletionWidget: React.FC<ProfileCompletionWidgetProps> = (
 
   const handleTaskAction = useCallback((task: CompletionTask) => {
     // Handle task action (navigate to appropriate page, open modal, etc.)
-    console.log('Task action:', task.id);
+  void console.log('Task action:', task.id);
     if (onTaskComplete) {
       onTaskComplete(task.id);
     }

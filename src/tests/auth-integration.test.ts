@@ -106,20 +106,20 @@ vi.mock('../lib/session-security', () => ({
 describe('Authentication Integration Tests', () => {
   beforeEach(() => {
     // Reset all mocks
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
     
     // Reset auth service state
-    authService.destroy();
+  void authService.destroy();
   });
 
   afterEach(() => {
     // Cleanup after each test
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
   });
 
   describe('AuthService Core Functionality', () => {
     test('should initialize with correct default state', () => {
-      const state = authService.getState();
+      const _state = authService.getState();
       
       expect(state.user).toBeNull();
       expect(state.session).toBeNull();
@@ -130,7 +130,7 @@ describe('Authentication Integration Tests', () => {
 
     test('should handle successful sign up', async () => {
       // Mock successful Supabase response
-      const mockUser = { id: 'user-id', email: 'test@example.com' };
+      const _mockUser = { id: 'user-id', email: 'test@example.com' };
       const { supabase } = await import('../lib/supabase');
       
       vi.mocked(supabase.auth.signUp).mockResolvedValueOnce({
@@ -142,7 +142,7 @@ describe('Authentication Integration Tests', () => {
         upsert: vi.fn().mockResolvedValue({ error: null }),
       } as any);
 
-      const result = await authService.signUp({
+      const _result = await authService.signUp({
         email: 'test@example.com',
         password: 'Test123!@#',
         fullName: 'Test User',
@@ -164,8 +164,8 @@ describe('Authentication Integration Tests', () => {
     });
 
     test('should handle successful sign in', async () => {
-      const mockUser = { id: 'user-id', email: 'test@example.com' };
-      const mockSession = { access_token: 'token', user: mockUser };
+      const _mockUser = { id: 'user-id', email: 'test@example.com' };
+      const _mockSession = { access_token: 'token', user: mockUser };
       const { supabase } = await import('../lib/supabase');
 
       vi.mocked(supabase.auth.signInWithPassword).mockResolvedValueOnce({
@@ -173,7 +173,7 @@ describe('Authentication Integration Tests', () => {
         error: null,
       });
 
-      const result = await authService.signIn({
+      const _result = await authService.signIn({
         email: 'test@example.com',
         password: 'Test123!@#',
       });
@@ -190,7 +190,7 @@ describe('Authentication Integration Tests', () => {
         error: new Error('Invalid credentials'),
       });
 
-      const result = await authService.signIn({
+      const _result = await authService.signIn({
         email: 'invalid@example.com',
         password: 'wrongpassword',
       });
@@ -207,7 +207,7 @@ describe('Authentication Integration Tests', () => {
         error: null,
       });
 
-      const result = await authService.signInWithGoogle();
+      const _result = await authService.signInWithGoogle();
 
       expect(result.error).toBeUndefined();
       expect(supabase.auth.signInWithOAuth).toHaveBeenCalledWith({
@@ -228,7 +228,7 @@ describe('Authentication Integration Tests', () => {
         error: null,
       });
 
-      const result = await authService.signOut();
+      const _result = await authService.signOut();
 
       expect(result.error).toBeUndefined();
       expect(supabase.auth.signOut).toHaveBeenCalled();
@@ -242,7 +242,7 @@ describe('Authentication Integration Tests', () => {
         error: null,
       });
 
-      const result = await authService.resetPassword({
+      const _result = await authService.resetPassword({
         email: 'test@example.com',
       });
 
@@ -259,14 +259,14 @@ describe('Authentication Integration Tests', () => {
   describe('State Management Integration', () => {
     test('should sync auth state with unified user store', async () => {
       // Mock successful authentication
-      const mockUser = { 
+      const _mockUser = { 
         id: 'user-id', 
         email: 'test@example.com',
         email_confirmed_at: new Date().toISOString(),
       };
       
       // Simulate auth state change
-      const state = authService.getState();
+      const _state = authService.getState();
       expect(state.isAuthenticated).toBe(false);
 
       // Mock profile data loading
@@ -290,14 +290,14 @@ describe('Authentication Integration Tests', () => {
       // Load user data
       await (authService as any).loadUserData(mockUser);
 
-      const updatedState = authService.getState();
+      const _updatedState = authService.getState();
       expect(updatedState.user).toEqual(mockUser);
       expect(updatedState.isAuthenticated).toBe(true);
       expect(updatedState.profile).toBeTruthy();
     });
 
     test('should provide legacy compatibility layer', () => {
-      const legacyAuth = useLegacyAuth();
+      const _legacyAuth = useLegacyAuth();
       
       expect(legacyAuth).toHaveProperty('user');
       expect(legacyAuth).toHaveProperty('isLoading');
@@ -309,12 +309,12 @@ describe('Authentication Integration Tests', () => {
   });
 
   describe('Protected Route Integration', () => {
-    const TestComponent = () => <div>Protected Content</div>;
-    const LoginComponent = () => <div>Login Page</div>;
+    const _TestComponent = () => <div>Protected Content</div>;
+    const _LoginComponent = () => <div>Login Page</div>;
 
     test('should redirect unauthenticated users to login', () => {
       // Mock unauthenticated state
-      const mockStore = {
+      const _mockStore = {
         isAuthenticated: false,
         isLoading: false,
         userId: null,
@@ -330,7 +330,7 @@ describe('Authentication Integration Tests', () => {
         hasAnyRole: vi.fn(() => false),
       };
 
-      vi.mocked(useUnifiedUserStore).mockReturnValue(mockStore as any);
+  void vi.mocked(useUnifiedUserStore).mockReturnValue(mockStore as any);
 
       render(
         <MemoryRouter initialEntries={['/dashboard']}>
@@ -354,7 +354,7 @@ describe('Authentication Integration Tests', () => {
 
     test('should allow authenticated users to access protected routes', () => {
       // Mock authenticated state
-      const mockStore = {
+      const _mockStore = {
         isAuthenticated: true,
         isLoading: false,
         userId: 'user-id',
@@ -370,7 +370,7 @@ describe('Authentication Integration Tests', () => {
         hasAnyRole: vi.fn(() => true),
       };
 
-      vi.mocked(useUnifiedUserStore).mockReturnValue(mockStore as any);
+  void vi.mocked(useUnifiedUserStore).mockReturnValue(mockStore as any);
 
       render(
         <MemoryRouter initialEntries={['/dashboard']}>
@@ -394,7 +394,7 @@ describe('Authentication Integration Tests', () => {
 
     test('should enforce role-based access control', () => {
       // Mock client user trying to access coach route
-      const mockStore = {
+      const _mockStore = {
         isAuthenticated: true,
         isLoading: false,
         userId: 'user-id',
@@ -410,7 +410,7 @@ describe('Authentication Integration Tests', () => {
         hasAnyRole: vi.fn((roles: string[]) => roles.includes('client')),
       };
 
-      vi.mocked(useUnifiedUserStore).mockReturnValue(mockStore as any);
+  void vi.mocked(useUnifiedUserStore).mockReturnValue(mockStore as any);
 
       render(
         <MemoryRouter initialEntries={['/coach-dashboard']}>
@@ -441,7 +441,7 @@ describe('Authentication Integration Tests', () => {
       const { checkRateLimit } = await import('../lib/rate-limiter-enhanced');
       
       // First few attempts should be allowed
-      vi.mocked(checkRateLimit).mockReturnValue({ allowed: true });
+  void vi.mocked(checkRateLimit).mockReturnValue({ allowed: true });
       
       let result = await authService.signIn({
         email: 'test@example.com',
@@ -465,7 +465,7 @@ describe('Authentication Integration Tests', () => {
     });
 
     test('should handle MFA verification flow', async () => {
-      const mockUser = { id: 'user-id', email: 'test@example.com' };
+      const _mockUser = { id: 'user-id', email: 'test@example.com' };
       
       // Mock MFA settings
       vi.spyOn(mfaService, 'getMFASettings').mockResolvedValue({
@@ -474,7 +474,7 @@ describe('Authentication Integration Tests', () => {
         backup_codes: [],
       } as any);
 
-      vi.spyOn(mfaService, 'isDeviceTrusted').mockResolvedValue(false);
+  void vi.spyOn(mfaService, 'isDeviceTrusted').mockResolvedValue(false);
       vi.spyOn(mfaService, 'verifyMFALogin').mockResolvedValue({
         success: true,
         requiresDeviceTrust: false,
@@ -488,7 +488,7 @@ describe('Authentication Integration Tests', () => {
       expect(state.mfaVerified).toBe(false);
 
       // Verify MFA code
-      const mfaResult = await authService.verifyMFA('123456');
+      const _mfaResult = await authService.verifyMFA('123456');
       
       expect(mfaResult.error).toBeUndefined();
       
@@ -508,8 +508,8 @@ describe('Authentication Integration Tests', () => {
 
   describe('Component Integration', () => {
     test('should integrate with GoogleSignInButton component', async () => {
-      const mockOnSuccess = vi.fn();
-      const mockOnError = vi.fn();
+      const _mockOnSuccess = vi.fn();
+      const _mockOnError = vi.fn();
 
       // Mock successful Google sign-in
       vi.spyOn(authService, 'signInWithGoogle').mockResolvedValue({
@@ -525,8 +525,8 @@ describe('Authentication Integration Tests', () => {
         </MemoryRouter>
       );
 
-      const button = screen.getByRole('button');
-      fireEvent.click(button);
+      const _button = screen.getByRole('button');
+  void fireEvent.click(button);
 
       await waitFor(() => {
         expect(authService.signInWithGoogle).toHaveBeenCalled();
@@ -542,7 +542,7 @@ describe('Authentication Integration Tests', () => {
         new Error('Network error')
       );
 
-      const result = await authService.signIn({
+      const _result = await authService.signIn({
         email: 'test@example.com',
         password: 'Test123!@#',
       });
@@ -566,30 +566,30 @@ describe('Authentication Integration Tests', () => {
         })),
       } as any);
 
-      const mockUser = { id: 'user-id', email: 'test@example.com' };
+      const _mockUser = { id: 'user-id', email: 'test@example.com' };
       
       // Should handle invalid profile data
       await (authService as any).loadUserData(mockUser);
       
-      const state = authService.getState();
+      const _state = authService.getState();
       expect(state.profile).toBeNull(); // Should be null due to validation failure
     });
   });
 
   describe('Memory Management', () => {
     test('should clean up resources on destroy', () => {
-      const memoryStats = authService.getMemoryStats();
+      const _memoryStats = authService.getMemoryStats();
       expect(memoryStats.isDestroyed).toBe(false);
       
-      authService.destroy();
+  void authService.destroy();
       
-      const statsAfterDestroy = authService.getMemoryStats();
+      const _statsAfterDestroy = authService.getMemoryStats();
       expect(statsAfterDestroy.isDestroyed).toBe(true);
       expect(statsAfterDestroy.listenersCount).toBe(0);
     });
 
     test('should handle subscription cleanup', () => {
-      const unsubscribeSpy = vi.fn();
+      const _unsubscribeSpy = vi.fn();
       
       // Mock Supabase subscription
       const { supabase } = vi.mocked(await import('../lib/supabase'));
@@ -602,10 +602,10 @@ describe('Authentication Integration Tests', () => {
       } as any);
 
       // Initialize new auth service instance
-      const newAuthService = new (authService.constructor as any)();
+      const _newAuthService = new (authService.constructor as any)();
       
       // Destroy should call unsubscribe
-      newAuthService.destroy();
+  void newAuthService.destroy();
       
       expect(unsubscribeSpy).toHaveBeenCalled();
     });
@@ -636,14 +636,14 @@ export function createMockAuthState(overrides: any = {}) {
 
 // Helper function to mock authenticated user
 export function mockAuthenticatedUser(userOverrides: any = {}) {
-  const mockUser = {
+  const _mockUser = {
     id: 'test-user-id',
     email: 'test@example.com',
     email_confirmed_at: new Date().toISOString(),
     ...userOverrides,
   };
 
-  const mockProfile = {
+  const _mockProfile = {
     id: 'test-user-id',
     full_name: 'Test User',
     email: 'test@example.com',

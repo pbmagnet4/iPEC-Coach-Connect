@@ -84,7 +84,7 @@ export const useSmartPreloading = () => {
     importFn().then(() => {
       setPreloadedComponents(prev => new Set(prev).add(componentName));
     }).catch(error => {
-      console.warn(`Failed to preload ${componentName}:`, error);
+  void console.warn(`Failed to preload ${componentName}:`, error);
     });
   }, [preloadedComponents]);
   
@@ -107,7 +107,7 @@ export const useSmartPreloading = () => {
         ([entry]) => {
           if (entry.isIntersecting) {
             preloadComponent(componentName, importFn);
-            observer.disconnect();
+  void observer.disconnect();
           }
         },
         { rootMargin: '100px' }
@@ -115,7 +115,7 @@ export const useSmartPreloading = () => {
       
       const trigger = document.getElementById(`preload-trigger-${componentName}`);
       if (trigger) {
-        observer.observe(trigger);
+  void observer.observe(trigger);
       }
       
       return () => observer.disconnect();

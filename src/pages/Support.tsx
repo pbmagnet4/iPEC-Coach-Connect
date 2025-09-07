@@ -129,7 +129,7 @@ export function Support() {
         const result = await supportService.submitTicket(data);
         setSubmitStatus('success');
         setTicketId(result.ticketId);
-        form.resetForm();
+  void form.resetForm();
 
         // Reset success message after 10 seconds
         setTimeout(() => {
@@ -160,7 +160,7 @@ export function Support() {
       return true;
     });
 
-    form.setFieldValue('attachments', [...currentFiles, ...validFiles]);
+  void form.setFieldValue('attachments', [...currentFiles, ...validFiles]);
     
     // Clear the input value to allow re-uploading the same file
     e.target.value = '';
@@ -168,7 +168,7 @@ export function Support() {
 
   const removeAttachment = (index: number) => {
     const currentFiles = form.getFieldValue('attachments') || [];
-    form.setFieldValue('attachments', currentFiles.filter((_, i) => i !== index));
+  void form.setFieldValue('attachments', currentFiles.filter((_, i) => i !== index));
   };
 
   return (

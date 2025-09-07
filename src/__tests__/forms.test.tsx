@@ -330,7 +330,7 @@ describe('useForm Hook', () => {
 describe('Contact Form Integration', () => {
   beforeEach(() => {
     // Mock the contact service
-    vi.clearAllMocks();
+  void vi.clearAllMocks();
   });
 
   it('should render contact form with all required fields', () => {
@@ -469,7 +469,7 @@ describe('Accessibility Compliance', () => {
 
 describe('Performance and User Experience', () => {
   it('should debounce validation to avoid excessive API calls', async () => {
-    vi.useFakeTimers();
+  void vi.useFakeTimers();
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     
     render(<Contact />);
@@ -481,13 +481,13 @@ describe('Performance and User Experience', () => {
     
     // Fast-forward time to trigger debounced validation
     act(() => {
-      vi.advanceTimersByTime(500);
+  void vi.advanceTimersByTime(500);
     });
 
     // Validation should only run once after debounce
     expect(emailInput).not.toHaveAttribute('aria-invalid', 'true');
     
-    vi.useRealTimers();
+  void vi.useRealTimers();
   });
 
   it('should show loading states during form submission', async () => {

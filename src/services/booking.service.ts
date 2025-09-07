@@ -523,31 +523,31 @@ class BookingService {
     const errors: string[] = [];
 
     if (!request.coachId) {
-      errors.push('Coach ID is required');
+  void errors.push('Coach ID is required');
     }
 
     if (!request.sessionTypeId) {
-      errors.push('Session type is required');
+  void errors.push('Session type is required');
     }
 
     if (!request.scheduledAt) {
-      errors.push('Scheduled time is required');
+  void errors.push('Scheduled time is required');
     }
 
     const scheduledTime = new Date(request.scheduledAt);
     const now = new Date();
     if (scheduledTime <= now) {
-      errors.push('Scheduled time must be in the future');
+  void errors.push('Scheduled time must be in the future');
     }
 
     // Check minimum advance booking time (e.g., 2 hours)
     const minAdvanceTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
     if (scheduledTime < minAdvanceTime) {
-      errors.push('Sessions must be booked at least 2 hours in advance');
+  void errors.push('Sessions must be booked at least 2 hours in advance');
     }
 
     if (!request.durationMinutes || request.durationMinutes < 30) {
-      errors.push('Session duration must be at least 30 minutes');
+  void errors.push('Session duration must be at least 30 minutes');
     }
 
     return {
@@ -649,7 +649,7 @@ class BookingService {
 
       return paymentResult.payment_intent?.stripe_payment_intent_id || `pi_${sessionId}`;
     } catch (error) {
-      console.error('Payment processing error:', error);
+  void console.error('Payment processing error:', error);
       throw error;
     }
   }
@@ -666,7 +666,7 @@ class BookingService {
       // Get session details to create proper reminders
       const sessionResult = await sessionService.getSession(sessionId);
       if (sessionResult.error || !sessionResult.data) {
-        console.error('Failed to get session for reminder scheduling:', sessionResult.error);
+  void console.error('Failed to get session for reminder scheduling:', sessionResult.error);
         return;
       }
 
@@ -692,7 +692,7 @@ class BookingService {
         await this.createSessionReminder(session, reminder15m, '15 minutes');
       }
     } catch (error) {
-      console.error('Error scheduling reminders:', error);
+  void console.error('Error scheduling reminders:', error);
       // Don't throw error - reminders are not critical to booking flow
     }
   }
@@ -730,7 +730,7 @@ class BookingService {
       const { bookingNotificationsService } = await import('./booking-notifications.service');
       await bookingNotificationsService.sendBookingConfirmation(sessionId);
     } catch (error) {
-      console.error('Error sending booking confirmation:', error);
+  void console.error('Error sending booking confirmation:', error);
       // Don't throw - booking should succeed even if notifications fail
     }
   }
@@ -739,7 +739,7 @@ class BookingService {
     try {
       const sessionResult = await sessionService.getSession(sessionId);
       if (sessionResult.error || !sessionResult.data) {
-        console.error('Failed to get session for calendar events:', sessionResult.error);
+  void console.error('Failed to get session for calendar events:', sessionResult.error);
         return;
       }
 
@@ -758,10 +758,10 @@ class BookingService {
 
       // TODO: Generate .ics file and include in confirmation emails
       // This would create proper calendar invitations that users can add to their calendars
-      console.log('Calendar event created:', calendarEvent);
+  void console.log('Calendar event created:', calendarEvent);
 
     } catch (error) {
-      console.error('Error creating calendar events:', error);
+  void console.error('Error creating calendar events:', error);
       // Don't throw - calendar events are nice-to-have
     }
   }
@@ -795,10 +795,10 @@ class BookingService {
         const [endHour, endMin] = availSlot.end_time.split(':').map(Number);
         
         const slotStart = new Date(date);
-        slotStart.setHours(startHour, startMin, 0, 0);
+  void slotStart.setHours(startHour, startMin, 0, 0);
         
         const slotEnd = new Date(date);
-        slotEnd.setHours(endHour, endMin, 0, 0);
+  void slotEnd.setHours(endHour, endMin, 0, 0);
         
         // Generate 30-minute slots within this availability window
         while (slotStart.getTime() + durationMinutes * 60000 <= slotEnd.getTime()) {
@@ -834,13 +834,13 @@ class BookingService {
           }
           
           // Move to next 30-minute slot
-          slotStart.setTime(slotStart.getTime() + 30 * 60000);
+  void slotStart.setTime(slotStart.getTime() + 30 * 60000);
         }
       }
     }
     
     // Sort slots by start time
-    slots.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+  void slots.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
     
     return slots;
   }
@@ -865,7 +865,7 @@ class BookingService {
       const { bookingNotificationsService } = await import('./booking-notifications.service');
       await bookingNotificationsService.sendRescheduleNotifications(sessionId, oldDateTime, newDateTime, reason);
     } catch (error) {
-      console.error('Error sending reschedule notifications:', error);
+  void console.error('Error sending reschedule notifications:', error);
     }
   }
 
@@ -909,7 +909,7 @@ class BookingService {
       const { bookingNotificationsService } = await import('./booking-notifications.service');
       await bookingNotificationsService.sendCancellationNotifications(sessionId, reason, refundAmount);
     } catch (error) {
-      console.error('Error sending cancellation notifications:', error);
+  void console.error('Error sending cancellation notifications:', error);
     }
   }
 
@@ -930,7 +930,7 @@ class BookingService {
       const { bookingNotificationsService } = await import('./booking-notifications.service');
       await bookingNotificationsService.sendSessionCompletionNotifications(sessionId);
     } catch (error) {
-      console.error('Error sending completion notifications:', error);
+  void console.error('Error sending completion notifications:', error);
     }
   }
 
@@ -939,7 +939,7 @@ class BookingService {
       const { bookingNotificationsService } = await import('./booking-notifications.service');
       await bookingNotificationsService.sendFollowUpSuggestion(sessionId);
     } catch (error) {
-      console.error('Error sending follow-up suggestion:', error);
+  void console.error('Error sending follow-up suggestion:', error);
     }
   }
 }

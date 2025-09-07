@@ -38,10 +38,10 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log error details for monitoring
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+  void console.error('ErrorBoundary caught an error:', error, errorInfo);
     
     // Report to error tracking service
-    this.reportError(error, errorInfo);
+  void his.reportError(error, errorInfo);
     
     // Call optional error handler
     this.props.onError?.(error, errorInfo);
@@ -81,7 +81,7 @@ Please describe what you were doing when this error occurred:
 [Your description here]
     `.trim());
     
-    window.open(`mailto:support@ipeccoachconnect.com?subject=${subject}&body=${body}`);
+  void window.open(`mailto:support@ipeccoachconnect.com?subject=${subject}&body=${body}`);
   };
 
   render() {
@@ -180,7 +180,7 @@ Please describe what you were doing when this error occurred:
 // Hook-based error boundary for functional components
 export function useErrorHandler() {
   return (error: Error, errorInfo?: { componentStack?: string }) => {
-    console.error('Error caught by useErrorHandler:', error, errorInfo);
+  void console.error('Error caught by useErrorHandler:', error, errorInfo);
     
     // In a real app, report to error tracking service
     if (process.env.NODE_ENV === 'production') {

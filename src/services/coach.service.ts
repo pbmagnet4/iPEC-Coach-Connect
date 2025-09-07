@@ -183,7 +183,7 @@ class CoachManagementService {
         const fileName = `${coachId}/certification/${Date.now()}_${doc.name}`;
         await supabaseUtils.storage.upload('coach-documents', fileName, doc);
         const url = await supabaseUtils.storage.getPublicUrl('coach-documents', fileName);
-        certDocUrls.push(url);
+  void certDocUrls.push(url);
       }
 
       // Upload identity document
@@ -198,7 +198,7 @@ class CoachManagementService {
           const fileName = `${coachId}/additional/${Date.now()}_${doc.name}`;
           await supabaseUtils.storage.upload('coach-documents', fileName, doc);
           const url = await supabaseUtils.storage.getPublicUrl('coach-documents', fileName);
-          additionalUrls.push(url);
+  void additionalUrls.push(url);
         }
       }
 
@@ -429,35 +429,35 @@ class CoachManagementService {
     const errors: string[] = [];
 
     if (!application.ipecCertificationNumber?.trim()) {
-      errors.push('iPEC certification number is required');
+  void errors.push('iPEC certification number is required');
     }
 
     if (!application.certificationLevel) {
-      errors.push('Certification level is required');
+  void errors.push('Certification level is required');
     }
 
     if (!application.certificationDate) {
-      errors.push('Certification date is required');
+  void errors.push('Certification date is required');
     }
 
     if (!application.specializations?.length) {
-      errors.push('At least one specialization is required');
+  void errors.push('At least one specialization is required');
     }
 
     if (!application.hourlyRate || application.hourlyRate < 25) {
-      errors.push('Hourly rate must be at least $25');
+  void errors.push('Hourly rate must be at least $25');
     }
 
     if (!application.experienceYears || application.experienceYears < 0) {
-      errors.push('Experience years must be a positive number');
+  void errors.push('Experience years must be a positive number');
     }
 
     if (!application.languages?.length) {
-      errors.push('At least one language is required');
+  void errors.push('At least one language is required');
     }
 
     if (!application.bio?.trim() || application.bio.length < 100) {
-      errors.push('Bio must be at least 100 characters');
+  void errors.push('Bio must be at least 100 characters');
     }
 
     return {
@@ -470,20 +470,20 @@ class CoachManagementService {
     const errors: string[] = [];
 
     if (!schedule.timezone) {
-      errors.push('Timezone is required');
+  void errors.push('Timezone is required');
     }
 
     for (const slot of schedule.slots) {
       if (slot.dayOfWeek < 0 || slot.dayOfWeek > 6) {
-        errors.push('Invalid day of week');
+  void errors.push('Invalid day of week');
       }
 
       if (!slot.startTime || !slot.endTime) {
-        errors.push('Start and end times are required');
+  void errors.push('Start and end times are required');
       }
 
       if (slot.startTime >= slot.endTime) {
-        errors.push('Start time must be before end time');
+  void errors.push('Start time must be before end time');
       }
     }
 
@@ -497,11 +497,11 @@ class CoachManagementService {
     const errors: string[] = [];
 
     if (updates.hourly_rate !== undefined && updates.hourly_rate < 25) {
-      errors.push('Hourly rate must be at least $25');
+  void errors.push('Hourly rate must be at least $25');
     }
 
     if (updates.experience_years !== undefined && updates.experience_years < 0) {
-      errors.push('Experience years must be a positive number');
+  void errors.push('Experience years must be a positive number');
     }
 
     return {

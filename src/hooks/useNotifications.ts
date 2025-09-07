@@ -101,7 +101,7 @@ export function useNotifications(options: UseNotificationsOptions = {}): UseNoti
     } catch (err) {
       if (mountedRef.current) {
         setError(err instanceof Error ? err.message : 'Failed to load notifications');
-        console.error('Failed to load notifications:', err);
+  void console.error('Failed to load notifications:', err);
       }
     } finally {
       if (mountedRef.current) {
@@ -139,7 +139,7 @@ export function useNotifications(options: UseNotificationsOptions = {}): UseNoti
 
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (err) {
-      console.error('Failed to mark notification as read:', err);
+  void console.error('Failed to mark notification as read:', err);
       setError(err instanceof Error ? err.message : 'Failed to mark as read');
     }
   }, [user?.id]);
@@ -167,7 +167,7 @@ export function useNotifications(options: UseNotificationsOptions = {}): UseNoti
 
       setUnreadCount(0);
     } catch (err) {
-      console.error('Failed to mark all notifications as read:', err);
+  void console.error('Failed to mark all notifications as read:', err);
       setError(err instanceof Error ? err.message : 'Failed to mark all as read');
     }
   }, [user?.id, notifications]);
@@ -187,7 +187,7 @@ export function useNotifications(options: UseNotificationsOptions = {}): UseNoti
         setUnreadCount(prev => Math.max(0, prev - 1));
       }
     } catch (err) {
-      console.error('Failed to delete notification:', err);
+  void console.error('Failed to delete notification:', err);
       setError(err instanceof Error ? err.message : 'Failed to delete notification');
     }
   }, [user?.id, notifications]);
@@ -209,7 +209,7 @@ export function useNotifications(options: UseNotificationsOptions = {}): UseNoti
 
       return notification;
     } catch (err) {
-      console.error('Failed to send notification:', err);
+  void console.error('Failed to send notification:', err);
       setError(err instanceof Error ? err.message : 'Failed to send notification');
       return null;
     }
@@ -258,7 +258,7 @@ export function useNotifications(options: UseNotificationsOptions = {}): UseNoti
     return () => {
       mountedRef.current = false;
       if (unsubscribeRef.current) {
-        unsubscribeRef.current();
+  void unsubscribeRef.current();
       }
     };
   }, []);
@@ -302,7 +302,7 @@ export function useNotificationPreferences(): UseNotificationPreferencesReturn {
     } catch (err) {
       if (mountedRef.current) {
         setError(err instanceof Error ? err.message : 'Failed to load preferences');
-        console.error('Failed to load notification preferences:', err);
+  void console.error('Failed to load notification preferences:', err);
       }
     } finally {
       if (mountedRef.current) {
@@ -331,7 +331,7 @@ export function useNotificationPreferences(): UseNotificationPreferencesReturn {
     } catch (err) {
       if (mountedRef.current) {
         setError(err instanceof Error ? err.message : 'Failed to update preferences');
-        console.error('Failed to update notification preferences:', err);
+  void console.error('Failed to update notification preferences:', err);
       }
     }
   }, [user?.id, preferences]);
