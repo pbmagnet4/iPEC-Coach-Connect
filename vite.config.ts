@@ -1,11 +1,9 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
-// import { visualizer } from 'rollup-plugin-visualizer'
-import { splitVendorChunkPlugin } from 'vite'
-// import { VitePWA } from 'vite-plugin-pwa'
-// import { compressionPlugin } from 'vite-plugin-compression'
-// import { chunkSplitPlugin } from 'vite-plugin-chunk-split'
+import { visualizer } from 'rollup-plugin-visualizer'
+import { VitePWA } from 'vite-plugin-pwa'
+import compression from 'vite-plugin-compression2'
 // import { bundleAnalyzer } from 'vite-bundle-analyzer'
 import autoprefixer from 'autoprefixer'
 import tailwindcss from 'tailwindcss'
@@ -19,66 +17,54 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       react(),
       
-      // Advanced chunk splitting for better caching
-      // chunkSplitPlugin({
-      //   strategy: 'split-by-experience',
-      //   customSplitting: {
-      //     // Critical libraries that change frequently
-      //     'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-      //     
-      //     // Heavy UI libraries
-      //     'ui-heavy': ['framer-motion', 'embla-carousel-react'],
-      //     
-      //     // Backend services
-      //     'backend-services': ['@supabase/supabase-js', 'stripe'],
-      //     
-      //     // Utilities that rarely change
-      //     'utils-stable': ['date-fns', 'geolib', 'class-variance-authority'],
-      //     
-      //     // State management
-      //     'state-management': ['zustand'],
-      //     
-      //     // Development tools (dev only)
-      //     'dev-tools': ['@testing-library/react', 'vitest']
-      //   }
-      // }),
+      // Modern compression with vite-plugin-compression2
+      isProduction && compression({
+        include: /\.(js|css|html|svg)$/,
+        algorithm: 'gzip',
+        threshold: 1024,
+        deleteOriginFile: false
+      }),
       
-      // Remove splitVendorChunkPlugin to prevent empty chunk conflicts
-      
-      // Compression for production
-      // isProduction && compressionPlugin({
-      //   ext: '.gz',
-      //   algorithm: 'gzip',
-      //   threshold: 1024,
-      //   deleteOriginFile: false
-      // }),
-      
-      // isProduction && compressionPlugin({
-      //   ext: '.br',
-      //   algorithm: 'brotliCompress',
-      //   threshold: 1024,
-      //   deleteOriginFile: false
-      // }),
+      isProduction && compression({
+        include: /\.(js|css|html|svg)$/,
+        algorithm: 'brotliCompress',
+        ext: '.br',
+        threshold: 1024,
+        deleteOriginFile: false
+      }),
       
       // PWA with service worker for advanced caching
-      // TODO: Re-enable PWA when vite-plugin-pwa is properly installed
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+        manifest: {
+          name: 'iPEC Coach Connect',
+          short_name: 'iPEC Connect',
+          description: 'Connect with certified iPEC coaches for personalized coaching sessions',
+          theme_color: '#ffffff',
+          icons: [
+            {
+              src: 'pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png'
+            },
+            {
+              src: 'pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png'
+            }
+          ]
+        }
+      }),
       
       // Bundle analyzer with advanced metrics
-      // command === 'build' && visualizer({
-      //   filename: 'dist/stats.html',
-      //   open: true,
-      //   gzipSize: true,
-      //   brotliSize: true,
-      //   template: 'treemap'
-      // }),
-      
-      // Bundle size monitoring
-      // command === 'build' && bundleAnalyzer({
-      //   analyzerMode: 'server',
-      //   openAnalyzer: false,
-      //   generateStatsFile: true,
-      //   statsFilename: 'dist/bundle-stats.json'
-      // })
+      command === 'build' && visualizer({
+        filename: 'dist/stats.html',
+        open: false,
+        gzipSize: true,
+        brotliSize: true,
+        template: 'treemap'
+      })
     ].filter(Boolean),
     
     optimizeDeps: {
@@ -169,8 +155,44 @@ export default defineConfig(({ command, mode }) => {
         },
       
         output: {
-          // Disable manual chunking to prevent empty chunks
-          manualChunks: undefined,
+          // Modern chunk splitting for better caching (replaces vite-plugin-chunk-split)
+          manualChunks: (id) => {
+            // Vendor chunks from node_modules
+            if (id.includes('node_modules')) {
+              // React ecosystem
+              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+                return 'react-vendor'
+              }
+              
+              // Heavy UI libraries
+              if (id.includes('framer-motion') || id.includes('embla-carousel')) {
+                return 'ui-heavy'
+              }
+              
+              // Backend services
+              if (id.includes('@supabase') || id.includes('stripe')) {
+                return 'backend-services'
+              }
+              
+              // Utilities that rarely change
+              if (id.includes('date-fns') || id.includes('geolib') || id.includes('class-variance-authority')) {
+                return 'utils-stable'
+              }
+              
+              // State management
+              if (id.includes('zustand')) {
+                return 'state-management'
+              }
+              
+              // Testing libraries (shouldn't be in production but just in case)
+              if (id.includes('@testing-library') || id.includes('vitest')) {
+                return 'dev-tools'
+              }
+              
+              // Everything else from node_modules goes to vendor
+              return 'vendor'
+            }
+          },
           
           // Optimize asset filenames
           assetFileNames: (assetInfo) => {

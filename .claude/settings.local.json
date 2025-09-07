@@ -73,7 +73,8 @@
       "Bash(npm ls:*)",
       "Bash(npm why:*)",
       "Bash(timeout 15 npm run dev)",
-      "Bash(npm update:*)"
+      "Bash(npm update:*)",
+      "Bash(npm remove:*)"
     ],
     "deny": []
   }
