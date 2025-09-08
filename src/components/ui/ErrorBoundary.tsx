@@ -38,10 +38,10 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log error details for monitoring
-  void console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
     
     // Report to error tracking service
-  void his.reportError(error, errorInfo);
+    this.reportError(error, errorInfo);
     
     // Call optional error handler
     this.props.onError?.(error, errorInfo);
