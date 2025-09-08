@@ -17,54 +17,54 @@ import {
 
 // Lazy load all pages for optimal code splitting
 // Core pages (high priority)
-const _Home = React.lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
-const _Login = React.lazy(() => import('./pages/auth/Login').then(module => ({ default: module.Login })));
-const _OptimizedRegistration = React.lazy(() => import('./pages/auth/OptimizedRegistration').then(module => ({ default: module.OptimizedRegistration })));
-const _GetStarted = React.lazy(() => import('./pages/onboarding/GetStarted').then(module => ({ default: module.GetStarted })));
+const Home = React.lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
+const Login = React.lazy(() => import('./pages/auth/Login').then(module => ({ default: module.Login })));
+const OptimizedRegistration = React.lazy(() => import('./pages/auth/OptimizedRegistration').then(module => ({ default: module.OptimizedRegistration })));
+const GetStarted = React.lazy(() => import('./pages/onboarding/GetStarted').then(module => ({ default: module.GetStarted })));
 
 // Coach-related pages
-const _CoachList = React.lazy(() => import('./pages/CoachList').then(module => ({ default: module.CoachList })));
-const _CoachProfile = React.lazy(() => import('./pages/CoachProfile').then(module => ({ default: module.CoachProfile })));
-const _CoachDashboard = React.lazy(() => import('./pages/CoachDashboard').then(module => ({ default: module.CoachDashboard })));
-const _BecomeCoach = React.lazy(() => import('./pages/BecomeCoach').then(module => ({ default: module.BecomeCoach })));
+const CoachList = React.lazy(() => import('./pages/CoachList').then(module => ({ default: module.CoachList })));
+const CoachProfile = React.lazy(() => import('./pages/CoachProfile').then(module => ({ default: module.CoachProfile })));
+const CoachDashboard = React.lazy(() => import('./pages/CoachDashboard').then(module => ({ default: module.CoachDashboard })));
+const BecomeCoach = React.lazy(() => import('./pages/BecomeCoach').then(module => ({ default: module.BecomeCoach })));
 
 // User pages
-const _Profile = React.lazy(() => import('./pages/Profile').then(module => ({ default: module.Profile })));
-const _Booking = React.lazy(() => import('./pages/Booking').then(module => ({ default: module.Booking })));
-const _Dashboard = React.lazy(() => import('./pages/Dashboard').then(module => ({ default: module.Dashboard })));
-const _MySessions = React.lazy(() => import('./pages/MySessions').then(module => ({ default: module.MySessions })));
+const Profile = React.lazy(() => import('./pages/Profile').then(module => ({ default: module.Profile })));
+const Booking = React.lazy(() => import('./pages/Booking').then(module => ({ default: module.Booking })));
+const Dashboard = React.lazy(() => import('./pages/Dashboard').then(module => ({ default: module.Dashboard })));
+const MySessions = React.lazy(() => import('./pages/MySessions').then(module => ({ default: module.MySessions })));
 
 // Community pages - Enhanced versions with authentication awareness
-const _EnhancedCommunity = React.lazy(() => import('./pages/community/EnhancedCommunity').then(module => ({ default: module.EnhancedCommunity })));
-const _DiscussionList = React.lazy(() => import('./pages/community/DiscussionList').then(module => ({ default: module.DiscussionList })));
-const _EnhancedDiscussionDetails = React.lazy(() => import('./pages/community/EnhancedDiscussionDetails').then(module => ({ default: module.EnhancedDiscussionDetails })));
-const _GroupList = React.lazy(() => import('./pages/community/GroupList').then(module => ({ default: module.GroupList })));
-const _GroupPage = React.lazy(() => import('./pages/community/GroupPage').then(module => ({ default: module.GroupPage })));
-const _EventsCalendar = React.lazy(() => import('./pages/community/EventsCalendar').then(module => ({ default: module.EventsCalendar })));
-const _EnhancedEventDetails = React.lazy(() => import('./pages/community/EnhancedEventDetails').then(module => ({ default: module.EnhancedEventDetails })));
-const _MemberProfile = React.lazy(() => import('./pages/community/MemberProfile').then(module => ({ default: module.MemberProfile })));
+const EnhancedCommunity = React.lazy(() => import('./pages/community/EnhancedCommunity').then(module => ({ default: module.EnhancedCommunity })));
+const DiscussionList = React.lazy(() => import('./pages/community/DiscussionList').then(module => ({ default: module.DiscussionList })));
+const EnhancedDiscussionDetails = React.lazy(() => import('./pages/community/EnhancedDiscussionDetails').then(module => ({ default: module.EnhancedDiscussionDetails })));
+const GroupList = React.lazy(() => import('./pages/community/GroupList').then(module => ({ default: module.GroupList })));
+const GroupPage = React.lazy(() => import('./pages/community/GroupPage').then(module => ({ default: module.GroupPage })));
+const EventsCalendar = React.lazy(() => import('./pages/community/EventsCalendar').then(module => ({ default: module.EventsCalendar })));
+const EnhancedEventDetails = React.lazy(() => import('./pages/community/EnhancedEventDetails').then(module => ({ default: module.EnhancedEventDetails })));
+const MemberProfile = React.lazy(() => import('./pages/community/MemberProfile').then(module => ({ default: module.MemberProfile })));
 
 // Learning pages (simplified)
-const _AboutCoaching = React.lazy(() => import('./pages/learning/AboutCoaching').then(module => ({ default: module.AboutCoaching })));
-const _CoachingResources = React.lazy(() => import('./pages/learning/CoachingResources').then(module => ({ default: module.CoachingResources })));
-const _CoachingBasics = React.lazy(() => import('./pages/learning/CoachingBasics').then(module => ({ default: module.CoachingBasics })));
+const AboutCoaching = React.lazy(() => import('./pages/learning/AboutCoaching').then(module => ({ default: module.AboutCoaching })));
+const CoachingResources = React.lazy(() => import('./pages/learning/CoachingResources').then(module => ({ default: module.CoachingResources })));
+const CoachingBasics = React.lazy(() => import('./pages/learning/CoachingBasics').then(module => ({ default: module.CoachingBasics })));
 
 // Info pages
-const _HowItWorks = React.lazy(() => import('./pages/HowItWorks').then(module => ({ default: module.HowItWorks })));
-const _Pricing = React.lazy(() => import('./pages/Pricing').then(module => ({ default: module.Pricing })));
-const _FAQ = React.lazy(() => import('./pages/FAQ').then(module => ({ default: module.FAQ })));
-const _Support = React.lazy(() => import('./pages/Support').then(module => ({ default: module.Support })));
-const _Contact = React.lazy(() => import('./pages/Contact').then(module => ({ default: module.Contact })));
+const HowItWorks = React.lazy(() => import('./pages/HowItWorks').then(module => ({ default: module.HowItWorks })));
+const Pricing = React.lazy(() => import('./pages/Pricing').then(module => ({ default: module.Pricing })));
+const FAQ = React.lazy(() => import('./pages/FAQ').then(module => ({ default: module.FAQ })));
+const Support = React.lazy(() => import('./pages/Support').then(module => ({ default: module.Support })));
+const Contact = React.lazy(() => import('./pages/Contact').then(module => ({ default: module.Contact })));
 
 // Settings pages
-const _AccountSettings = React.lazy(() => import('./pages/settings/AccountSettings').then(module => ({ default: module.AccountSettings })));
-const _ProfileSettings = React.lazy(() => import('./pages/settings/ProfileSettings').then(module => ({ default: module.ProfileSettings })));
-const _SecuritySettings = React.lazy(() => import('./pages/settings/SecuritySettings').then(module => ({ default: module.SecuritySettings })));
-const _PaymentSettings = React.lazy(() => import('./pages/settings/PaymentSettings').then(module => ({ default: module.PaymentSettings })));
-const _SubscriptionSettings = React.lazy(() => import('./pages/settings/SubscriptionSettings').then(module => ({ default: module.SubscriptionSettings })));
+const AccountSettings = React.lazy(() => import('./pages/settings/AccountSettings').then(module => ({ default: module.AccountSettings })));
+const ProfileSettings = React.lazy(() => import('./pages/settings/ProfileSettings').then(module => ({ default: module.ProfileSettings })));
+const SecuritySettings = React.lazy(() => import('./pages/settings/SecuritySettings').then(module => ({ default: module.SecuritySettings })));
+const PaymentSettings = React.lazy(() => import('./pages/settings/PaymentSettings').then(module => ({ default: module.PaymentSettings })));
+const SubscriptionSettings = React.lazy(() => import('./pages/settings/SubscriptionSettings').then(module => ({ default: module.SubscriptionSettings })));
 
 // Preload critical routes
-const _preloadCriticalRoutes = () => {
+const preloadCriticalRoutes = () => {
   // Preload core pages that users are likely to visit
   void import('./pages/Home');
   void import('./pages/CoachList');
@@ -152,8 +152,8 @@ function App() {
 
   // Preload resources based on route changes
   React.useEffect(() => {
-    const _handleRouteChange = () => {
-      const _currentPath = window.location.pathname;
+    const handleRouteChange = () => {
+      const currentPath = window.location.pathname;
       preloadRouteResources(currentPath);
     };
     
@@ -161,10 +161,10 @@ function App() {
     handleRouteChange();
     
     // Listen for route changes
-  void window.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('popstate', handleRouteChange);
     
     return () => {
-  void window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('popstate', handleRouteChange);
     };
   }, []);
   
