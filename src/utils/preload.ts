@@ -71,10 +71,10 @@ class NetworkAwareLoader {
   }
 }
 
-const _networkLoader = new NetworkAwareLoader();
+const networkLoader = new NetworkAwareLoader();
 
 // Preload critical resources with intelligent prioritization
-export const _preloadResource = (resource: PreloadResource): void => {
+export const preloadResource = (resource: PreloadResource): void => {
   if (!networkLoader.shouldPreload(resource.priority)) {
     return;
   }
@@ -93,7 +93,7 @@ export const _preloadResource = (resource: PreloadResource): void => {
 };
 
 // Critical CSS preloading
-export const _preloadCriticalCSS = (): void => {
+export const preloadCriticalCSS = (): void => {
   const criticalResources: PreloadResource[] = [
     {
       url: '/assets/css/critical.css',
@@ -106,7 +106,7 @@ export const _preloadCriticalCSS = (): void => {
 };
 
 // Font preloading with font-display optimization
-export const _preloadFonts = (): void => {
+export const preloadFonts = (): void => {
   const fonts: PreloadResource[] = [
     {
       url: '/assets/fonts/inter-variable.woff2',
@@ -126,7 +126,7 @@ export const _preloadFonts = (): void => {
 };
 
 // Dynamic import with caching and error handling
-export const _dynamicImport = <T = any>(
+export const dynamicImport = <T = any>(
   importFn: () => Promise<T>,
   fallback?: () => Promise<T>
 ): Promise<T> => {
@@ -152,24 +152,24 @@ export const _dynamicImport = <T = any>(
 };
 
 // Heavy library loaders with intelligent splitting
-export const _loadFramerMotion = () => {
+export const loadFramerMotion = () => {
   return dynamicImport(() => import('framer-motion'));
 };
 
-export const _loadEmblaCarousel = () => {
+export const loadEmblaCarousel = () => {
   return dynamicImport(() => import('embla-carousel-react'));
 };
 
-export const _loadStripe = () => {
+export const loadStripe = () => {
   return dynamicImport(() => import('stripe'));
 };
 
-export const _loadSupabaseClient = () => {
+export const loadSupabaseClient = () => {
   return dynamicImport(() => import('@supabase/supabase-js'));
 };
 
 // Route-based preloading with intelligent prefetching
-export const _preloadRouteResources = (route: string): void => {
+export const preloadRouteResources = (route: string): void => {
   // Skip preloading in development mode as chunk names are different
   if (import.meta.env.DEV) {
     return;
@@ -208,7 +208,7 @@ export const _preloadRouteResources = (route: string): void => {
 };
 
 // Intersection Observer for lazy loading optimization
-export const _createIntersectionObserver = (
+export const createIntersectionObserver = (
   callback: IntersectionObserverCallback,
   options: IntersectionObserverInit = {}
 ): IntersectionObserver => {
@@ -223,7 +223,7 @@ export const _createIntersectionObserver = (
 };
 
 // Image lazy loading with WebP support
-export const _loadImage = (src: string, alt: string): Promise<HTMLImageElement> => {
+export const loadImage = (src: string, alt: string): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     const _img = new Image();
     
@@ -251,7 +251,7 @@ export const _loadImage = (src: string, alt: string): Promise<HTMLImageElement> 
 };
 
 // Progressive image loading with blur-up technique
-export const _loadProgressiveImage = (
+export const loadProgressiveImage = (
   lowResSrc: string,
   highResSrc: string,
   container: HTMLElement
@@ -283,7 +283,7 @@ export const _loadProgressiveImage = (
 };
 
 // Bundle size monitoring and alerts
-export const _monitorBundleSize = (): void => {
+export const monitorBundleSize = (): void => {
   if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
     const _observer = new PerformanceObserver((list) => {
       const _entries = list.getEntries();
@@ -304,7 +304,7 @@ export const _monitorBundleSize = (): void => {
 };
 
 // Initialize performance monitoring
-export const _initPerformanceMonitoring = (): void => {
+export const initPerformanceMonitoring = (): void => {
   if (typeof window !== 'undefined') {
     // Monitor bundle sizes
     monitorBundleSize();

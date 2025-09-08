@@ -234,7 +234,7 @@ const defaultMetrics: DashboardMetrics = {
 // STORE IMPLEMENTATION
 // =====================================================================
 
-export const _useUnifiedUserStore = create<UnifiedUserState>()(
+export const useUnifiedUserStore = create<UnifiedUserState>()(
   // Apply middleware stack
   devtools(
     persist(
@@ -847,7 +847,7 @@ window.addEventListener('offline', () => {
 });
 
 // Cleanup function
-export const _destroyUnifiedUserStore = () => {
+export const destroyUnifiedUserStore = () => {
   if (authServiceSubscription) {
     authServiceSubscription();
     authServiceSubscription = null;
@@ -863,7 +863,7 @@ export const _destroyUnifiedUserStore = () => {
 // =====================================================================
 
 // Hook for authentication state
-export const _useAuth = () => {
+export const useAuth = () => {
   return useUnifiedUserStore((state) => ({
     isAuthenticated: state.isAuthenticated,
     isLoading: state.isLoading,
@@ -880,7 +880,7 @@ export const _useAuth = () => {
 };
 
 // Hook for user roles and permissions
-export const _useUserRoles = () => {
+export const useUserRoles = () => {
   return useUnifiedUserStore((state) => ({
     roles: state.roles,
     primaryRole: state.primaryRole,
@@ -894,7 +894,7 @@ export const _useUserRoles = () => {
 };
 
 // Hook for onboarding state
-export const _useOnboarding = () => {
+export const useOnboarding = () => {
   return useUnifiedUserStore((state) => ({
     onboardingStage: state.onboardingStage,
     onboardingData: state.onboardingData,
@@ -907,7 +907,7 @@ export const _useOnboarding = () => {
 };
 
 // Hook for client profile
-export const _useClientProfile = () => {
+export const useClientProfile = () => {
   return useUnifiedUserStore((state) => ({
     clientProfile: state.clientProfile,
     updateClientProfile: state.updateClientProfile,
@@ -917,7 +917,7 @@ export const _useClientProfile = () => {
 };
 
 // Hook for coach application
-export const _useCoachApplication = () => {
+export const useCoachApplication = () => {
   return useUnifiedUserStore((state) => ({
     coachApplication: state.coachApplication,
     submitCoachApplication: state.submitCoachApplication,
@@ -927,7 +927,7 @@ export const _useCoachApplication = () => {
 };
 
 // Hook for user preferences
-export const _useUserPreferences = () => {
+export const useUserPreferences = () => {
   return useUnifiedUserStore((state) => ({
     preferences: state.preferences,
     updatePreferences: state.updatePreferences,
@@ -938,7 +938,7 @@ export const _useUserPreferences = () => {
 };
 
 // Hook for dashboard metrics
-export const _useDashboardMetrics = () => {
+export const useDashboardMetrics = () => {
   return useUnifiedUserStore((state) => ({
     metrics: state.metrics,
     calculateMetrics: state.calculateMetrics,
@@ -1065,7 +1065,7 @@ export function transformToLegacyUser(
  * 
  * @returns Legacy auth state with backward-compatible interface
  */
-export const _useLegacyAuth = () => {
+export const useLegacyAuth = () => {
   return useUnifiedUserStore((state) => {
     const _legacyUser = transformToLegacyUser(state.profile, state.primaryRole);
     
@@ -1090,7 +1090,7 @@ export const _useLegacyAuth = () => {
  * 
  * @returns Legacy role state with backward-compatible interface
  */
-export const _useLegacyRole = () => {
+export const useLegacyRole = () => {
   return useUnifiedUserStore((state) => {
     const _legacyRole = mapExtendedRoleToLegacy(state.primaryRole);
     
